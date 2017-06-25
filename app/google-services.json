@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "63449497103",
+    "firebase_url": "https://finalfingerlickingawesome.firebaseio.com",
+    "project_id": "finalfingerlickingawesome",
+    "storage_bucket": "finalfingerlickingawesome.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63449497103:android:220e40a77c37eeaf",
+        "android_client_info": {
+          "package_name": "com.example.prakharagarwal.fingerlickingawesome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63449497103-v5hu1ktkkr6j2il3nve8882fc19ugioc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prakharagarwal.fingerlickingawesome",
+            "certificate_hash": "c6c0863b9d96e02ced8b98407c78f14c0e859014"
+          }
+        },
+        {
+          "client_id": "63449497103-8ddpk1l70o73j97965oaapcm70khlls5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyrxMMGfLONizeGiB4fszxlowMm7rAytQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63449497103-8ddpk1l70o73j97965oaapcm70khlls5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
