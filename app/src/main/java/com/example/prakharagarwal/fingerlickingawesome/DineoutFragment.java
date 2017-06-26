@@ -46,7 +46,7 @@ public class DineoutFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dineout, container, false);
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
-        mFeedsAdapter= new FeedsAdapter(getContext(),videos);
+        mFeedsAdapter= new FeedsAdapter(getActivity(),videos);
         mRecyclerView.setAdapter(mFeedsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
