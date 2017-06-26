@@ -13,12 +13,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:transitionName="@string/transitionphoto"
-                android:layout_height="200dp"
-                android:id="@+id/articleThumbnail"/>
 
         </RelativeLayout>
 

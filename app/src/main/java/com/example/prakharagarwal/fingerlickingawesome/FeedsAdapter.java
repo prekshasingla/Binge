@@ -44,7 +44,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
     @Override
     public void onBindViewHolder(FeedsAdapterViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-       
+
 
 
     }
