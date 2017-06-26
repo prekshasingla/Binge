@@ -41,68 +41,35 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
     final private Context mContext;
     FeedsAdapterViewHolder holder;
     FragmentManager fragmentManager;
-
+    int currId = 0;
 
 
     public FeedsAdapter(Context context, List<String> videos, FragmentManager fragmentManager) {
         mContext = context;
         mVideos = videos;
-        this.fragmentManager=fragmentManager;
+        this.fragmentManager = fragmentManager;
     }
 
 
     @Override
     public FeedsAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feeds_adapter_card_item, parent,false);
-            //view.setFocusable(true);
-            holder = new FeedsAdapterViewHolder(view);
-            return holder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feeds_adapter_card_item, parent, false);
+        //view.setFocusable(true);
+        holder = new FeedsAdapterViewHolder(view);
+        return holder;
 
     }
 
     @Override
-    public void onBindViewHolder(FeedsAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(final FeedsAdapterViewHolder holder, int position) {
 
 
-
-
-
-        final String video= mVideos.get(position);
-        final int id=100+position;
+        final String video = mVideos.get(position);
+        final int id = 100 + position;
         holder.youTubeView.setId(id);
 
-        YouTubeThumbnailView thumbnail= new YouTubeThumbnailView(mContext);
-
-        final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
-            @Override
-            public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-
-            }
-
-            @Override
-            public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                youTubeThumbnailView.setVisibility(View.VISIBLE);
-                //relativeLayoutOverYouTubeThumbnailView.setVisibility(View.VISIBLE);
-            }
-        };
-
-        thumbnail.initialize(Config.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-
-                youTubeThumbnailLoader.setVideo("tOoOI0KdUw4");
-                youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                //write something for failure
-            }
-        });
-        holder.youTubeView.addView(thumbnail);
-
-       // fragmentManager.beginTransaction().add(id,youTubePlayerFragment).commit();
+        fragmentManager.beginTransaction().replace(id,new BlankFragment()).commit();
 
 
     }
@@ -119,21 +86,19 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
         //public final FrameLayout container;
 
 
-
-
         public FeedsAdapterViewHolder(View view) {
             super(view);
 
 
-            youTubeView=(FrameLayout)view.findViewById(R.id.youtube_thumbnail);
+            youTubeView = (FrameLayout) view.findViewById(R.id.youtube_thumbnail);
             view.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View view) {
-            final YouTubePlayerSupportFragment youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
-            youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY,new YouTubePlayer.OnInitializedListener() {
+            final YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+            youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
                 @Override
                 public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
@@ -151,23 +116,28 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
                         //errorReason.getErrorDialog(mContext, RECOVERY_REQUEST).show();
                     } else {
                         String error = String.format(mContext.getString(R.string.player_error), errorReason.toString());
-                        Toast.makeText(mContext,"Error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();
                     }
                 }
 
             });
-            int id=getAdapterPosition()+100;
-            fragmentManager.beginTransaction().replace(id,youTubePlayerFragment).commit();
+            if (currId == 0) {
+
+            } else {
+
+                fragmentManager.beginTransaction().replace(currId,new BlankFragment()).commit();
+            }
+            int id = getAdapterPosition() + 100;
+            currId=id;
+            fragmentManager.beginTransaction().replace(id, youTubePlayerFragment).commit();
+
         }
     }
 
-    public void addAll(List<String> videos){
-        mVideos=videos;
+    public void addAll(List<String> videos) {
+        mVideos = videos;
 
     }
-
-
-
 
 
 }
