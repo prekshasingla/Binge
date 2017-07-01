@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,16 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 public class BlankFragment extends Fragment {
 
 
+    String video=null;//="ZZS4dd5VeXY";
+
     public BlankFragment() {
         // Required empty public constructor
     }
+
+    /*public BlankFragment(String video) {
+        this.video=video;
+
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,14 @@ public class BlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle bundle=getArguments();
+
+
+        if(bundle!=null)
+         video=bundle.getString("video");
+
+        //Log.e("video",video);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
         FrameLayout lay=(FrameLayout) rootView.findViewById(R.id.blank_fragment_frame);
@@ -49,11 +65,11 @@ public class BlankFragment extends Fragment {
             }
         };
 
-        thumbnail.initialize(Config.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+/**/        thumbnail.initialize(Config.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
 
-                youTubeThumbnailLoader.setVideo("tOoOI0KdUw4");
+                youTubeThumbnailLoader.setVideo(video);
                 youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
             }
 
@@ -65,8 +81,5 @@ public class BlankFragment extends Fragment {
         lay.addView(thumbnail);
         return rootView;
     }
-
-
-
 
 }

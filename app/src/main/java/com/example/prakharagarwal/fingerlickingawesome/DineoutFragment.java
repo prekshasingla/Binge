@@ -36,7 +36,10 @@ public class DineoutFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         videos=new ArrayList<String>();
+
+
 
     }
 
@@ -44,11 +47,18 @@ public class DineoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dineout, container, false);
+        LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
-        mFeedsAdapter= new FeedsAdapter(getActivity(),videos,getFragmentManager());
-        mRecyclerView.setAdapter(mFeedsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+       /*??*/ mFeedsAdapter= new FeedsAdapter(getContext(),mRecyclerView,videos,getChildFragmentManager());
+      try{
+          mRecyclerView.setAdapter(mFeedsAdapter);
+      }catch (NoClassDefFoundError e){
+
+      }
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        //Log.e("position",""+linearLayoutManager.findLastCompletelyVisibleItemPosition());
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
@@ -65,8 +75,14 @@ public class DineoutFragment extends Fragment {
                                 //Log.d("Data", ""+child2);
                                 if (child2.getKey().equals("hvideo")){
 
-                                    Log.d("Data", ""+child2.getValue());
-                                    videos.add(""+child2.getValue());
+                                    //Log.d("Data", ""+child2.getValue());
+
+                                        String video= (""+child2.getValue()).split("=")[1];
+                                        //Log.e("print video",video);
+                                        videos.add(video);
+
+
+                                    //videos.add(""+child2.getValue());
 
 
                                 }
