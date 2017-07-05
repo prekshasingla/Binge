@@ -73,7 +73,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
         String video = mVideos.get(position);
         //video="ZZS4dd5VeXY";
         final int id = 100 + position;
-        holder.youTubeView.setId(id);
+      //  holder.youTubeView.setId(id);
 
         Bundle bundle = new Bundle();
         bundle.putString("video", video);
@@ -91,32 +91,65 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
                 if (visiblePos != -1) {
                     int id1 = 100 + visiblePos;
                     final YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-                    youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
-                        @Override
-                        public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
 
-                            if (!b) {
-                                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-                       /**/
-                                youTubePlayer.cueVideo(mVideos.get(visiblePos)); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+                        if (!b) {
+                            youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
+                            youTubePlayer.cueVideo(mVideos.get(visiblePos)); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
 
+                        }
+                        youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
+                            @Override
+                            public void onLoading() {
+
+                            }
+
+                            @Override
+                            public void onLoaded(String s) {
+
+                                Log.e("Play","Done");
                                 youTubePlayer.play();
                             }
 
-                        }
+                            @Override
+                            public void onAdStarted() {
 
-                        @Override
-                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-                            if (errorReason.isUserRecoverableError()) {
-                                //errorReason.getErrorDialog(mContext, RECOVERY_REQUEST).show();
-                            } else {
-                                String error = String.format(mContext.getString(R.string.player_error), errorReason.toString());
-                                Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();
                             }
-                        }
 
-                    });
-                    if (currId == -1) {
+                            @Override
+                            public void onVideoStarted() {
+
+                            }
+
+                            @Override
+                            public void onVideoEnded() {
+
+                            }
+
+                            @Override
+                            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
+                        if (errorReason.isUserRecoverableError()) {
+                            //errorReason.getErrorDialog(mContext, RECOVERY_REQUEST).show();
+                        } else {
+                            String error = String.format(mContext.getString(R.string.player_error), errorReason.toString());
+                            Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                });
+
+
+                 if (currId == -1) {
 
                     } else {
                         if (currId >= firstVisible && currId <= lastVisible) {
@@ -128,14 +161,18 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
                         }
                     }
 
-                    //if (currId == id1) {
-                    //} else {
-                        fragmentManager.beginTransaction().replace(id1, youTubePlayerFragment).commit();
-                        currId = id1;
-                    //}
+                    fragmentManager.beginTransaction().replace(id1, youTubePlayerFragment).commit();
+                    currId = id1;
 
 
                 }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
             }
         });
 
@@ -150,7 +187,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
 
     public class FeedsAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        public final FrameLayout youTubeView;
+        //public final FrameLayout youTubeView;
         //public final FrameLayout container;
 
 
@@ -158,7 +195,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
             super(view);
 
 
-            youTubeView = (FrameLayout) view.findViewById(R.id.youtube_thumbnail);
+       //     youTubeView = (FrameLayout) view.findViewById(R.id.youtube_thumbnail);
 //            view.setOnClickListener(this);
 
         }
@@ -219,6 +256,15 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.FeedsAdapter
     public void addAll(List<String> videos) {
         mVideos = videos;
 
+    }
+
+    public void notifyItemSetChanged(int position, boolean hasDownloaded) {
+        if (currId == position) {
+            return;
+        }
+        currId = position;
+        Log.d("notifyItemSetChanged","" + position);
+        notifyItemChanged(position,"done");
     }
 
 

@@ -28,7 +28,7 @@ import java.util.ListIterator;
 
 public class DineoutFragment extends Fragment {
     RecyclerView mRecyclerView;
-    FeedsAdapter mFeedsAdapter;
+    VideoAdapter mFeedsAdapter;
 
     List<String> videos;
 
@@ -50,7 +50,7 @@ public class DineoutFragment extends Fragment {
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
-       /*??*/ mFeedsAdapter= new FeedsAdapter(getContext(),mRecyclerView,videos,getChildFragmentManager());
+       /*??*/ mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,videos,getChildFragmentManager());
       try{
           mRecyclerView.setAdapter(mFeedsAdapter);
       }catch (NoClassDefFoundError e){
@@ -67,27 +67,14 @@ public class DineoutFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.getKey().equals("table")) {//Log.d("Data", ""+child);
-
+                    if (child.getKey().equals("table")) {
                         for (DataSnapshot child1 : child.getChildren()) {
-                            //Log.d("Data", ""+child1);
                             for (DataSnapshot child2 : child1.getChildren()) {
-                                //Log.d("Data", ""+child2);
                                 if (child2.getKey().equals("hvideo")){
-
-                                    //Log.d("Data", ""+child2.getValue());
-
                                         String video= (""+child2.getValue()).split("=")[1];
-                                        //Log.e("print video",video);
                                         videos.add(video);
-
-
-                                    //videos.add(""+child2.getValue());
-
-
                                 }
                             }
-                                //This might work but it retrieves all the data
                         }
                     }
                 }
@@ -100,8 +87,6 @@ public class DineoutFragment extends Fragment {
 
             }
         });
-
-
 
         return rootView;
     }

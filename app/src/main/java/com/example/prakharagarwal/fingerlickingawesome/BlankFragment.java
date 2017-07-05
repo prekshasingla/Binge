@@ -50,7 +50,7 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
         FrameLayout lay=(FrameLayout) rootView.findViewById(R.id.blank_fragment_frame);
-        YouTubeThumbnailView thumbnail = new YouTubeThumbnailView(getContext());
+        YouTubeThumbnailView thumbnail = new YouTubeThumbnailView(getContext().getApplicationContext());
 
         final YouTubeThumbnailLoader.OnThumbnailLoadedListener onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
             @Override

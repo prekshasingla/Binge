@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
         mviewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -29,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         mviewPager.setAdapter(mviewPagerAdapter);
         mtabLayout.setupWithViewPager(mviewPager);
-
 
     }
 }

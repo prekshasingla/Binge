@@ -9,19 +9,30 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:id="@+id/appbar"
-
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
+
+            <ImageView
+                android:background="@color/title_bar"
+                android:id="@+id/logo"
+                android:src="@mipmap/logo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                />
 
             <android.support.design.widget.TabLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabMode="scrollable"
-                app:tabTextColor="@color/pitch_black"
+                app:tabTextColor="@color/abc_primary_text_material_light"
                 app:tabGravity="center"
+                app:tabSelectedTextColor="@color/abc_primary_text_material_light"
                 android:id="@+id/tablayout"
                 ></android.support.design.widget.TabLayout>
 
