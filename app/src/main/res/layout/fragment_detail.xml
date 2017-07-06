@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/recycler_view">
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -54,18 +54,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/card_view_address"
-            card_view:cardCornerRadius="@dimen/cardview_default_radius"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardPreventCornerOverlap="true"
-            android:elevation="@dimen/cardview_default_elevation"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            style="@style/CardView.Light">
+            android:orientation="vertical"
+            android:layout_margin="4dp"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -97,20 +88,15 @@
                 android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
                 />
             </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:background="@color/pitch_black"
+                android:id="@+id/separatorLine1"
+                />
 
-
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/card_view_menu"
-            card_view:cardCornerRadius="@dimen/cardview_default_radius"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardPreventCornerOverlap="true"
-            android:elevation="@dimen/cardview_default_elevation"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            style="@style/CardView.Light">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -156,21 +142,15 @@
             </HorizontalScrollView>
             </LinearLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:background="@color/pitch_black"
+                android:id="@+id/separatorLine2"
+                />
 
-        </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/card_view_review"
-                card_view:cardCornerRadius="@dimen/cardview_default_radius"
-                card_view:cardUseCompatPadding="true"
-                card_view:cardPreventCornerOverlap="true"
-                android:elevation="@dimen/cardview_default_elevation"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                style="@style/CardView.Light">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -204,9 +184,16 @@
                             android:padding="5dp"/>
                     </HorizontalScrollView>
                 </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:background="@color/pitch_black"
+                android:id="@+id/separatorLine3"
+               />
 
 
-            </android.support.v7.widget.CardView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
