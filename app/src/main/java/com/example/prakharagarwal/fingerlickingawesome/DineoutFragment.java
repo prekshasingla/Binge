@@ -29,18 +29,12 @@ import java.util.ListIterator;
 public class DineoutFragment extends Fragment {
     RecyclerView mRecyclerView;
     VideoAdapter mFeedsAdapter;
-
-    List<String> videos;
+    List<Restaurant> restaurants;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        videos=new ArrayList<String>();
-
-
-
+        restaurants=new ArrayList<Restaurant>();
     }
 
     @Nullable
@@ -50,7 +44,7 @@ public class DineoutFragment extends Fragment {
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
-       /*??*/ mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,videos,getChildFragmentManager());
+        mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants);
       try{
           mRecyclerView.setAdapter(mFeedsAdapter);
       }catch (NoClassDefFoundError e){
@@ -69,16 +63,60 @@ public class DineoutFragment extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.getKey().equals("table")) {
                         for (DataSnapshot child1 : child.getChildren()) {
+                            Restaurant restaurant=new Restaurant();
+
                             for (DataSnapshot child2 : child1.getChildren()) {
+
+                                if (child2.getKey().equals("hname")){
+                                    restaurant.setName(""+child2.getValue());
+
+                                }
                                 if (child2.getKey().equals("hvideo")){
-                                        String video= (""+child2.getValue()).split("=")[1];
-                                        videos.add(video);
+                                    restaurant.setVideo((""+child2.getValue()).split("=")[1]);
+                                }
+                                if (child2.getKey().equals("h_address")){
+                                    restaurant.setAddress(""+child2.getValue());
+                                }
+                                if (child2.getKey().equals("h_lat")){
+                                    restaurant.setLattitude(""+child2.getValue());
+                                }
+
+                               if (child2.getKey().equals("h_lng")){
+                                    restaurant.setLongitude(""+child2.getValue());
+                                }
+
+                                if (child2.getKey().equals("h_type_of_restaurant")){
+                                    restaurant.setTypeOfRestaurant(""+child2.getValue());
+                                }
+
+                                if (child2.getKey().equals("hambience_etime")){
+                                    restaurant.setAmbienceEndTime(Integer.parseInt(""+child2.getValue()));
+                                }
+                                if (child2.getKey().equals("hambience_stime")){
+                                    restaurant.setAmbienceStartTime(Integer.parseInt(""+child2.getValue()));
+                                }
+                                if (child2.getKey().equals("hclosing_time")){
+                                    restaurant.setClosingTime(""+child2.getValue());
+                                }
+                                if (child2.getKey().equals("hopening_time")){
+                                    restaurant.setOpeningTime(""+child2.getValue());
+                                }
+                                if (child2.getKey().equals("hcuisine_type")){
+                                    restaurant.setCuisineType(""+child2.getValue());
+                                }
+                                if (child2.getKey().equals("hsignature_etime")){
+                                    restaurant.setSignatureEndTime(Integer.parseInt(""+child2.getValue()));
+                                }
+                                if (child2.getKey().equals("hsignature_stime")){
+                                    restaurant.setSignatureStartTime(Integer.parseInt(""+child2.getValue()));
                                 }
                             }
+                            restaurants.add(restaurant);
+
                         }
                     }
                 }
-                mFeedsAdapter.addAll(videos);
+                mFeedsAdapter.addAll(restaurants);
                 mFeedsAdapter.notifyDataSetChanged();
             }
 

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dineout_fragment_recycler_view"
-        android:text="@string/hello_blank_fragment"
         android:background="@color/recycler_view"
         android:paddingTop="48dp"/>
 

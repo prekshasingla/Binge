@@ -3,10 +3,14 @@
 
 <android.support.v7.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="6dp"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/article_cardView"
-    android:layout_margin="4dp"
-    android:padding="4dp"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardPreventCornerOverlap="true"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:padding="6dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,6 +25,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Restaurant Name"
+            android:id="@+id/item_name"
             android:fontFamily="serif"
             android:textStyle="bold"
             android:textSize="20dp"
@@ -45,12 +50,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/item_type_of_restaurant"
                     android:text="Casual Dining" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:id="@+id/item_cost_for_two"
                     android:text="Cost for two :1500" />
         </LinearLayout>
         <LinearLayout
