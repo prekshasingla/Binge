@@ -71,9 +71,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.webView.getSettings().setAllowFileAccess(true);
         holder.webView.setWebChromeClient(new WebChromeClient());
 
-        holder.webView.callOnClick();
 
         holder.webView.setWebViewClient(new WebViewClient());
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 16) {
+            holder.webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        }
+        else {
+            holder.webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        }
+
 
 //        holder.webView.setWebViewClient(new WebViewClient() {
 //            // autoplay when finished loading via javascript injection
@@ -83,11 +91,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
 
 
-//        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-//        if (SDK_INT > 16) {
-//            holder.webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-//        }
-//
 //        holder.webView.setWebViewClient(new WebViewClient() {
 //            @Override
 //            public void onPageFinished(WebView webView, String url) {

@@ -3,6 +3,7 @@ package com.example.prakharagarwal.fingerlickingawesome;
 import android.app.Fragment;
 import android.app.IntentService;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.Locale;
 
@@ -57,7 +61,7 @@ public class DetailActivityFragment extends Fragment {
 
         CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)rootView.findViewById(R.id.collapsing_toolbar);
 
-        //collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
         //collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbarLayout.setTitle(restaurant.name);
         SquareImageView squareImageView=(SquareImageView)rootView.findViewById(R.id.detail_image) ;
@@ -94,6 +98,33 @@ public class DetailActivityFragment extends Fragment {
 
             }
         });
+
+
+        LinearLayout layoutMenu = (LinearLayout) rootView.findViewById(R.id.details_menu_images);
+        for (int j = 0; j < 10; j++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setId(j+100);
+            imageView.setPadding(4,4,4,4);
+
+            Picasso.with(getActivity())
+                    .load(img_url
+                    ).transform(new CircleTransform())
+                    .into(imageView);
+            layoutMenu.addView(imageView);
+        }
+
+        LinearLayout layoutReview = (LinearLayout) rootView.findViewById(R.id.details_review_images);
+        for (int j = 0; j < 10; j++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setId(j+100);
+            imageView.setPadding(4,4,4,4);
+
+            Picasso.with(getActivity())
+                    .load(img_url).transform(new CircleTransform())
+                    .into(imageView);
+            layoutReview.addView(imageView);
+        }
+
 
 
         return rootView;
