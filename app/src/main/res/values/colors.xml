@@ -5,12 +5,15 @@
     <color name="title_bar">#EEEEEE</color>
     <color name="recycler_view">#E0E0E0</color>
     <color name="text_color">#FF000000</color>
+    <color name="button_ambience_color">#304FFE</color>
+    <color name="button_signature_dishes_color">#F44336</color>
 
 
 
+    <color name="photo_placeholder">#ccc</color>
 
     <color name="colorAccent">#FF4081</color>
-    <color name="white_opaque">#FFFFFFFF</color>
+    <color name="white_opaque">#FFFFFFFF</color>6j
     <color name="pitch_black">#FF000000</color>
 
     <color name="theme_accent">#04561A</color>

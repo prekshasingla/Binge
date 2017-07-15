@@ -10,6 +10,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,7 +58,7 @@ public class DetailActivityFragment extends Fragment {
         restaurant.setSignatureStartTime(i.getIntExtra("signature_start_time",0));
 
 
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)rootView.findViewById(R.id.collapsing_toolbar);
 
@@ -72,6 +73,20 @@ public class DetailActivityFragment extends Fragment {
         Picasso.with(getActivity())
                 .load(img_url)
                 .into(squareImageView);
+
+        squareImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("http://www.youtube.com/watch?v=" +restaurant.video));
+//                startActivity(intent);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + restaurant.video));
+                startActivity(intent);
+            }
+        });
+
 
         TextView textViewAddress=(TextView)rootView.findViewById(R.id.detail_address);
         textViewAddress.setText(restaurant.address);
@@ -96,6 +111,10 @@ public class DetailActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                Intent intent=new Intent(getActivity(),MenuActivity.class);
+                getActivity().startActivity(intent);
+
+
             }
         });
 
@@ -106,12 +125,103 @@ public class DetailActivityFragment extends Fragment {
             imageView.setId(j+100);
             imageView.setPadding(4,4,4,4);
 
+            String img_url1="http://img.youtube.com/vi/"+restaurant.video+"/0.jpg";
+
+
+//            if(j==1)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==2)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==3)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==4)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//            if(j==5)
+//                img_url1="http://img.youtube.com/vi/LyJ9-m2M_NM/0.jpg";
+//            if(j==6)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==7)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==8)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==9)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+
             Picasso.with(getActivity())
-                    .load(img_url
-                    ).transform(new CircleTransform())
+                    .load(img_url1)
                     .into(imageView);
             layoutMenu.addView(imageView);
         }
+
+//        LinearLayout layoutMainCourse = (LinearLayout) rootView.findViewById(R.id.details_main_course_images);
+//        for (int j = 0; j < 10; j++) {
+//            ImageView imageView = new ImageView(getActivity());
+//            imageView.setId(j+100);
+//            imageView.setPadding(4,4,4,4);
+//
+//            String img_url1="http://img.youtube.com/vi/"+restaurant.video+"/0.jpg";
+//
+//
+//            if(j==1)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==2)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==3)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==4)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//            if(j==5)
+//                img_url1="http://img.youtube.com/vi/LyJ9-m2M_NM/0.jpg";
+//            if(j==6)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==7)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==8)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==9)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//
+//            Picasso.with(getActivity())
+//                    .load(img_url1)
+//                    .into(imageView);
+//            layoutMainCourse.addView(imageView);
+//        }
+//
+//        LinearLayout layoutStarters = (LinearLayout) rootView.findViewById(R.id.details_starters_images);
+//        for (int j = 0; j < 10; j++) {
+//            ImageView imageView = new ImageView(getActivity());
+//            imageView.setId(j+100);
+//            imageView.setPadding(4,4,4,4);
+//
+//            String img_url1="http://img.youtube.com/vi/"+restaurant.video+"/0.jpg";
+//
+//
+//            if(j==1)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==2)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==3)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==4)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//            if(j==5)
+//                img_url1="http://img.youtube.com/vi/LyJ9-m2M_NM/0.jpg";
+//            if(j==6)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==7)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==8)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==9)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//
+//            Picasso.with(getActivity())
+//                    .load(img_url1)
+//                    .into(imageView);
+//            layoutStarters.addView(imageView);
+//        }
+//
+//
 
         LinearLayout layoutReview = (LinearLayout) rootView.findViewById(R.id.details_review_images);
         for (int j = 0; j < 10; j++) {
@@ -119,8 +229,30 @@ public class DetailActivityFragment extends Fragment {
             imageView.setId(j+100);
             imageView.setPadding(4,4,4,4);
 
+            String img_url1="http://img.youtube.com/vi/"+restaurant.video+"/0.jpg";
+
+
+//            if(j==1)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==2)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==3)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==4)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+//            if(j==5)
+//                img_url1="http://img.youtube.com/vi/LyJ9-m2M_NM/0.jpg";
+//            if(j==6)
+//                img_url1="http://img.youtube.com/vi/Smjo2-2-opw/0.jpg";
+//            if(j==7)
+//                img_url1="http://img.youtube.com/vi/Y0aP0Rd6j1M/0.jpg";
+//            if(j==8)
+//                img_url1="http://img.youtube.com/vi/twl072sffjE/0.jpg";
+//            if(j==9)
+//                img_url1="http://img.youtube.com/vi/UwVqBY3c_80/0.jpg";
+
             Picasso.with(getActivity())
-                    .load(img_url).transform(new CircleTransform())
+                    .load(img_url1)
                     .into(imageView);
             layoutReview.addView(imageView);
         }

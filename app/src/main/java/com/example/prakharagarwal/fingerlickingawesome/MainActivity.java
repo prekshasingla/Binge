@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             if (location != null) {
                 latitude = "" + location.getLatitude();
                 longitude = "" + location.getLongitude();
-            } else {
+            } else if(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!=null){
                 // locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, gps);
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 latitude = "" + location.getLatitude();

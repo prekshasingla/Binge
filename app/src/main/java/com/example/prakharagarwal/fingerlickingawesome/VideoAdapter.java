@@ -71,7 +71,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.webView.getSettings().setAllowFileAccess(true);
         holder.webView.setWebChromeClient(new WebChromeClient());
 
-
         holder.webView.setWebViewClient(new WebViewClient());
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -109,6 +108,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             }
         }, position+5);
 
+
+        holder.buttonAmbience.setBackgroundColor(mContext.getResources().getColor(R.color.button_ambience_color));
         holder.buttonAmbience.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +125,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             }
         });
 
+        holder.buttonSignatureDishes.setBackgroundColor(mContext.getResources().getColor(R.color.button_signature_dishes_color));
         holder.buttonSignatureDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
