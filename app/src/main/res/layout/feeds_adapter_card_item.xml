@@ -1,37 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/article_cardView"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:layout_marginBottom="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="300dp"
+    android:id="@+id/container">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:id="@+id/article_cardView"
-        >
 
-        <RelativeLayout
+        <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/item_webview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+           <!-- tools:ignore="WebViewLayout"
+            />-->
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Restaurant Name"
+            android:id="@+id/item_name"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textAlignment="center"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
 
-            <FrameLayout
-                android:id="@+id/youtube_thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/item_type_of_restaurant"
+                    android:text="Casual Dining" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:id="@+id/item_cost_for_two"
+                    android:text="Cost for two :1500" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+           >
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/button_ambience"
+            android:layout_margin="8dp"
+            android:text="Ambience"
+            />
 
-                android:paddingBottom="30dp"
-                android:scaleType="centerCrop"
-                android:visibility="visible" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/button_signature_dishes"
+            android:layout_margin="8dp"
+            android:text="Signature Dishes"/>
+        </LinearLayout>
 
-
-
-
-        </RelativeLayout>
-
-</android.support.v7.widget.CardView>
 
 
 </LinearLayout>
+        </android.support.v7.widget.CardView>
