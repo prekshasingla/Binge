@@ -2,12 +2,7 @@ package com.example.prakharagarwal.fingerlickingawesome;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -200,21 +195,24 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
 //            mContext.startActivity(intent);
 
-            Intent intent=new Intent(mContext,DetailActivity.class);
-            intent.putExtra("name",mRestaurants.get(getAdapterPosition()).name);
-            intent.putExtra("video",mRestaurants.get(getAdapterPosition()).video);
-            intent.putExtra("address",mRestaurants.get(getAdapterPosition()).address);
-            intent.putExtra("lattitude",mRestaurants.get(getAdapterPosition()).lattitude);
-            intent.putExtra("longitude",mRestaurants.get(getAdapterPosition()).longitude);
-            intent.putExtra("type_of_restaurant",mRestaurants.get(getAdapterPosition()).typeOfRestaurant);
-            intent.putExtra("ambience_end_time",mRestaurants.get(getAdapterPosition()).ambienceEndTime);
-            intent.putExtra("ambience_start_time",mRestaurants.get(getAdapterPosition()).ambienceStartTime);
-            intent.putExtra("closing_time",mRestaurants.get(getAdapterPosition()).closingTime);
-            intent.putExtra("opening_time",mRestaurants.get(getAdapterPosition()).openingTime);
-            intent.putExtra("cuisine_type",mRestaurants.get(getAdapterPosition()).cuisineType);
-            intent.putExtra("signature_end_time",mRestaurants.get(getAdapterPosition()).signatureEndTime);
-            intent.putExtra("signature_start_time",mRestaurants.get(getAdapterPosition()).signatureStartTime);
+            Intent intent=new Intent(mContext,StoriesActivity.class);
             mContext.startActivity(intent);
+
+//            Intent intent=new Intent(mContext,DetailActivity.class);
+//            intent.putExtra("name",mRestaurants.get(getAdapterPosition()).name);
+//            intent.putExtra("video",mRestaurants.get(getAdapterPosition()).video);
+//            intent.putExtra("address",mRestaurants.get(getAdapterPosition()).address);
+//            intent.putExtra("lattitude",mRestaurants.get(getAdapterPosition()).lattitude);
+//            intent.putExtra("longitude",mRestaurants.get(getAdapterPosition()).longitude);
+//            intent.putExtra("type_of_restaurant",mRestaurants.get(getAdapterPosition()).typeOfRestaurant);
+//            intent.putExtra("ambience_end_time",mRestaurants.get(getAdapterPosition()).ambienceEndTime);
+//            intent.putExtra("ambience_start_time",mRestaurants.get(getAdapterPosition()).ambienceStartTime);
+//            intent.putExtra("closing_time",mRestaurants.get(getAdapterPosition()).closingTime);
+//            intent.putExtra("opening_time",mRestaurants.get(getAdapterPosition()).openingTime);
+//            intent.putExtra("cuisine_type",mRestaurants.get(getAdapterPosition()).cuisineType);
+//            intent.putExtra("signature_end_time",mRestaurants.get(getAdapterPosition()).signatureEndTime);
+//            intent.putExtra("signature_start_time",mRestaurants.get(getAdapterPosition()).signatureStartTime);
+//            mContext.startActivity(intent);
         }
     }
 

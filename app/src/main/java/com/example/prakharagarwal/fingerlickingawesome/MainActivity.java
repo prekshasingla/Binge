@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 
+       // getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
         mviewPager = (ViewPager) findViewById(R.id.viewpager);

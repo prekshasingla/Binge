@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment">
+
+   <!-- <com.google.android.exoplayer.AspectRatioFrameLayout android:id="@+id/video_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:foregroundGravity="center">
+
+        <SurfaceView android:id="@+id/surface_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+
+    </com.google.android.exoplayer.AspectRatioFrameLayout>
+
+    -->
+
+      <FrameLayout
+          android:id="@+id/blank_fragment_stories"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="fitXY"
+          android:visibility="visible" >
+
+
+
+</FrameLayout>
+
+
+   <!--<VideoView android:id="@+id/videoView"
+       android:layout_height="fill_parent"
+       android:layout_width="fill_parent"/>-->
+
+
+</RelativeLayout>
