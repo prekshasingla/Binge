@@ -87,7 +87,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.textViewName.setText(name);
         holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
-        final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
+        final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setDomStorageEnabled(true);
@@ -122,14 +122,33 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //            }
 //        });
 
-        holder.webView.postDelayed(new Runnable() {
+        //todo
+//        holder.webView.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+//
+//            }
+//        }, position+5);
 
-            @Override
-            public void run() {
-                holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
 
-            }
-        }, position+5);
+        holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+
+        if(position==0)
+        {
+
+            holder.webView.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    holder.webView.performClick();
+
+                }
+            }, position+5);
+
+
+        }
 
 
 
