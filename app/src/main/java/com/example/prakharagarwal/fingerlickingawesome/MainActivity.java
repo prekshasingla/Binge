@@ -16,6 +16,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         TextView textViewLocation = (TextView) findViewById(R.id.user_location);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+
+       // getSupportActionBar().setDisplayShowTitleEnabled(true);
+
 
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
@@ -61,32 +67,32 @@ public class MainActivity extends AppCompatActivity {
         mviewPager.setAdapter(mviewPagerAdapter);
         mtabLayout.setupWithViewPager(mviewPager);
 
-        final ImageView imageViewOptions=(ImageView)findViewById(R.id.options);
-        imageViewOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(getBaseContext(),"Options",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        final ImageView imageViewFilter=(ImageView)findViewById(R.id.filter);
-        imageViewFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(getBaseContext(),"Filter",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        final ImageView imageViewSearch=(ImageView)findViewById(R.id.search);
-        imageViewSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(getBaseContext(),"Search",Toast.LENGTH_LONG).show();
-            }
-        });
+//        final ImageView imageViewOptions=(ImageView)findViewById(R.id.options);
+//        imageViewOptions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Toast.makeText(getBaseContext(),"Options",Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        final ImageView imageViewFilter=(ImageView)findViewById(R.id.filter);
+//        imageViewFilter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Toast.makeText(getBaseContext(),"Filter",Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        final ImageView imageViewSearch=(ImageView)findViewById(R.id.search);
+//        imageViewSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Toast.makeText(getBaseContext(),"Search",Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         if (checkUserPermission()) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
