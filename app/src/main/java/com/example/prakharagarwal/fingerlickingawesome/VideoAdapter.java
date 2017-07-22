@@ -88,6 +88,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
         final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
+
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setDomStorageEnabled(true);
@@ -95,6 +96,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.webView.setWebChromeClient(new WebChromeClient());
 
         holder.webView.setWebViewClient(new WebViewClient());
+
+        holder.webView.setVerticalScrollBarEnabled(false);
+        holder.webView.setHorizontalScrollBarEnabled(false);
+
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
@@ -123,6 +128,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //        });
 
         //todo
+
 //        holder.webView.postDelayed(new Runnable() {
 //
 //            @Override
