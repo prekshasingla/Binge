@@ -4,38 +4,90 @@
     android:layout_height="match_parent"
     tools:context="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment">
 
-   <!-- <com.google.android.exoplayer.AspectRatioFrameLayout android:id="@+id/video_frame"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        android:foregroundGravity="center">
 
-        <SurfaceView android:id="@+id/surface_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
 
-
-    </com.google.android.exoplayer.AspectRatioFrameLayout>
-
-    -->
-
-      <FrameLayout
+       <WebView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:id="@+id/webview_stories"
+           android:scaleType="fitXY"></WebView>
+      <!-- <FrameLayout
           android:id="@+id/blank_fragment_stories"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:scaleType="fitXY"
-          android:visibility="visible" >
+          android:visibility="visible" ></FrameLayout>
+          -->
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:background="@drawable/photo_background_protection_top">
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_weight="2"
+           android:layout_height="wrap_content"
+           android:text="Name"
+           android:textSize="20sp"
+
+           android:id="@+id/restaurant_name_stories"
+           android:fontFamily="@string/abc_font_family_display_1_material"
+           android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Dish"
+                   android:textSize="20sp"
+                   android:fontFamily="@string/abc_font_family_body_1_material"
+                   android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Rs.300"
+                   android:textSize="20sp"
+                   android:layout_gravity="right"
+                   android:gravity="right"
+                   android:fontFamily="@string/abc_font_family_body_1_material"
+                   android:textColor="@color/abc_primary_text_material_dark" />
+
+           </LinearLayout>
 
 
+       <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:weightSum="2">
 
-</FrameLayout>
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="0.5"
+              android:layout_height="match_parent"
+              android:id="@+id/click_left"
+              android:orientation="horizontal"/>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent"
+              android:orientation="vertical" ></LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="0.5"
+              android:layout_height="match_parent"
+              android:id="@+id/click_right"
+              android:orientation="horizontal" />
 
 
-   <!--<VideoView android:id="@+id/videoView"
-       android:layout_height="fill_parent"
-       android:layout_width="fill_parent"/>-->
-
+      </LinearLayout>
+   </FrameLayout>
 
 </RelativeLayout>
