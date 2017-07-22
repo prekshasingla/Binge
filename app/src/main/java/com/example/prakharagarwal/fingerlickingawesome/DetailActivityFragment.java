@@ -36,7 +36,6 @@ public class DetailActivityFragment extends Fragment {
 
     Restaurant restaurant;
 
-
     public DetailActivityFragment() {
     }
 
@@ -67,6 +66,7 @@ public class DetailActivityFragment extends Fragment {
 
 
 
+        AppBarLayout appBarLayout = (AppBarLayout)rootView.findViewById(R.id.app_bar_layout);
         CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)rootView.findViewById(R.id.collapsing_toolbar);
 
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
@@ -92,6 +92,8 @@ public class DetailActivityFragment extends Fragment {
                 //startActivity(intent);
             }
         });
+
+       // appBarLayout.setExpanded(false,true);
 
 
         TextView textViewAddress=(TextView)rootView.findViewById(R.id.detail_address);
@@ -160,8 +162,6 @@ public class DetailActivityFragment extends Fragment {
                     .into(imageView);
             layoutReview.addView(imageView);
         }
-
-
 
         return rootView;
 
