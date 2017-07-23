@@ -3,6 +3,7 @@ package com.example.prakharagarwal.fingerlickingawesome;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     LinearLayout container;
     FragmentManager fragmentManager;
     RecyclerView recyclerView;
+    LinearLayoutManager linearLayoutManager;
 
     public static final String inputFormat = "HH:mm";
 
@@ -57,11 +59,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
        }
 
 
-    public VideoAdapter(Context context, RecyclerView recyclerView, FragmentManager fragmentManager,List<Restaurant> restaurants) {
+    public VideoAdapter(Context context, RecyclerView recyclerView, FragmentManager fragmentManager, List<Restaurant> restaurants, LinearLayoutManager linearLayoutManager) {
         mContext = context;
         mRestaurants=restaurants;
         this.recyclerView = recyclerView;
         this.fragmentManager = fragmentManager;
+        this.linearLayoutManager=linearLayoutManager;
     }
 
 
@@ -87,7 +90,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.textViewName.setText(name);
         holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
-        final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
+        final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
+
+        final String url1=getYoutubeURL(video);
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setDomStorageEnabled(true);
@@ -95,6 +100,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.webView.setWebChromeClient(new WebChromeClient());
 
         holder.webView.setWebViewClient(new WebViewClient());
+
+        holder.webView.setVerticalScrollBarEnabled(false);
+        holder.webView.setHorizontalScrollBarEnabled(false);
+
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
@@ -122,14 +131,52 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //            }
 //        });
 
-        holder.webView.postDelayed(new Runnable() {
+        //todo
 
+//        holder.webView.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+//
+//            }
+//        }, position+5);
+
+        holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+
+
+        final int currentVisible=linearLayoutManager.findLastCompletelyVisibleItemPosition();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+
 
             }
-        }, position+5);
+        });
+
+        if(currentVisible==position){
+            holder.webView.loadDataWithBaseURL("", url1, "text/html", "UTF-8", "");
+
+        }
+
+
+        if(position==0)
+        {
+
+            holder.webView.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    holder.webView.performClick();
+
+                }
+            }, position+5);
+
+
+        }
 
 
 
@@ -220,6 +267,61 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         mRestaurants=restaurants;
     }
 
+
+    String getYoutubeURL(String videoID){
+
+        String url ="<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "  <body style=\"margin:0; padding:0\">\n" +
+                "    <div id=\"player\"></div>\n" +
+                "\n" +
+                "    <script>\n" +
+                "      var tag = document.createElement('script');\n" +
+                "\n" +
+                "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
+                "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
+                "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
+                "\n" +
+                "      var player;\n" +
+                "      function onYouTubeIframeAPIReady() {\n" +
+                "        player = new YT.Player('player', {\n" +
+                "          height: '160',\n" +
+                "          width: '350',\n" +
+                "          videoId: '"+videoID+"',\n" +
+                " playerVars: { \n" +
+                "         'autoplay': 1,\n" +
+                "          'autohide': 1,\n"+
+                "         'controls': 0, \n" +
+                "         'showinfo': 0,\n"+
+                "          'playlist': '"+videoID+"',\n" +
+                "         'loop': 1,\n"+
+                "         'rel' : 0\n" +
+                "  },"+
+                "          events: {\n" +
+                "            'onReady': onPlayerReady,\n" +
+                "            'onStateChange': onPlayerStateChange\n" +
+                "          }\n" +
+
+
+                "        });\n" +
+                "      }\n" +
+                "\n" +
+                "      function onPlayerReady(event) {\n" +
+                "        event.target.playVideo();\n" +
+                "      }\n" +
+                "\n" +
+                "      var done = false;\n" +
+                "      function onPlayerStateChange(event) {\n" +
+                "      }\n" +
+                "      function stopVideo() {\n" +
+                "        player.stopVideo();\n" +
+                "      }\n" +
+                "    </script>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        return url;
+    }
 
 
 
