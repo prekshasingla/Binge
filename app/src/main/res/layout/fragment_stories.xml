@@ -1,17 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment">
 
 
-   <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+
 
        <WebView
            android:layout_width="match_parent"
            android:layout_height="match_parent"
+           android:clickable="false"
+           android:focusable="false"
+           android:focusableInTouchMode="false"
            android:id="@+id/webview_stories"
            android:scaleType="fitXY"></WebView>
       <!-- <FrameLayout
@@ -21,6 +22,12 @@
           android:scaleType="fitXY"
           android:visibility="visible" ></FrameLayout>
           -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relative_layout_stories">
+        </RelativeLayout>
+
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -88,6 +95,6 @@
 
 
       </LinearLayout>
-   </FrameLayout>
 
-</RelativeLayout>
+
+</FrameLayout>

@@ -44,7 +44,7 @@ public class DineoutFragment extends Fragment {
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
-        mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants);
+        mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants,linearLayoutManager);
       try{
           mRecyclerView.setAdapter(mFeedsAdapter);
       }catch (NoClassDefFoundError e){
