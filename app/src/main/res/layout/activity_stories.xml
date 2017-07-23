@@ -4,5 +4,4 @@
     android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout="@layout/fragment_stories"
-     />
+    tools:layout="@layout/fragment_stories" />
