@@ -74,6 +74,7 @@ public class StoriesActivityFragment extends Fragment {
 
 
         Videos=new ArrayList<String>();
+        Videos.add("B34rGH1GX4w");//Portrait Video
         Videos.add("V_BEOsCvKqI");
         Videos.add("c2EY0KnAGZc");//Landscape Video
         Videos.add("xsFQN64WmF4");

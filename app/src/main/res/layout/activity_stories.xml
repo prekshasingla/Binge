@@ -1,7 +1,33 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:layout="@layout/fragment_stories" />fragment_stories-->
+
+<com.sothree.slidinguppanel.SlidingUpPanelLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout="@layout/fragment_stories" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="bottom"
+    android:gravity="bottom"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <fragment
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_stories"
+        android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
+        android:gravity="center"
+        tools:layout="@layout/fragment_stories"
+        layout="@layout/fragment_stories" />
+
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center|top"
+        layout="@layout/fragment_menu">
+
+    </include>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
