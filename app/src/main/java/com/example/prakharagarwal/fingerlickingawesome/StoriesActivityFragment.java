@@ -67,20 +67,23 @@ public class StoriesActivityFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView= (View)inflater.inflate(R.layout.fragment_stories, container, false);
 
 
 
         Videos=new ArrayList<String>();
-        //Videos.add("3Gwnyt5-Iq8"); //Landscape Video
         Videos.add("V_BEOsCvKqI");
+        Videos.add("c2EY0KnAGZc");//Landscape Video
         Videos.add("xsFQN64WmF4");
         Videos.add("yabDCV4ccQs");
         Videos.add("FoMlSB6ftQg");
         Videos.add("5723ieP5VAQ");
 
+
+
+        curr=0;
         end=Videos.size();
 
         RelativeLayout relativeLayoutStories=(RelativeLayout) rootView.findViewById(R.id.relative_layout_stories);
@@ -93,103 +96,13 @@ public class StoriesActivityFragment extends Fragment {
 
 
 
-//        final YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-//                youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
-//                    @Override
-//                    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-//
-//                        if (!b) {
-//                            player=youTubePlayer;
-//                            player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-//                       /**/
-//                            player.cueVideo(Videos.get(0));
-//                            curr=0;
-//
-//                            player.play();
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-//                        if (errorReason.isUserRecoverableError()) {
-//                            //errorReason.getErrorDialog(mContext, RECOVERY_REQUEST).show();
-//                        } else {
-//                            String error = String.format(getActivity().getString(R.string.player_error), errorReason.toString());
-//                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//
-//                });
-
-
         webView= (WebView)rootView.findViewById(R.id.webview_stories);
 
         hideSystemUi();
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        float density = displayMetrics.density;
-
 
         // final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+Videos.get(0)+"?rel=0&ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
 
-        url ="<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "  <body>\n" +
-                "    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->\n" +
-                "    <div id=\"player\" onClick=\" {} \"></div>\n" +
-                "\n" +
-                "    <script>\n" +
-                "      // 2. This code loads the IFrame Player API code asynchronously.\n" +
-                "      var tag = document.createElement('script');\n" +
-                "\n" +
-                "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
-                "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
-                "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
-                "\n" +
-                "      // 3. This function creates an <iframe> (and YouTube player)\n" +
-                "      //    after the API code downloads.\n" +
-                "      var player;\n" +
-                "      function onYouTubeIframeAPIReady() {\n" +
-                "        player = new YT.Player('player', {\n" +
-                "          height: '626',\n" +
-                "          width: '345',\n" +
-                "          videoId: 'xsFQN64WmF4',\n" +
-                " playerVars: { \n" +
-                "         'autoplay': 1,\n" +
-                "         'controls': 0, \n" +
-                "         'showinfo': 0,\n"+
-                "         'rel' : 0\n" +
-                "  },"+
-                "          events: {\n" +
-                "            'onReady': onPlayerReady,\n" +
-                "            'onStateChange': onPlayerStateChange\n" +
-                "          }\n" +
-
-
-                "        });\n" +
-                "      }\n" +
-                "\n" +
-                "      // 4. The API will call this function when the video player is ready.\n" +
-                "      function onPlayerReady(event) {\n" +
-                "        event.target.playVideo();\n" +
-                "      }\n" +
-                "\n" +
-                "      // 5. The API calls this function when the player's state changes.\n" +
-                "      //    The function indicates that when playing a video (state=1),\n" +
-                "      //    the player should play for six seconds and then stop.\n" +
-                "      var done = false;\n" +
-                "      function onPlayerStateChange(event) {\n" +
-                "      }\n" +
-                "      function stopVideo() {\n" +
-                "        player.stopVideo();\n" +
-                "      }\n" +
-                "    </script>\n" +
-                "  </body>\n" +
-                "</html>";
 
         webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -222,27 +135,23 @@ public class StoriesActivityFragment extends Fragment {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
 
 
         LinearLayout linearLayoutLeft=(LinearLayout)rootView.findViewById(R.id.click_left);
-//        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(curr!=0) {
-//                    curr--;
-//                    final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+Videos.get(curr)+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
-//
-//                    webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
-//
-//                    //player.cueVideo(Videos.get(curr));
-//                    //player.play();
-//                }
-//
-//
-//            }
-//        });
+        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(curr!=0) {
+                    curr--;
+                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+
+                }
+
+
+            }
+        });
 
         LinearLayout linearLayoutRight=(LinearLayout)rootView.findViewById(R.id.click_right);
         linearLayoutRight.setOnClickListener(new View.OnClickListener() {
@@ -250,83 +159,72 @@ public class StoriesActivityFragment extends Fragment {
             public void onClick(View v) {
 
 
-                if(curr!=end) {
+                if(curr!=end-1) {
                     curr++;
-                    //final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+Videos.get(curr)+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
-
-                    url ="<!DOCTYPE html>\n" +
-                            "<html>\n" +
-                            "  <body>\n" +
-                            "    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->\n" +
-                            "    <div id=\"player\" onClick=\" {} \"></div>\n" +
-                            "\n" +
-                            "    <script>\n" +
-                            "      // 2. This code loads the IFrame Player API code asynchronously.\n" +
-                            "      var tag = document.createElement('script');\n" +
-                            "\n" +
-                            "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
-                            "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
-                            "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
-                            "\n" +
-                            "      // 3. This function creates an <iframe> (and YouTube player)\n" +
-                            "      //    after the API code downloads.\n" +
-                            "      var player;\n" +
-                            "      function onYouTubeIframeAPIReady() {\n" +
-                            "        player = new YT.Player('player', {\n" +
-                            "          height: '626',\n" +
-                            "          width: '345',\n" +
-                            "          videoId: 'V_BEOsCvKqI',\n" +
-                            " playerVars: { \n" +
-                            "         'autoplay': 1,\n" +
-                            "         'controls': 0, \n" +
-                            "         'showinfo': 0,\n"+
-                            "         'rel' : 0\n" +
-                            "  },"+
-                            "          events: {\n" +
-                            "            'onReady': onPlayerReady,\n" +
-                            "            'onStateChange': onPlayerStateChange\n" +
-                            "          }\n" +
-
-
-                            "        });\n" +
-                            "      }\n" +
-                            "\n" +
-                            "      // 4. The API will call this function when the video player is ready.\n" +
-                            "      function onPlayerReady(event) {\n" +
-                            "        event.target.playVideo();\n" +
-                            "      }\n" +
-                            "\n" +
-                            "      // 5. The API calls this function when the player's state changes.\n" +
-                            "      //    The function indicates that when playing a video (state=1),\n" +
-                            "      //    the player should play for six seconds and then stop.\n" +
-                            "      var done = false;\n" +
-                            "      function onPlayerStateChange(event) {\n" +
-                            "      }\n" +
-                            "      function stopVideo() {\n" +
-                            "        player.stopVideo();\n" +
-                            "      }\n" +
-                            "    </script>\n" +
-                            "  </body>\n" +
-                            "</html>";
-
-
-                    webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
-
-
-                    //player.cueVideo(Videos.get(curr));
-                    //player.play();
+                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
                 }
 
             }
         });
 
 
-        //getFragmentManager().beginTransaction().replace(R.id.blank_fragment_stories,youTubePlayerFragment).commit();
-
-
-
-
         return rootView;
+    }
+
+
+    String getYoutubeURL(String videoID){
+
+         String url ="<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "  <body style=\"margin:0; padding:0\">\n" +
+                "    <div id=\"player\"></div>\n" +
+                "\n" +
+                "    <script>\n" +
+                "      var tag = document.createElement('script');\n" +
+                "\n" +
+                "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
+                "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
+                "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
+                "\n" +
+                "      var player;\n" +
+                "      function onYouTubeIframeAPIReady() {\n" +
+                "        player = new YT.Player('player', {\n" +
+                "          height: '640',\n" +
+                "          width: '360',\n" +
+                "          videoId: '"+videoID+"',\n" +
+                " playerVars: { \n" +
+                "         'autoplay': 1,\n" +
+                "          'autohide': 1,\n"+
+                "         'controls': 0, \n" +
+                "         'showinfo': 0,\n"+
+                "          'playlist': '"+videoID+"',\n" +
+                "         'loop': 1,\n"+
+                "         'rel' : 0\n" +
+                "  },"+
+                "          events: {\n" +
+                "            'onReady': onPlayerReady,\n" +
+                "            'onStateChange': onPlayerStateChange\n" +
+                "          }\n" +
+
+
+                "        });\n" +
+                "      }\n" +
+                "\n" +
+                "      function onPlayerReady(event) {\n" +
+                "        event.target.playVideo();\n" +
+                "      }\n" +
+                "\n" +
+                "      var done = false;\n" +
+                "      function onPlayerStateChange(event) {\n" +
+                "      }\n" +
+                "      function stopVideo() {\n" +
+                "        player.stopVideo();\n" +
+                "      }\n" +
+                "    </script>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        return url;
     }
 
     @SuppressLint("InlinedApi")
@@ -340,4 +238,15 @@ public class StoriesActivityFragment extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        webView.destroy();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        webView.destroy();
+    }
 }
