@@ -1,19 +1,15 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.Extra;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TextView;
+
+import com.example.prakharagarwal.fingerlickingawesome.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,9 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.

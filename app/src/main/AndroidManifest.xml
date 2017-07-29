@@ -28,7 +28,7 @@
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".Extra.MenuActivity"
             android:label="@string/title_activity_menu" />
         <activity
             android:name=".StoriesActivity"

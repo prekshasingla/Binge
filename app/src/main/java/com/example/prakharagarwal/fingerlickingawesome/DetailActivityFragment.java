@@ -1,32 +1,20 @@
 package com.example.prakharagarwal.fingerlickingawesome;
 
 import android.app.Fragment;
-import android.app.IntentService;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
+import com.example.prakharagarwal.fingerlickingawesome.Extra.MenuActivity;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
-import java.util.Locale;
 
 /**
  * A placeholder fragment containing a simple view.

@@ -21,13 +21,18 @@
         tools:layout="@layout/fragment_stories"
         layout="@layout/fragment_stories" />
 
-    <include
+    <fragment
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:id="@+id/fragment_menu"
+        android:name="com.example.prakharagarwal.fingerlickingawesome.MenuFragment"
         android:gravity="center|top"
-        layout="@layout/fragment_menu">
+        tools:layout="@layout/fragment_menu"
+        layout="@layout/fragment_menu" />
 
-    </include>
+
+
+
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

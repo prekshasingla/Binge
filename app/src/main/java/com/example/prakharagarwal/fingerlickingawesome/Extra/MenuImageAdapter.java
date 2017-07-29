@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.Extra;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.prakharagarwal.fingerlickingawesome.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
