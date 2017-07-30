@@ -27,5 +27,6 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     </string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_stories">StoriesActivity</string>
+    <string name="title_activity_review">ReviewActivity</string>
 
 </resources>

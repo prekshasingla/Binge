@@ -6,8 +6,15 @@
 <com.sothree.slidinguppanel.SlidingUpPanelLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stories_sliding_up"
     android:layout_gravity="bottom"
     android:gravity="bottom"
+    sothree:umanoFadeColor="@color/black85"
+    sothree:umanoOverlay="true"
+    sothree:umanoDragView="@+id/stories_heading"
+    sothree:umanoPanelHeight="10dp"
+    sothree:umanoScrollableView="@+id/menu_fragment_recycler_view"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <fragment
@@ -19,20 +26,48 @@
         android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
         android:gravity="center"
         tools:layout="@layout/fragment_stories"
-        layout="@layout/fragment_stories" />
+        layout="@layout/fragment_stories"/>
 
-    <fragment
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_height="match_parent"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:id="@+id/fragment_menu"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.MenuFragment"
-        android:gravity="center|top"
-        tools:layout="@layout/fragment_menu"
-        layout="@layout/fragment_menu" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        android:id="@+id/linlay"
+        tools:context=".Extra.MenuActivityFragment">
 
 
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/menu_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp"
+            android:visibility="gone"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MENU"
+            android:id="@+id/stories_heading"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white_opaque"
+            android:padding="4dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+
+            android:id="@+id/menu_fragment_recycler_view"
+            android:paddingTop="48dp"/>
+
+    </LinearLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

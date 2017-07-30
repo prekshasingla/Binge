@@ -61,9 +61,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         else {
             holder.imageViewVeg.setImageResource(R.mipmap.nonveg);
         }
-
-
-
     }
 
 
@@ -98,7 +95,5 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
     public void addAll(List<Menu> menus) {
         MenuAdapter.this.menus=menus;
     }
-
-
 
 }

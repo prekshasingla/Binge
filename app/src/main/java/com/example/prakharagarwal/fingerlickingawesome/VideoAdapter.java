@@ -178,6 +178,27 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         }
 
+        holder.buttonReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(mContext,ReviewActivity.class);
+                mContext.startActivity(intent);
+
+
+            }
+        });
+        holder.buttonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(mContext,StoriesActivity.class);
+                mContext.startActivity(intent);
+
+
+            }
+        });
+
 
 
     }
@@ -220,6 +241,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         public TextView textViewName;
         public TextView textViewTypeOfRestaurant;
         public TextView textViewTypeOfCuisine;
+        public Button buttonReview;
+        public Button buttonMenu;
 
 
 
@@ -232,6 +255,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             textViewName=(TextView)view.findViewById(R.id.item_name);
             textViewTypeOfRestaurant=(TextView)view.findViewById(R.id.item_type_of_restaurant);
             textViewTypeOfCuisine=(TextView)view.findViewById(R.id.item_type_of_cuisine);
+            buttonReview=(Button)view.findViewById(R.id.button_review);
+            buttonMenu=(Button)view.findViewById(R.id.button_menu);
+
             view.setOnClickListener(this);
 
         }
@@ -242,8 +268,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
 //            mContext.startActivity(intent);
 
-            Intent intent=new Intent(mContext,StoriesActivity.class);
-            mContext.startActivity(intent);
+//            Intent intent=new Intent(mContext,StoriesActivity.class);
+//            mContext.startActivity(intent);
 
 //            Intent intent=new Intent(mContext,DetailActivity.class);
 //            intent.putExtra("name",mRestaurants.get(getAdapterPosition()).name);

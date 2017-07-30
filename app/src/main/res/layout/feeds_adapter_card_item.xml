@@ -96,18 +96,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/button_ambience"
+            android:id="@+id/button_review"
             android:layout_margin="8dp"
-            android:text="Ambience"
+            android:text="Review"
             />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/button_signature_dishes"
+            android:id="@+id/button_menu"
             android:layout_margin="8dp"
-            android:text="Signature Dishes"/>
+            android:text="Menu"/>
         </LinearLayout>
 
 
