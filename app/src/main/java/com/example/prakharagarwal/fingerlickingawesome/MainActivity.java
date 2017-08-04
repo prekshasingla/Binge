@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPagerAdapter mviewPagerAdapter;
     ViewPager mviewPager;
-    TabLayout mtabLayout;
     String latitude=null;
     String longitude=null;
 
@@ -62,10 +61,8 @@ public class MainActivity extends AppCompatActivity {
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
         mviewPager = (ViewPager) findViewById(R.id.viewpager);
-        mtabLayout = (TabLayout) findViewById(R.id.tablayout);
 
         mviewPager.setAdapter(mviewPagerAdapter);
-        mtabLayout.setupWithViewPager(mviewPager);
 
 //        final ImageView imageViewOptions=(ImageView)findViewById(R.id.options);
 //        imageViewOptions.setOnClickListener(new View.OnClickListener() {

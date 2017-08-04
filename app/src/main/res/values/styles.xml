@@ -7,7 +7,7 @@
 
     <style name="AppTheme.NoActionBar" parent="Base.Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">#A0522D</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
 

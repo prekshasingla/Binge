@@ -39,10 +39,11 @@
            android:layout_weight="2"
            android:layout_height="wrap_content"
            android:text="Name"
-           android:textSize="20sp"
-
+           android:gravity="center"
+           android:textSize="40sp"
+           android:background="#5c000000"
            android:id="@+id/restaurant_name_stories"
-           android:fontFamily="@string/abc_font_family_display_1_material"
+           android:fontFamily="cursive"
            android:textColor="@color/abc_primary_text_disable_only_material_dark" />
 
                <TextView
