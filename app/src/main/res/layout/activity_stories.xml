@@ -3,61 +3,79 @@
 
 <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:layout="@layout/fragment_stories" />fragment_stories-->
 
-<com.sothree.slidinguppanel.SlidingUpPanelLayout android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/stories_sliding_up"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:gravity="bottom"
+    sothree:umanoDragView="@+id/stories_heading_linlay"
     sothree:umanoFadeColor="@color/black85"
     sothree:umanoOverlay="true"
-    sothree:umanoDragView="@+id/stories_heading"
-    sothree:umanoScrollableView="@+id/menu_fragment_recycler_view"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    sothree:umanoPanelHeight="60dp"
+    sothree:umanoScrollableView="@+id/menu_fragment_recycler_view">
 
     <fragment
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         android:id="@+id/fragment_stories"
         android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
+        layout="@layout/fragment_stories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:gravity="center"
-        tools:layout="@layout/fragment_stories"
-        layout="@layout/fragment_stories"/>
+        tools:layout="@layout/fragment_stories" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.8"
         android:orientation="vertical"
-        android:id="@+id/linlay"
+        android:background="#5c000000"
         tools:context=".Extra.MenuActivityFragment">
 
 
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MENU"
-            android:background="#f0c88c"
-            android:id="@+id/stories_heading"
-            android:textSize="25sp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/black85"
-            android:padding="4dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/stories_heading_linlay">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/stories_heading_image"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_up_white_24dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:foregroundGravity="center"
+                />
+
+            <TextView
+                android:id="@+id/stories_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:foregroundGravity="center"
+                android:text="MENU"
+                android:textColor="@color/white_opaque"
+                android:textSize="25sp" />
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/menu_fragment_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
 
-            android:id="@+id/menu_fragment_recycler_view"
-            android:paddingTop="48dp"/>
+            android:padding="10dp"
+            android:paddingTop="48dp" />
 
     </LinearLayout>
 

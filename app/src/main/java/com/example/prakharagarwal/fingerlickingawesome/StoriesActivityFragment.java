@@ -1,55 +1,27 @@
 package com.example.prakharagarwal.fingerlickingawesome;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
-import android.media.MediaCodec;
-import android.media.session.MediaController;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.google.android.exoplayer.ExoPlayer;
-import com.google.android.exoplayer.MediaCodecAudioTrackRenderer;
-import com.google.android.exoplayer.MediaCodecSelector;
-import com.google.android.exoplayer.MediaCodecVideoTrackRenderer;
-import com.google.android.exoplayer.TrackRenderer;
-import com.google.android.exoplayer.extractor.ExtractorSampleSource;
-import com.google.android.exoplayer.upstream.Allocator;
-import com.google.android.exoplayer.upstream.DataSource;
-import com.google.android.exoplayer.upstream.DefaultAllocator;
-import com.google.android.exoplayer.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer.upstream.DefaultUriDataSource;
-import com.google.android.exoplayer.util.Util;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StoriesActivityFragment extends Fragment {
+public class StoriesActivityFragment extends Fragment implements GestureDetector.OnGestureListener{
 
 
     private static final String TAG = "VideoPlayer";
@@ -61,6 +33,7 @@ public class StoriesActivityFragment extends Fragment {
     int end=-1, curr=-1;
 
     String url;
+    private GestureDetector gestureScanner;
 
 
     public StoriesActivityFragment() {
@@ -71,11 +44,16 @@ public class StoriesActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView= (View)inflater.inflate(R.layout.fragment_stories, container, false);
 
-
-
+        gestureScanner = new GestureDetector(this);
+        rootView.findViewById(R.id.webview_stories).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                return gestureScanner.onTouchEvent(event);
+            }
+        });
         Videos=new ArrayList<String>();
         Videos.add("B34rGH1GX4w");//Portrait Video
-        Videos.add("V_BEOsCvKqI");
+        Videos.add("xmYg3GqWlaQ");//potrait
         Videos.add("c2EY0KnAGZc");//Landscape Video
         Videos.add("xsFQN64WmF4");
         Videos.add("yabDCV4ccQs");
@@ -139,34 +117,35 @@ public class StoriesActivityFragment extends Fragment {
         webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
 
 
-        LinearLayout linearLayoutLeft=(LinearLayout)rootView.findViewById(R.id.click_left);
-        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if(curr!=0) {
-                    curr--;
-                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
-
-                }
-
-
-            }
-        });
-
-        LinearLayout linearLayoutRight=(LinearLayout)rootView.findViewById(R.id.click_right);
-        linearLayoutRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if(curr!=end-1) {
-                    curr++;
-                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
-                }
-
-            }
-        });
+//        LinearLayout linearLayoutLeft=(LinearLayout)rootView.findViewById(R.id.click_left);
+//        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(curr!=0) {
+//                    curr--;
+//                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+//
+//                }
+//
+//
+//            }
+//        });
+//
+//        LinearLayout linearLayoutRight=(LinearLayout)rootView.findViewById(R.id.click_right);
+//        linearLayoutRight.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                if(curr!=end-1) {
+//                    curr++;
+//                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+//                }
+//
+//            }
+//        });
 
 
         return rootView;
@@ -249,5 +228,39 @@ public class StoriesActivityFragment extends Fragment {
     public void onStop() {
         super.onStop();
         webView.destroy();
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        Log.e("gesture","on down");
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        Log.e("gesture","on singletapup");
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Log.e("gesture","on scroll");
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Log.e("gesture","on fling");
+        return true;
     }
 }
