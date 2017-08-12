@@ -15,16 +15,24 @@
       },
       "oauth_client": [
         {
+          "client_id": "63449497103-qn32db7r93u3uf95eh5hj8duoa9kpcbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prakharagarwal.fingerlickingawesome",
+            "certificate_hash": "04e32bfb918bb4b9e8bc30e8a2c00dd214699b97"
+          }
+        },
+        {
+          "client_id": "63449497103-8ddpk1l70o73j97965oaapcm70khlls5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "63449497103-v5hu1ktkkr6j2il3nve8882fc19ugioc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.prakharagarwal.fingerlickingawesome",
             "certificate_hash": "c6c0863b9d96e02ced8b98407c78f14c0e859014"
           }
-        },
-        {
-          "client_id": "63449497103-8ddpk1l70o73j97965oaapcm70khlls5.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [

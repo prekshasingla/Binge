@@ -14,6 +14,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -21,19 +24,12 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StoriesActivityFragment extends Fragment implements GestureDetector.OnGestureListener{
-
-
-    private static final String TAG = "VideoPlayer";
-
+public class StoriesActivityFragment extends Fragment{
 
 
     WebView webView;
     ArrayList<String> Videos;
     int end=-1, curr=-1;
-
-    String url;
-    private GestureDetector gestureScanner;
 
 
     public StoriesActivityFragment() {
@@ -44,13 +40,6 @@ public class StoriesActivityFragment extends Fragment implements GestureDetector
                              Bundle savedInstanceState) {
         View rootView= (View)inflater.inflate(R.layout.fragment_stories, container, false);
 
-        gestureScanner = new GestureDetector(this);
-        rootView.findViewById(R.id.webview_stories).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event){
-                return gestureScanner.onTouchEvent(event);
-            }
-        });
         Videos=new ArrayList<String>();
         Videos.add("B34rGH1GX4w");//Portrait Video
         Videos.add("xmYg3GqWlaQ");//potrait
@@ -65,23 +54,17 @@ public class StoriesActivityFragment extends Fragment implements GestureDetector
         curr=0;
         end=Videos.size();
 
-        RelativeLayout relativeLayoutStories=(RelativeLayout) rootView.findViewById(R.id.relative_layout_stories);
-        relativeLayoutStories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getContext(),"clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+//        RelativeLayout relativeLayoutStories=(RelativeLayout) rootView.findViewById(R.id.relative_layout_stories);
+//        relativeLayoutStories.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Toast.makeText(getContext(),"clicked",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         webView= (WebView)rootView.findViewById(R.id.webview_stories);
 
         hideSystemUi();
-
-
-        // final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+Videos.get(0)+"?rel=0&ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
-
 
         webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -117,35 +100,67 @@ public class StoriesActivityFragment extends Fragment implements GestureDetector
         webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
 
 
+        final GestureDetector gesture = new GestureDetector(getActivity(),
+                new GestureDetector.SimpleOnGestureListener() {
 
-//        LinearLayout linearLayoutLeft=(LinearLayout)rootView.findViewById(R.id.click_left);
-//        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(curr!=0) {
-//                    curr--;
-//                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//        LinearLayout linearLayoutRight=(LinearLayout)rootView.findViewById(R.id.click_right);
-//        linearLayoutRight.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//                if(curr!=end-1) {
-//                    curr++;
-//                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
-//                }
-//
-//            }
-//        });
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        boolean result = false;
+                        final int SWIPE_THRESHOLD = 100;
+                        final int SWIPE_VELOCITY_THRESHOLD = 100;
+                        try {
+                            float diffY = e2.getY() - e1.getY();
+                            float diffX = e2.getX() - e1.getX();
+                            if (Math.abs(diffX) > Math.abs(diffY)) {
+                                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                                    if (diffX > 0) {
+                                        if(curr!=0) {
+                                           curr--;
+                                           webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                                        }
+                                        //Toast.makeText(getActivity(), "right", Toast.LENGTH_LONG).show();
+                                    } else {
+
+                                        if(curr!=end-1) {
+                                           curr++;
+                                           webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                                        }
+                                        //Toast.makeText(getActivity(), "left", Toast.LENGTH_LONG).show();
+                                    }
+                                    result = true;
+                                }
+                            }
+                            else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffY > 0) {
+                                    ((StoriesActivity)getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                    //Toast.makeText(getActivity(), "down", Toast.LENGTH_LONG).show();
+                                } else {
+                                    ((StoriesActivity)getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                                    //Toast.makeText(getActivity(), "up", Toast.LENGTH_LONG).show();
+                                }
+                                result = true;
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        return result;
+                    }
+
+                });
+
+        rootView.findViewById(R.id.relative_layout_stories).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);
+            }
+        });
+
+
 
 
         return rootView;
@@ -228,39 +243,5 @@ public class StoriesActivityFragment extends Fragment implements GestureDetector
     public void onStop() {
         super.onStop();
         webView.destroy();
-    }
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        Log.e("gesture","on down");
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent motionEvent) {
-        Log.e("gesture","on singletapup");
-        return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        Log.e("gesture","on scroll");
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        Log.e("gesture","on fling");
-        return true;
     }
 }

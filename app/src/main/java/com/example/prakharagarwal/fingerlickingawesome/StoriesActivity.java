@@ -28,32 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoriesActivity extends FragmentActivity implements GestureDetector.OnGestureListener{
+public class StoriesActivity extends FragmentActivity {
 
 
     RecyclerView mRecyclerView;
     MenuAdapter menuAdapter;
     List<Menu> menus;
     SlidingUpPanelLayout slidingUpPanelLayout;
-    GestureDetector gestureScanner;
-    GestureDetector.OnGestureListener listener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stories);
-         gestureScanner = new GestureDetector(this);
         menus=new ArrayList<Menu>();
 
         slidingUpPanelLayout=(SlidingUpPanelLayout)findViewById(R.id.stories_sliding_up);
-//        findViewById(R.id.fragment_stories).setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event){
-//                return gestureScanner.onTouchEvent(event);
-//            }
-//        });
-
 
        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
            @Override
@@ -91,43 +81,10 @@ public class StoriesActivity extends FragmentActivity implements GestureDetector
 
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
-
-
     }
 
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        Log.e("gesture","on down");
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent motionEvent) {
-        Log.e("gesture","on singletapup");
-        return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        Log.e("gesture","on scroll");
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        Log.e("gesture","on fling");
-        return true;
+    public SlidingUpPanelLayout getSlidingUpPanelLayout(){
+        return slidingUpPanelLayout;
     }
 
 }

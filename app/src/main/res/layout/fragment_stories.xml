@@ -22,6 +22,7 @@
           android:scaleType="fitXY"
           android:visibility="visible" ></FrameLayout>
           -->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
