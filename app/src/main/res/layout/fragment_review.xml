@@ -8,5 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.prakharagarwal.fingerlickingawesome.ReviewActivityFragment">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:text="Video"
+        android:id="@+id/btnSelectVideo"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:text="Upload"
+        android:id="@+id/btnUploadVideo"
+        android:layout_height="wrap_content"
+        />
 
 </RelativeLayout>

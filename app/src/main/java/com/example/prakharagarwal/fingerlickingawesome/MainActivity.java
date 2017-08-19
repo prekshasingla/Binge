@@ -64,32 +64,31 @@ public class MainActivity extends AppCompatActivity {
 
         mviewPager.setAdapter(mviewPagerAdapter);
 
-//        final ImageView imageViewOptions=(ImageView)findViewById(R.id.options);
-//        imageViewOptions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Toast.makeText(getBaseContext(),"Options",Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        final ImageView imageViewFilter=(ImageView)findViewById(R.id.filter);
-//        imageViewFilter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Toast.makeText(getBaseContext(),"Filter",Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        final ImageView imageViewSearch=(ImageView)findViewById(R.id.search);
-//        imageViewSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Toast.makeText(getBaseContext(),"Search",Toast.LENGTH_LONG).show();
-//            }
-//        });
+
+        final ImageView imageViewFilter=(ImageView)findViewById(R.id.filter);
+        imageViewFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+
+                Toast.makeText(getBaseContext(),"Filter",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        final ImageView imageViewSearch=(ImageView)findViewById(R.id.search);
+        imageViewSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent=new Intent(MainActivity.this,SignUpActivity.class);
+                startActivity(intent);
+
+
+                Toast.makeText(getBaseContext(),"Search",Toast.LENGTH_LONG).show();
+            }
+        });
 
         if (checkUserPermission()) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
