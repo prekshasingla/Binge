@@ -86,5 +86,17 @@
 
         </android.support.v4.view.ViewPager>
 
+        <!--<fragment-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:id="@+id/fragment_dineout"-->
+            <!--android:name="com.example.prakharagarwal.fingerlickingawesome.DineoutFragment"-->
+            <!--android:gravity="center"-->
+            <!--tools:layout="@layout/fragment_dineout"-->
+            <!--layout="@layout/fragment_dineout" />-->
+
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

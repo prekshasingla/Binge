@@ -56,9 +56,11 @@ public class DineoutFragment extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
-        ref.addValueEventListener(new ValueEventListener() {
+       // ref.addValueEventListener(new ValueEventListener() {
 
-            @Override
+        ref.addListenerForSingleValueEvent(new ValueEventListener(){
+
+        @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.getKey().equals("table")) {
@@ -68,6 +70,7 @@ public class DineoutFragment extends Fragment {
                             for (DataSnapshot child2 : child1.getChildren()) {
 
                                 if (child2.getKey().equals("hname")){
+                                   // Log.e("Restaurant",""+child2.getValue());
                                     restaurant.setName(""+child2.getValue());
 
                                 }
@@ -123,9 +126,18 @@ public class DineoutFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                Log.e("error","error");
             }
         });
 
         return rootView;
     }
+
+//    public interface OnGetDataListener {
+//        //make new interface for call back
+//        void onSuccess(DataSnapshot dataSnapshot);
+//        void onStart();
+//        void onFailure();
+//    }
+
 }

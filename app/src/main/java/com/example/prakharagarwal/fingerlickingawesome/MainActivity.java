@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mviewPager = (ViewPager) findViewById(R.id.viewpager);
 
         mviewPager.setAdapter(mviewPagerAdapter);
+       // Log.e("adapter","set");
 
 
         final ImageView imageViewFilter=(ImageView)findViewById(R.id.filter);
@@ -70,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+//                startActivity(intent);
 
                 Toast.makeText(getBaseContext(),"Filter",Toast.LENGTH_LONG).show();
             }
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(MainActivity.this,SignUpActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(MainActivity.this,SignUpActivity.class);
+//                startActivity(intent);
 
 
                 Toast.makeText(getBaseContext(),"Search",Toast.LENGTH_LONG).show();

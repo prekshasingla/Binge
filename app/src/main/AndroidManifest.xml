@@ -41,8 +41,6 @@
         <activity
             android:name=".ReviewActivity"
             android:label="@string/title_activity_review" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

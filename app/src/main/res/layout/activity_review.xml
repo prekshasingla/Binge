@@ -20,15 +20,24 @@
         tools:layout="@layout/fragment_review"
         layout="@layout/fragment_review" />
 
-    <fragment
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_height="500dp"
-        android:layout_width="match_parent"
-        android:id="@+id/fragment_2"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.MenuFragment"
-        android:gravity="center|top"
-        tools:layout="@layout/fragment_menu"
-        layout="@layout/fragment_menu" />
+    <!--<fragment-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_height="500dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/fragment_2"-->
+        <!--android:name="com.example.prakharagarwal.fingerlickingawesome.MenuFragment"-->
+        <!--android:gravity="center|top"-->
+        <!--tools:layout="@layout/fragment_menu"-->
+        <!--layout="@layout/fragment_menu" />-->
+
+    <include
+    android:id="@+id/fragment_2"
+    layout="@layout/fragment_review_text"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginRight="5dp"
+    android:layout_weight="0.5"/>
+
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
