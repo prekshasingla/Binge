@@ -7,7 +7,11 @@
     android:gravity="bottom"
     app:umanoFadeColor="@color/black85"
     app:umanoOverlay="true"
+    app:umanoDragView="@+id/title_reviews"
+    app:umanoPanelHeight="60dp"
+    app:umanoScrollableView="@+id/review_text_fragment_recycler_view"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <fragment
         android:layout_centerHorizontal="true"
@@ -15,29 +19,60 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/fragment_review"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.ReviewActivityFragment"
+        android:name="com.example.prakharagarwal.fingerlickingawesome.Review.ReviewActivityFragment"
         android:gravity="center"
         tools:layout="@layout/fragment_review"
         layout="@layout/fragment_review" />
 
-    <!--<fragment-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_height="500dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/fragment_2"-->
-        <!--android:name="com.example.prakharagarwal.fingerlickingawesome.MenuFragment"-->
-        <!--android:gravity="center|top"-->
-        <!--tools:layout="@layout/fragment_menu"-->
-        <!--layout="@layout/fragment_menu" />-->
 
-    <include
-    android:id="@+id/fragment_2"
-    layout="@layout/fragment_review_text"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_marginRight="5dp"
-    android:layout_weight="0.5"/>
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="0.8"
+        android:id="@+id/linlay_review_text"
+        android:orientation="vertical"
+        android:background="#5c000000"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+
+        <!--<Button-->
+            <!--android:id="@+id/button_write_review"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Write a review..."-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restaurant Reviews"
+            android:id="@+id/title_reviews"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white_opaque"
+            android:padding="4dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/button_write_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write a review..."
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_reviews"
+            android:padding="10dp"
+            android:id="@+id/review_text_fragment_recycler_view"
+            android:paddingTop="48dp"
+            />
+    </LinearLayout>
+
+
 
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

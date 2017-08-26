@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.StoriesMenu;
 
 /**
  * Created by prekshasingla on 11/07/17.

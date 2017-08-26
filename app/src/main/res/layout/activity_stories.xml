@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/fragment_stories"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesActivityFragment"
+        android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesMenu.StoriesActivityFragment"
         layout="@layout/fragment_stories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,8 +35,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.8"
         android:orientation="vertical"
-        android:background="#5c000000"
-        tools:context=".Extra.MenuActivityFragment">
+        android:background="#5c000000">
 
 
         <LinearLayout

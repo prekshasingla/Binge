@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.MainScreen;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

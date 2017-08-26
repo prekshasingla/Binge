@@ -1,26 +1,24 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.prakharagarwal.fingerlickingawesome.R;
+import com.example.prakharagarwal.fingerlickingawesome.Review.ReviewActivity;
+import com.example.prakharagarwal.fingerlickingawesome.StoriesMenu.StoriesActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

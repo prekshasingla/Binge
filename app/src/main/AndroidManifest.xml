@@ -20,8 +20,9 @@
         android:icon="@mipmap/bingeicon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:windowSoftInputMode="stateHidden">
+        <activity android:name=".MainScreen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,18 +30,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".Extra.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainScreen.MainActivity" />
         <activity
             android:name=".Extra.MenuActivity"
             android:label="@string/title_activity_menu" />
         <activity
-            android:name=".StoriesActivity"
+            android:name=".StoriesMenu.StoriesActivity"
             android:label="@string/title_activity_stories" />
         <activity
-            android:name=".ReviewActivity"
+            android:name=".Review.ReviewActivity"
             android:label="@string/title_activity_review" />
+        <activity
+            android:name=".Review.WriteReviewActivity"
+            android:label="@string/title_activity_write_review" />
+        <activity
+            android:name=".Review.UploadReviewStoryActivity"
+            android:label="@string/title_activity_upload_review_story"></activity>
     </application>
 
 </manifest>

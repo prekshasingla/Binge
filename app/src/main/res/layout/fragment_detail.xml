@@ -23,7 +23,7 @@
             android:fitsSystemWindows="true"
             app:expandedTitleTextAppearance="@android:color/transparent">
 
-            <com.example.prakharagarwal.fingerlickingawesome.SquareImageView
+            <com.example.prakharagarwal.fingerlickingawesome.Extra.SquareImageView
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

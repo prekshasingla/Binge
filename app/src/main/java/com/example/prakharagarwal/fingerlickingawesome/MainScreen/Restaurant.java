@@ -1,23 +1,23 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.MainScreen;
 
 /**
  * Created by prekshasingla on 05/07/17.
  */
 public class Restaurant {
 
-    String name;
-    String video;
-    String address;
-    String lattitude;
-    String longitude;
-    String typeOfRestaurant;
-    int ambienceEndTime;
-    int ambienceStartTime;
-    String closingTime;
-    String cuisineType;
-    String openingTime;
-    int signatureEndTime;
-    int signatureStartTime;
+    public String name;
+    public String video;
+    public String address;
+    public String lattitude;
+    public String longitude;
+    public String typeOfRestaurant;
+    public int ambienceEndTime;
+    public int ambienceStartTime;
+    public String closingTime;
+    public String cuisineType;
+    public String openingTime;
+    public int signatureEndTime;
+    public int signatureStartTime;
 
 
     public Restaurant(){}

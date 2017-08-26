@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.Review;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.prakharagarwal.fingerlickingawesome.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -42,35 +43,15 @@ public class ReviewActivityFragment extends Fragment {
     Uri videoUri;
     String video=null;
 
-    private StorageReference storageRef;
-
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-
-
-
     public ReviewActivityFragment() {
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            // do your stuff
-        } else {
-            signInAnonymously();
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-        storageRef = FirebaseStorage.getInstance().getReference();
 
         rootView = inflater.inflate(R.layout.fragment_review, container, false);
 
@@ -86,39 +67,6 @@ public class ReviewActivityFragment extends Fragment {
             }
         });
 
-        Button uploadBtn=(Button)rootView.findViewById(R.id.btnUploadVideo);
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-                Uri file = Uri.fromFile(videoFile);
-                StorageReference riversRef = storageRef.child("videos/river3.mp4");
-
-                riversRef.putFile(file)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // Get a URL to the uploaded content
-                                // Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                Log.e("Success","true");
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-
-                                Log.e("Failed","true"+exception);
-                                // Handle unsuccessful uploads
-                                // ...
-                            }
-                        });
-
-
-            }
-        });
 
         return rootView;
     }
@@ -128,6 +76,10 @@ public class ReviewActivityFragment extends Fragment {
             videoUri = data.getData();
             videoFile=new File(getRealPathFromUri(videoUri));
             video=getRealPathFromUri(videoUri);
+            Intent intent=new Intent(getActivity(),UploadReviewStoryActivity.class);
+            intent.putExtra("video",video);
+            getActivity().startActivity(intent);
+
             //Log.i("Strng", file.toString());
             Log.d("data video",""+videoFile);
         }
@@ -149,20 +101,4 @@ public class ReviewActivityFragment extends Fragment {
             }
         }
     }
-
-    private void signInAnonymously() {
-        mAuth.signInAnonymously().addOnSuccessListener(getActivity(), new  OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                // do your stuff
-            }
-        })
-                .addOnFailureListener(getActivity(), new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.e(TAG, "signInAnonymously:FAILURE", exception);
-                    }
-                });
-    }
-
 }

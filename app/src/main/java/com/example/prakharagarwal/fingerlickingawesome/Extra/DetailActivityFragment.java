@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome;
+package com.example.prakharagarwal.fingerlickingawesome.Extra;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.prakharagarwal.fingerlickingawesome.Extra.MenuActivity;
+import com.example.prakharagarwal.fingerlickingawesome.R;
+import com.example.prakharagarwal.fingerlickingawesome.MainScreen.Restaurant;
 import com.squareup.picasso.Picasso;
 
 /**
