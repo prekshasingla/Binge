@@ -126,6 +126,7 @@ public class DineoutFragment extends Fragment {
             }
         });
 
+
         return rootView;
     }
 }
