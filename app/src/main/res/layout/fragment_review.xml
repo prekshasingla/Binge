@@ -1,28 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.prakharagarwal.fingerlickingawesome.Review.ReviewActivityFragment">
+    android:layout_height="match_parent">
 
     <Button
         android:layout_width="wrap_content"
-        android:text="Video"
+        android:text="Post a video review..."
         android:id="@+id/btnSelectVideo"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:gravity="center"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:text="Upload"
-        android:id="@+id/btnUploadVideo"
-        android:layout_height="wrap_content"
-        />
-
-
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:id="@+id/webview_reviews"
+        android:scaleType="fitXY"></WebView>
 
 </RelativeLayout>

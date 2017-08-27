@@ -47,7 +47,7 @@ public class ReviewActivity extends FragmentActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
+        DatabaseReference ref = database.getReference("reviews");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,9 +79,7 @@ public class ReviewActivity extends FragmentActivity {
 
     public void getData(DataSnapshot dataSnapshot) {
 
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-            if (child.getKey().equals("reviews")) {
-                for (DataSnapshot child1 : child.getChildren()) {
+                for (DataSnapshot child1 : dataSnapshot.getChildren()) {
                     Review review=new Review();
 
                     for (DataSnapshot child2 : child1.getChildren()) {
@@ -107,12 +105,8 @@ public class ReviewActivity extends FragmentActivity {
                     reviews.add(review);
 
                 }
-            }
-        }
 
         reviewTextAdapter.addAll(reviews);
         reviewTextAdapter.notifyDataSetChanged();
     }
-
-
 }

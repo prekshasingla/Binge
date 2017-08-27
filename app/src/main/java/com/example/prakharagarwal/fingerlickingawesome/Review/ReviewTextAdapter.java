@@ -88,8 +88,8 @@ public class ReviewTextAdapter extends RecyclerView.Adapter<ReviewTextAdapter.Re
         public ReviewTextAdapterViewHolder(View view) {
             super(view);
 
-            textViewUserid = (TextView) view.findViewById(R.id.review_text_userid);
-            textViewReview = (TextView) view.findViewById(R.id.review_text_review);
+            textViewUserid = (TextView) view.findViewById(R.id.review_text_user_name);
+            textViewReview = (TextView) view.findViewById(R.id.review_text_description);
             ratingBar = (RatingBar) view.findViewById(R.id.review_text_rating_bar);
 
         }
