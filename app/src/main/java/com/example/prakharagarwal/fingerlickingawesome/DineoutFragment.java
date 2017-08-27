@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.prakharagarwal.fingerlickingawesome.MainScreen.Restaurant;
+import com.example.prakharagarwal.fingerlickingawesome.MainScreen.VideoAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
