@@ -83,6 +83,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         final String video = mRestaurants.get(position).video;
         final String name = mRestaurants.get(position).name;
+        final String id=mRestaurants.get(position).id;
         final String typeOfRestaurant=mRestaurants.get(position).typeOfRestaurant;
 
         holder.textViewName.setText(name);
@@ -191,6 +192,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             public void onClick(View v) {
 
                 Intent intent=new Intent(mContext,StoriesActivity.class);
+                intent.putExtra("restaurantID",id);
                 mContext.startActivity(intent);
 
 

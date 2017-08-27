@@ -124,6 +124,9 @@ public class DineoutFragment extends Fragment {
                         if (child2.getKey().equals("hsignature_stime")){
                             restaurant.setSignatureStartTime(Integer.parseInt(""+child2.getValue()));
                         }
+                        if (child2.getKey().equals("hid")){
+                            restaurant.setId(""+child2.getValue());
+                        }
                     }
                     restaurants.add(restaurant);
 

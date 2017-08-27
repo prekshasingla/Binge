@@ -18,7 +18,15 @@ public class Restaurant {
     public String openingTime;
     public int signatureEndTime;
     public int signatureStartTime;
+    String id;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Restaurant(){}
 
@@ -130,7 +138,7 @@ public class Restaurant {
     public Restaurant(String name, String video, String address, String lattitude,
                       String longitude, String typeOfRestaurant, int ambienceEndTime,
                       int ambienceStartTime, String closingTime, String openingTime,
-                      String cuisineType, int signatureEndTime, int signatureStartTime ){
+                      String cuisineType, int signatureEndTime, int signatureStartTime, String id ){
         this.name=name;
         this.video=video;
         this.address=address;
@@ -144,6 +152,7 @@ public class Restaurant {
         this.cuisineType=cuisineType;
         this.signatureEndTime=signatureEndTime;
         this.signatureStartTime=signatureStartTime;
+        this.id=id;
     }
 
 
