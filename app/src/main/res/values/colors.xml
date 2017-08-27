@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#BDBDBD</color>
     <color name="title_bar">#EEEEEE</color>
-    <color name="recycler_view">#E0E0E0</color>
+    <color name="recycler_view">#F7FBFC</color>
     <color name="text_color">#FF000000</color>
     <color name="button_ambience_color">#304FFE</color>
     <color name="button_signature_dishes_color">#F44336</color>

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.prakharagarwal.fingerlickingawesome.Extra.DetailActivity">
+    tools:context="com.example.prakharagarwal.binge.Extra.DetailActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
