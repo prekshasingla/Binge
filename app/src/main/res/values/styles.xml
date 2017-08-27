@@ -6,8 +6,8 @@
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Base.Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/white_opaque</item>
+        <item name="colorPrimaryDark">@color/text_color</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
 

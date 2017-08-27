@@ -31,4 +31,8 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="title_activity_write_review">WriteReviewActivity</string>
     <string name="title_activity_upload_review_story">UploadReviewStoryActivity</string>
 
+    <string name="title_activity_login">LoginActivity</string>
+    <!--Facebook login-->
+    <string name="facebook_app_id">1588416427876072</string>
+    <string name="fb_login_protocol_scheme">fb1588416427876072</string>
 </resources>
