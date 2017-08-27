@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/fragment_review"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.Review.ReviewActivityFragment"
+        android:name="com.example.prakharagarwal.binge.Review.ReviewActivityFragment"
         android:gravity="center"
         tools:layout="@layout/fragment_review"
         layout="@layout/fragment_review" />

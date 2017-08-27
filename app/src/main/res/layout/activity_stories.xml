@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/fragment_stories"
-        android:name="com.example.prakharagarwal.fingerlickingawesome.StoriesMenu.StoriesActivityFragment"
+        android:name="com.example.prakharagarwal.binge.StoriesMenu.StoriesActivityFragment"
         layout="@layout/fragment_stories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
