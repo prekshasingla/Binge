@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.fingerlickingawesome.StoriesMenu;
+package com.example.prakharagarwal.binge.StoriesMenu;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.prakharagarwal.fingerlickingawesome.R;
+import com.example.prakharagarwal.binge.R;
 
 import java.util.List;
 
