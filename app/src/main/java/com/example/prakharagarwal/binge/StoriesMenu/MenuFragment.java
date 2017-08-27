@@ -53,10 +53,7 @@ public class MenuFragment extends Fragment {
     }
     mRecyclerView.setLayoutManager(linearLayoutManager);
 
-    for(int i=0;i<10;i++) {
-        Menu menu = new Menu("Name", "Description", "Price", true);
-        menus.add(menu);
-    }
+
 
     menuAdapter.addAll(menus);
     menuAdapter.notifyDataSetChanged();

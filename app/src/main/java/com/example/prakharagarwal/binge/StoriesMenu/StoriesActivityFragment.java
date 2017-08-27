@@ -22,12 +22,12 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StoriesActivityFragment extends Fragment{
+public class StoriesActivityFragment extends Fragment {
 
 
     WebView webView;
-    ArrayList<String> Videos;
-    int end=-1, curr=-1;
+    ArrayList<String> mVideos;
+    int end = -1, curr = -1;
 
 
     public StoriesActivityFragment() {
@@ -36,21 +36,21 @@ public class StoriesActivityFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView= (View)inflater.inflate(R.layout.fragment_stories, container, false);
+        View rootView = (View) inflater.inflate(R.layout.fragment_stories, container, false);
 
-        Videos=new ArrayList<String>();
-        Videos.add("B34rGH1GX4w");//Portrait Video
-        Videos.add("xmYg3GqWlaQ");//potrait
-        Videos.add("c2EY0KnAGZc");//Landscape Video
-        Videos.add("xsFQN64WmF4");
-        Videos.add("yabDCV4ccQs");
-        Videos.add("FoMlSB6ftQg");
-        Videos.add("5723ieP5VAQ");
+//        Videos=new ArrayList<String>();
+//        Videos.add("B34rGH1GX4w");//Portrait Video
+//        Videos.add("xmYg3GqWlaQ");//potrait
+//        Videos.add("c2EY0KnAGZc");//Landscape Video
+//        Videos.add("xsFQN64WmF4");
+//        Videos.add("yabDCV4ccQs");
+//        Videos.add("FoMlSB6ftQg");
+//        Videos.add("5723ieP5VAQ");
 
+        mVideos = ((StoriesActivity) getActivity()).getVideos();
 
-
-        curr=0;
-        end=Videos.size();
+        curr = 0;
+        end = mVideos.size();
 
 //        RelativeLayout relativeLayoutStories=(RelativeLayout) rootView.findViewById(R.id.relative_layout_stories);
 //        relativeLayoutStories.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,7 @@ public class StoriesActivityFragment extends Fragment{
 //            }
 //        });
 
-        webView= (WebView)rootView.findViewById(R.id.webview_stories);
+        webView = (WebView) rootView.findViewById(R.id.webview_stories);
 
         hideSystemUi();
 
@@ -86,16 +86,14 @@ public class StoriesActivityFragment extends Fragment{
         });
 
 
-
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
             webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        }
-        else {
+        } else {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
 
 
         final GestureDetector gesture = new GestureDetector(getActivity(),
@@ -117,28 +115,27 @@ public class StoriesActivityFragment extends Fragment{
                             if (Math.abs(diffX) > Math.abs(diffY)) {
                                 if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                                     if (diffX > 0) {
-                                        if(curr!=0) {
-                                           curr--;
-                                           webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                                        if (curr != 0) {
+                                            curr--;
+                                            webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr)), "text/html", "UTF-8", "");
                                         }
                                         //Toast.makeText(getActivity(), "right", Toast.LENGTH_LONG).show();
                                     } else {
 
-                                        if(curr!=end-1) {
-                                           curr++;
-                                           webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                                        if (curr != end - 1) {
+                                            curr++;
+                                            webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr)), "text/html", "UTF-8", "");
                                         }
                                         //Toast.makeText(getActivity(), "left", Toast.LENGTH_LONG).show();
                                     }
                                     result = true;
                                 }
-                            }
-                            else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                            } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                                 if (diffY > 0) {
-                                    ((StoriesActivity)getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                    ((StoriesActivity) getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                                     //Toast.makeText(getActivity(), "down", Toast.LENGTH_LONG).show();
                                 } else {
-                                    ((StoriesActivity)getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                                    ((StoriesActivity) getActivity()).getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                     //Toast.makeText(getActivity(), "up", Toast.LENGTH_LONG).show();
                                 }
                                 result = true;
@@ -159,15 +156,13 @@ public class StoriesActivityFragment extends Fragment{
         });
 
 
-
-
         return rootView;
     }
 
 
-    String getYoutubeURL(String videoID){
+    String getYoutubeURL(String videoID) {
 
-         String url ="<!DOCTYPE html>\n" +
+        String url = "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "  <body style=\"margin:0; padding:0\">\n" +
                 "    <div id=\"player\"></div>\n" +
@@ -184,16 +179,16 @@ public class StoriesActivityFragment extends Fragment{
                 "        player = new YT.Player('player', {\n" +
                 "          height: '640',\n" +
                 "          width: '360',\n" +
-                "          videoId: '"+videoID+"',\n" +
+                "          videoId: '" + videoID + "',\n" +
                 " playerVars: { \n" +
                 "         'autoplay': 1,\n" +
-                "          'autohide': 1,\n"+
+                "          'autohide': 1,\n" +
                 "         'controls': 0, \n" +
-                "         'showinfo': 0,\n"+
-                "          'playlist': '"+videoID+"',\n" +
-                "         'loop': 1,\n"+
+                "         'showinfo': 0,\n" +
+                "          'playlist': '" + videoID + "',\n" +
+                "         'loop': 1,\n" +
                 "         'rel' : 0\n" +
-                "  },"+
+                "  }," +
                 "          events: {\n" +
                 "            'onReady': onPlayerReady,\n" +
                 "            'onStateChange': onPlayerStateChange\n" +

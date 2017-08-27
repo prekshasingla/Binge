@@ -45,7 +45,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
     public void onBindViewHolder(final MenuAdapterViewHolder holder, final int position) {
 
 
-        final String description = menus.get(position).description;
+        final String description = menus.get(position).desc;
         final String name = menus.get(position).name;
         final String price= menus.get(position).price;
 
@@ -54,13 +54,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         holder.textViewPrice.setText(price);
         holder.textViewDescription.setText(description);
 
-        if(menus.get(position).veg){
-            holder.imageViewVeg.setImageResource(R.mipmap.veg);
-
-        }
-        else {
-            holder.imageViewVeg.setImageResource(R.mipmap.nonveg);
-        }
     }
 
 

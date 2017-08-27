@@ -51,10 +51,7 @@ public class DineoutFragment extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
-        ref.addValueEventListener(new ValueEventListener() {
-
-       // ref.addListenerForSingleValueEvent(new ValueEventListener(){
-
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
             getData(dataSnapshot);

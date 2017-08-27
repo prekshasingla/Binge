@@ -18,6 +18,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class StoriesActivity extends FragmentActivity {
@@ -28,6 +29,8 @@ public class StoriesActivity extends FragmentActivity {
     List<Menu> menus;
     SlidingUpPanelLayout slidingUpPanelLayout;
     String ID;
+    ArrayList<String> Videos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,7 @@ public class StoriesActivity extends FragmentActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
 
-        ref.addValueEventListener(new ValueEventListener() {
-
-
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,14 +87,13 @@ public class StoriesActivity extends FragmentActivity {
         }
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        for(int i=0;i<10;i++) {
-            Menu menu = new Menu("Name", "Description", "Price", true);
-            menus.add(menu);
-        }
 
-        menuAdapter.addAll(menus);
-        menuAdapter.notifyDataSetChanged();
     }
+
+    public ArrayList<String> getVideos() {
+        return Videos;
+    }
+
     public void getData(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot child1 : dataSnapshot.getChildren()) {
@@ -103,8 +103,8 @@ public class StoriesActivity extends FragmentActivity {
 
                         if (child2.getKey()!=null){
                             for (DataSnapshot child3 : child2.getChildren()) {
-
-
+                                Menu menu=child3.getValue(Menu.class);
+                                    menus.add(menu);
                             }
 
                         }
@@ -113,7 +113,20 @@ public class StoriesActivity extends FragmentActivity {
 
 
             }
+        menuAdapter.addAll(menus);
 
+        menuAdapter.notifyDataSetChanged();
+        getVideoStoriesURL(menus);
+
+    }
+
+    private void getVideoStoriesURL(List<Menu> menus) {
+        for(int i=0;i<menus.size();i++){
+            Menu menu=menus.get(i);
+            if(menu.getHas_video()==0){
+                Videos.add(menu.getVideo_url());
+            }
+        }
     }
 
 
