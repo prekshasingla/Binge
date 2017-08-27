@@ -55,7 +55,7 @@ public class SignUpFragment extends Fragment implements
     EditText user_email;
     EditText user_password;
     Button signup;
-    boolean uniqueUser=true;
+    FirebaseDatabase mDatabase;
 
     @Nullable
     @Override
@@ -112,26 +112,21 @@ public class SignUpFragment extends Fragment implements
                 // ...
             }
         });
+        mDatabase=FirebaseDatabase.getInstance();
         return rootView;
     }
-    private void userSignUpFirebase(final String email, String password) {
+    public FirebaseDatabase getDatabase(){
+        return mDatabase;
+    }
+    private void userSignUpFirebase(final String email, final String password) {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("users");
-        ref.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference ref = mDatabase.getReference().child("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    for(DataSnapshot child1:child.getChildren()) {
-                        if (child1.getKey().equals("email")) {
-                            if (email.equals(child1.getValue().toString()))
-                                uniqueUser = false;
-                        }
-                    }
-
-                }
-
+                checkExistingUser(dataSnapshot,email,password);
             }
 
             @Override
@@ -139,18 +134,39 @@ public class SignUpFragment extends Fragment implements
 
             }
         });
-        if(uniqueUser) {
-            DatabaseReference ref1 = database.getReference().child("users").push();
+
+
+    }
+
+    public void checkExistingUser(DataSnapshot dataSnapshot,String email,String password){
+        boolean flag=true;
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            if (child.getKey().equals(email)) {
+                flag=false;
+                break;
+            }
+
+
+        }
+        if(flag)
+            updateUser(email,password);
+        else{
+            updateUser(null,null);
+        }
+
+    }
+
+    private void updateUser(String email, String password) {
+
+        if(email!=null && password!=null) {
+            DatabaseReference ref1 = mDatabase.getReference().child("users").child(email);
             User user = new User();
-            user.setEmail(email);
             user.setPassword(password);
             ref1.setValue(user);
 
         }else{
             Toast.makeText(getActivity(), "User exists", Toast.LENGTH_SHORT).show();
-            uniqueUser=true;
         }
-
     }
 
     @Override

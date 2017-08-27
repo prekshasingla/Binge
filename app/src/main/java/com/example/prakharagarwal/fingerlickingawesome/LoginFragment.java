@@ -124,24 +124,12 @@ public class LoginFragment extends Fragment implements
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("users");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    for(DataSnapshot child1:child.getChildren()) {
-                        if (child1.getKey().equals("email")) {
-                            if (email.equals(child1.getValue().toString()))
-                                emailVerified=true;
-                        }
-                        if (child1.getKey().equals("password")) {
-                            if (password.equals(child1.getValue().toString()))
-                                passwordVerified=true;
-                        }
-                    }
 
-                }
-
+                checkLogin(dataSnapshot,email,password);
             }
 
             @Override
@@ -149,19 +137,35 @@ public class LoginFragment extends Fragment implements
 
             }
         });
-        if(emailVerified && passwordVerified) {
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-            emailVerified=false;
-            passwordVerified=false;
 
-        }else{
-            Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
-            emailVerified=false;
-            passwordVerified=false;
-        }
 
     }
+public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
 
+    for (DataSnapshot child : dataSnapshot.getChildren()) {
+        if (child.getKey().equals(email)) {
+            emailVerified=true;
+            for(DataSnapshot child1 : child.getChildren()){
+                if(child1.getKey().equals("password")){
+                    if(password.equals(child1.getValue().toString()))
+                        passwordVerified=true;
+                }
+            }
+        }
+
+
+    }
+    if(emailVerified && passwordVerified) {
+        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+        emailVerified=false;
+        passwordVerified=false;
+
+    }else{
+        Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
+        emailVerified=false;
+        passwordVerified=false;
+    }
+}
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
