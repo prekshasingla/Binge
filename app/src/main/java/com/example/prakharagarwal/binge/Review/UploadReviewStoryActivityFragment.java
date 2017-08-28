@@ -3,6 +3,7 @@ package com.example.prakharagarwal.binge.Review;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,7 +52,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            // do your stuff
+
         } else {
             signInAnonymously();
         }
@@ -74,9 +75,31 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
 
         final VideoView videoViewStory=(VideoView)rootView.findViewById(R.id.video_view_review_upload);
-        //videoViewStory.setVideoPath(video);
         videoViewStory.setVideoURI(Uri.parse(video));
         videoViewStory.start();
+
+        videoViewStory.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+//        videoViewStory.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+//            @Override
+//            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+//                    //progressBarLandScape.setVisibility(View.GONE);
+//                    return true;
+//                }
+//                else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
+//                    //progressBarLandScape.setVisibility(View.VISIBLE);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
 
 
 
@@ -87,15 +110,12 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
 
                 progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("Loading..."); // Setting Message
-                progressDialog.setTitle("ProgressDialog"); // Setting Title
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                progressDialog.show(); // Display Progress Dialog
+                progressDialog.setMessage("Uploading...");
+                progressDialog.setTitle("Uploading Video");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
                 progressDialog.setCancelable(false);
 
-
-
-                //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
                 Uri file = Uri.fromFile(videoFile);
                 StorageReference riversRef = storageRef.child("videos/river5.mp4");
 
@@ -109,15 +129,8 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("story_reviews");
-                                //Map<String, Review> users = new HashMap<String, Review>();
-                                //users.put(new Review(review,rating,"restaurant","user123"));
-                                //long now = Instant.now().toEpochMilli();
-
 
                                 myRef.push().setValue(new StoryReview(downloadUrl.toString(),"restaurant","user123"));
-
-
-                                Log.e("Success",""+downloadUrl);
                                 progressDialog.dismiss();
 
                             }
@@ -125,10 +138,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-
                                 Log.e("Failed","true"+exception);
-                                // Handle unsuccessful uploads
-                                // ...
                             }
                         });
 

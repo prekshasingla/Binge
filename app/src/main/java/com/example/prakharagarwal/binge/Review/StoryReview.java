@@ -7,10 +7,33 @@ package com.example.prakharagarwal.binge.Review;
 public class StoryReview {
 
 
-    String uri;
-    String restaurant;
-    String userid;
+     String uri;
+     String restaurant;
+     String userid;
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(String restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
     public StoryReview(){
 

@@ -13,14 +13,14 @@
         android:gravity="center"
         />
 
-    <WebView
+    <VideoView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:id="@+id/webview_reviews"
-        android:scaleType="fitXY"></WebView>
+        android:id="@+id/videoview_reviews"
+        android:scaleType="fitXY"></VideoView>
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
