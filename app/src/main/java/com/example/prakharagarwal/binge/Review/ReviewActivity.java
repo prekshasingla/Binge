@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class ReviewActivity extends FragmentActivity {
     RecyclerView mRecyclerView;
     ReviewTextAdapter reviewTextAdapter;
     List<Review> reviews;
+    SlidingUpPanelLayout slidingUpPanelLayout;
 
 
     @Override
@@ -31,6 +34,27 @@ public class ReviewActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         reviews=new ArrayList<Review>();
+
+
+        slidingUpPanelLayout=(SlidingUpPanelLayout)findViewById(R.id.reviews_sliding_up);
+
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if(newState== SlidingUpPanelLayout.PanelState.EXPANDED)
+                    ((ImageView)findViewById(R.id.review_text_heading_image)).setImageResource(R.drawable.ic_keyboard_arrow_down_white_24dp);
+
+
+                if(newState== SlidingUpPanelLayout.PanelState.COLLAPSED)
+                    ((ImageView)findViewById(R.id.review_text_heading_image)).setImageResource(R.drawable.ic_keyboard_arrow_up_white_24dp);
+
+            }
+        });
 
 
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(this);
@@ -107,4 +131,9 @@ public class ReviewActivity extends FragmentActivity {
         reviewTextAdapter.addAll(reviews);
         reviewTextAdapter.notifyDataSetChanged();
     }
+
+    public SlidingUpPanelLayout getSlidingUpPanelLayout(){
+        return slidingUpPanelLayout;
+    }
+
 }

@@ -23,6 +23,7 @@ public class StoriesActivity extends FragmentActivity {
     SlidingUpPanelLayout slidingUpPanelLayout;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

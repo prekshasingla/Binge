@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.prakharagarwal.binge.R;
@@ -29,7 +30,7 @@ public class ReviewActivityFragment extends Fragment {
 
     static final int REQUEST_VIDEO_CAPTURE = 1;
 
-    Button videoBtn;
+    TextView videoBtn;
     View rootView;
 
     File videoFile;
@@ -89,7 +90,7 @@ public class ReviewActivityFragment extends Fragment {
         });
 
 
-        videoBtn=(Button)rootView.findViewById(R.id.btnSelectVideo);
+        videoBtn=(TextView)rootView.findViewById(R.id.btnSelectVideo);
         videoBtn.performClick();
         videoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
