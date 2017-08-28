@@ -2,6 +2,7 @@ package com.example.prakharagarwal.binge.Extra;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -23,7 +24,7 @@ public class SquareImageView extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int width = View.MeasureSpec.getSize(widthMeasureSpec);
         //int height = width * getDrawable().getIntrinsicHeight() / getDrawable().getIntrinsicWidth();
         int height=width* 9/16;
         setMeasuredDimension(width, height);

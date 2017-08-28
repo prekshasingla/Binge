@@ -89,7 +89,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.textViewName.setText(name);
         holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
-        final  String url="<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>\n";
+        final  String url="<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "  <body style=\"margin:0; padding:0\">\n" +
+                "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"+
+                "  </body>\n" +
+                "</html>";
 
         final String url1=getYoutubeURL(video);
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
@@ -112,37 +117,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             holder.webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-
-//        holder.webView.setWebViewClient(new WebViewClient() {
-//            // autoplay when finished loading via javascript injection
-//            public void onPageFinished(WebView view, String url) {
-//                holder.webView.loadUrl("javascript:(function() { document.getElementsByTagName('video')[0].play(); })()"); }
-//        });
-
-
-
-//        holder.webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public void onPageFinished(WebView webView, String url) {
-//               super.onPageFinished(webView, url);
-//                webView.loadUrl(url);
-//                container.requestLayout();
-//            }
-//        });
-
-        //todo
-
-//        holder.webView.postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
-//
-//            }
-//        }, position+5);
-
-        holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
-
+        String videoUrl=getYoutubeURL(video);
+        holder.webView.loadDataWithBaseURL("",url, "text/html", "UTF-8", "");
 
         final int currentVisible=linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
@@ -156,26 +132,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             }
         });
 
-        if(currentVisible==position){
-            holder.webView.loadDataWithBaseURL("", url1, "text/html", "UTF-8", "");
-
-        }
-
-
-        if(position==0)
-        {
-
-            holder.webView.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    holder.webView.performClick();
-
-                }
-            }, position+5);
-
-
-        }
+//        if(currentVisible==position){
+//            holder.webView.loadDataWithBaseURL("", url1, "text/html", "UTF-8", "");
+//
+//        }
+//
+//
+//        if(position==0)
+//        {
+//
+//            holder.webView.postDelayed(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    holder.webView.performClick();
+//
+//                }
+//            }, position+5);
+//
+//
+//        }
 
         holder.buttonReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,11 +287,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
                 "      var player;\n" +
                 "      function onYouTubeIframeAPIReady() {\n" +
                 "        player = new YT.Player('player', {\n" +
-                "          height: '160',\n" +
-                "          width: '350',\n" +
+                "          height: '170',\n" +
+                "          width: '360',\n" +
                 "          videoId: '"+videoID+"',\n" +
                 " playerVars: { \n" +
-                "         'autoplay': 1,\n" +
+                //"         'autoplay': 1,\n" +
                 "          'autohide': 1,\n"+
                 "         'controls': 0, \n" +
                 "         'showinfo': 0,\n"+
