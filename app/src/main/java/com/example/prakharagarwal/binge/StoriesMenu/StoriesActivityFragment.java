@@ -38,7 +38,6 @@ public class StoriesActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = (View) inflater.inflate(R.layout.fragment_stories, container, false);
 
-//        Videos=new ArrayList<String>();
 //        Videos.add("B34rGH1GX4w");//Portrait Video
 //        Videos.add("xmYg3GqWlaQ");//potrait
 //        Videos.add("c2EY0KnAGZc");//Landscape Video
@@ -47,10 +46,10 @@ public class StoriesActivityFragment extends Fragment {
 //        Videos.add("FoMlSB6ftQg");
 //        Videos.add("5723ieP5VAQ");
 
-        mVideos = ((StoriesActivity) getActivity()).getVideos();
-
-        curr = 0;
-        end = mVideos.size();
+        mVideos=new ArrayList<String>();
+            mVideos.addAll(((StoriesActivity) getActivity()).getVideos());
+            curr = 0;
+            end = mVideos.size();
 
 //        RelativeLayout relativeLayoutStories=(RelativeLayout) rootView.findViewById(R.id.relative_layout_stories);
 //        relativeLayoutStories.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +92,8 @@ public class StoriesActivityFragment extends Fragment {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
+        if(mVideos.size()>0)
+         webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
 
 
         final GestureDetector gesture = new GestureDetector(getActivity(),

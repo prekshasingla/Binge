@@ -37,9 +37,13 @@ public class StoriesActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stories);
         menus=new ArrayList<Menu>();
+        Videos=new ArrayList<String>();
+
         ID=getIntent().getStringExtra("restaurantID");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
+        ref.keepSynced(true);
+
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -104,8 +108,9 @@ public class StoriesActivity extends FragmentActivity {
                         if (child2.getKey()!=null){
                             for (DataSnapshot child3 : child2.getChildren()) {
                                 Menu menu=child3.getValue(Menu.class);
-                                    menus.add(menu);
-                            }
+                                getVideoStoryURL(menu);
+                                menus.add(menu);
+                                }
 
                         }
 
@@ -116,7 +121,7 @@ public class StoriesActivity extends FragmentActivity {
         menuAdapter.addAll(menus);
 
         menuAdapter.notifyDataSetChanged();
-        getVideoStoriesURL(menus);
+        //getVideoStoriesURL(menus);
 
     }
 
@@ -128,6 +133,12 @@ public class StoriesActivity extends FragmentActivity {
             }
         }
     }
+    private void getVideoStoryURL(Menu menu) {
+            if(menu.getHas_video()==0) {
+                Videos.add(menu.getVideo_url());
+            }
+    }
+
 
 
     public SlidingUpPanelLayout getSlidingUpPanelLayout(){

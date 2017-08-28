@@ -77,6 +77,9 @@ public class DineoutFragment extends Fragment {
 
                     for (DataSnapshot child2 : child1.getChildren()) {
 
+                        //Restaurant restaurant=child2.getValue(Restaurant.class);
+                        //restaurants.add(restaurant);
+
                         if (child2.getKey().equals("hname")){
                             // Log.e("Restaurant",""+child2.getValue());
                             restaurant.setName(""+child2.getValue());
