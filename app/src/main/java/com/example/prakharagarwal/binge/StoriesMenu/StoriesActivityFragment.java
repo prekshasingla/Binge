@@ -3,6 +3,7 @@ package com.example.prakharagarwal.binge.StoriesMenu;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,9 +15,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.prakharagarwal.binge.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,6 +31,8 @@ import java.util.ArrayList;
  */
 public class StoriesActivityFragment extends Fragment {
 
+String ID;
+    List<Menu> menus;
 
     WebView webView;
     ArrayList<String> mVideos;
@@ -37,17 +46,40 @@ public class StoriesActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = (View) inflater.inflate(R.layout.fragment_stories, container, false);
-
-//        Videos.add("B34rGH1GX4w");//Portrait Video
-//        Videos.add("xmYg3GqWlaQ");//potrait
-//        Videos.add("c2EY0KnAGZc");//Landscape Video
-//        Videos.add("xsFQN64WmF4");
-//        Videos.add("yabDCV4ccQs");
-//        Videos.add("FoMlSB6ftQg");
-//        Videos.add("5723ieP5VAQ");
-
         mVideos=new ArrayList<String>();
-            mVideos.addAll(((StoriesActivity) getActivity()).getVideos());
+        menus=new ArrayList<Menu>();
+
+        ID=getActivity().getIntent().getStringExtra("restaurantID");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("menu");
+        //ref.keepSynced(true);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getData(dataSnapshot);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Log.e("error","error");
+            }
+        });
+
+//        mVideos.add("B34rGH1GX4w");//Portrait Video
+//        mVideos.add("xmYg3GqWlaQ");//potrait
+//        mVideos.add("c2EY0KnAGZc");//Landscape Video
+//        mVideos.add("xsFQN64WmF4");
+//        mVideos.add("yabDCV4ccQs");
+//        mVideos.add("FoMlSB6ftQg");
+//        mVideos.add("5723ieP5VAQ");
+
+
+        //mVideos=new ArrayList<String>();
+          //  mVideos.addAll(((StoriesActivity) getActivity()).getVideos());
             curr = 0;
             end = mVideos.size();
 
@@ -92,8 +124,8 @@ public class StoriesActivityFragment extends Fragment {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        if(mVideos.size()>0)
-         webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
+//        if(mVideos.size()>0)
+//         webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
 
 
         final GestureDetector gesture = new GestureDetector(getActivity(),
@@ -158,8 +190,42 @@ public class StoriesActivityFragment extends Fragment {
 
         return rootView;
     }
+public void addAllVideos(){
+
+}
+    public void getData(DataSnapshot dataSnapshot) {
+
+        for (DataSnapshot child1 : dataSnapshot.getChildren()) {
+            if(child1.getKey().equals(ID))
+
+                for (DataSnapshot child2 : child1.getChildren()) {
+
+                    if (child2.getKey()!=null){
+                        for (DataSnapshot child3 : child2.getChildren()) {
+                            Menu menu=child3.getValue(Menu.class);
+                            getVideoStoryURL(menu);
+                            menus.add(menu);
+
+                        }
+
+                    }
+
+                }
 
 
+        }
+playStories();
+        ((StoriesActivity)getActivity()).addAllMenus(menus);
+    }
+    private void getVideoStoryURL(Menu menu) {
+        if(menu.getHas_video()==0) {
+            mVideos.add(menu.getVideo_url());
+        }
+    }
+    public void playStories(){
+        if(mVideos.size()>0)
+            webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0)), "text/html", "UTF-8", "");
+    }
     String getYoutubeURL(String videoID) {
 
         String url = "<!DOCTYPE html>\n" +
