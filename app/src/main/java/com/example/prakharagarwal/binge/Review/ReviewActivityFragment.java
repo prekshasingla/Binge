@@ -14,14 +14,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.prakharagarwal.binge.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,14 +37,15 @@ public class ReviewActivityFragment extends Fragment {
 
     TextView videoBtn;
     View rootView;
+    List<Review> reviews;
 
     File videoFile;
     Uri videoUri;
-    String video=null;
+    String video = null;
 
     VideoView videoView;
     ArrayList<String> Videos;
-    int end=-1, curr=-1;
+    int end = -1, curr = -1;
 
 
     public ReviewActivityFragment() {
@@ -51,15 +57,43 @@ public class ReviewActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-
         rootView = inflater.inflate(R.layout.fragment_review, container, false);
+        reviews = new ArrayList<Review>();
 
-        Videos=new ArrayList<String>();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("reviews");
 
-        curr=0;
-        end=Videos.size();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                reviews.clear();
+                getData(dataSnapshot);
+            }
 
-        videoView = (VideoView)rootView.findViewById(R.id.videoview_reviews);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Log.e("error", "error");
+            }
+        });
+        DatabaseReference ref1 = database.getReference("story_reviews");
+        ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getVideoReviews(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Videos = new ArrayList<String>();
+
+        curr = 0;
+        end = Videos.size();
+
+        videoView = (VideoView) rootView.findViewById(R.id.videoview_reviews);
 
         hideSystemUi();
 
@@ -76,9 +110,9 @@ public class ReviewActivityFragment extends Fragment {
             }
         });
 
-        String video="https://firebasestorage.googleapis.com/v0/b/finalfingerlickingawesome.appspot.com/o/videos%2Friver4.mp4?alt=media&token=8f72b197-f211-405a-870d-09ec444149c9";
+        String video = "https://firebasestorage.googleapis.com/v0/b/finalfingerlickingawesome.appspot.com/o/videos%2Friver4.mp4?alt=media&token=8f72b197-f211-405a-870d-09ec444149c9";
 
-        videoView.setVideoURI(Uri.parse(video));
+//        videoView.setVideoURI(Uri.parse(video));
 
         videoView.start();
 
@@ -90,7 +124,7 @@ public class ReviewActivityFragment extends Fragment {
         });
 
 
-        videoBtn=(TextView)rootView.findViewById(R.id.btnSelectVideo);
+        videoBtn = (TextView) rootView.findViewById(R.id.btnSelectVideo);
         videoBtn.performClick();
         videoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,26 +138,72 @@ public class ReviewActivityFragment extends Fragment {
 
         return rootView;
     }
+
+    public void getVideoReviews(DataSnapshot dataSnapshot) {
+        for (DataSnapshot child1 : dataSnapshot.getChildren()) {
+            for(DataSnapshot child2: child1.getChildren()) {
+                if (child2.getKey().equals("uri")) {
+                    Videos.add("" + child2.getValue());
+                }
+            }
+
+        }
+        videoView.setVideoURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/finalfingerlickingawesome.appspot.com/o/videos%2Friver4.mp4?alt=media&token=8f72b197-f211-405a-870d-09ec444149c9"));
+
+    }
+
+    public void getData(DataSnapshot dataSnapshot) {
+
+        for (DataSnapshot child1 : dataSnapshot.getChildren()) {
+            Review review = new Review();
+
+            for (DataSnapshot child2 : child1.getChildren()) {
+
+                if (child2.getKey().equals("userid")) {
+                    // Log.e("Restaurant",""+child2.getValue());
+                    review.setUserid("" + child2.getValue());
+                }
+                if (child2.getKey().equals("review")) {
+                    // Log.e("Restaurant",""+child2.getValue());
+                    review.setReview("" + child2.getValue());
+                }
+                if (child2.getKey().equals("rating")) {
+                    // Log.e("Restaurant",""+child2.getValue());
+                    review.setRating(Float.parseFloat("" + child2.getValue()));
+                }
+                if (child2.getKey().equals("restaurant")) {
+                    // Log.e("Restaurant",""+child2.getValue());
+                    review.setRestaurant("" + child2.getValue());
+                }
+
+            }
+            reviews.add(review);
+
+        }
+
+        ((ReviewActivity) getActivity()).addAllReviews(reviews);
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
             videoUri = data.getData();
-            videoFile=new File(getRealPathFromUri(videoUri));
-            video=getRealPathFromUri(videoUri);
+            videoFile = new File(getRealPathFromUri(videoUri));
+            video = getRealPathFromUri(videoUri);
 
-            Intent intent=new Intent(getActivity(),UploadReviewStoryActivity.class);
-            intent.putExtra("video",video);
+            Intent intent = new Intent(getActivity(), UploadReviewStoryActivity.class);
+            intent.putExtra("video", video);
             getActivity().startActivity(intent);
 
-            Log.d("data video",""+videoFile);
+            Log.d("data video", "" + videoFile);
         }
     }
 
     private String getRealPathFromUri(Uri tempUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = getActivity().getContentResolver().query(tempUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = getActivity().getContentResolver().query(tempUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);

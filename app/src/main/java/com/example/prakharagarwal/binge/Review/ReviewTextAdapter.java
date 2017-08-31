@@ -46,7 +46,7 @@ public class ReviewTextAdapter extends RecyclerView.Adapter<ReviewTextAdapter.Re
 
         final String review = reviews.get(position).review;
         final String userid = reviews.get(position).userid;
-        final Float rating= reviews.get(position).rating;
+        final float rating= reviews.get(position).rating;
 
 
         holder.textViewUserid.setText(userid);
