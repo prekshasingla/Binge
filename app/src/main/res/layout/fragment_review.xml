@@ -18,31 +18,6 @@
         android:layout_alignParentRight="true"
         android:scaleType="fitXY"></WebView>
 
-    <!--<VideoView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:clickable="false"-->
-        <!--android:focusable="false"-->
-        <!--android:focusableInTouchMode="false"-->
-        <!--android:id="@+id/videoview_reviews"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:scaleType="fitXY"></VideoView>-->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Post your story"
-        android:id="@+id/btnSelectVideo"
-        android:drawableTop="@drawable/camera_white"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/photo_background_protection_top"
-        android:gravity="center"
-        android:textColor="@color/white_opaque"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,4 +48,17 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Post your story"
+        android:id="@+id/btnSelectVideo"
+        android:drawableTop="@drawable/camera_white"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/photo_background_protection_top"
+        android:gravity="center"
+        android:textColor="@color/white_opaque"
+        />
 </FrameLayout>

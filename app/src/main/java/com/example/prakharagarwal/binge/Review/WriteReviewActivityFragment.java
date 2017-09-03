@@ -1,5 +1,6 @@
 package com.example.prakharagarwal.binge.Review;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,4 +61,6 @@ public class WriteReviewActivityFragment extends Fragment {
 
         return rootView;
     }
+
+
 }
