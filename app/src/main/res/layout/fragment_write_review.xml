@@ -3,14 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
+    android:layout_gravity="center"
     android:focusableInTouchMode="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_write_review"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text="Restaurant Name"
+
+        android:paddingBottom="15dp"/>
+
 
     <RatingBar
         android:id="@+id/rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/white_opaque"
+        android:layout_gravity="center"
+        android:layout_below="@+id/title_write_review"
+
         />
 
     <android.support.design.widget.TextInputLayout
@@ -20,7 +35,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/rating_bar"
-        android:focusableInTouchMode="true">
+        android:layout_gravity="center"
+        android:focusableInTouchMode="true"
+        >
 
         <EditText
             android:id="@+id/review_text"
@@ -38,6 +55,8 @@
         android:id="@+id/button_submit_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_below="@+id/review_text_layout"
         android:text="Submit" />
 </RelativeLayout>

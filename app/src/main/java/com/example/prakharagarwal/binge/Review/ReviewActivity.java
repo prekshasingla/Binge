@@ -74,6 +74,8 @@ public class ReviewActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(ReviewActivity.this,WriteReviewActivity.class);
+                intent.putExtra("restaurant","cafe_hangouts_faridabad");
+                intent.putExtra("user","user1");
                 startActivity(intent);
 
             }

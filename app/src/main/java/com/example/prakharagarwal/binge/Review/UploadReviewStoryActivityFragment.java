@@ -76,6 +76,8 @@ public class UploadReviewStoryActivityFragment extends Fragment {
         Intent intent=getActivity().getIntent();
         final String video=intent.getStringExtra("video");
         final Long epoch=intent.getLongExtra("epoch",0);
+        final String restaurantName=intent.getStringExtra("restaurant");
+        final String userId=intent.getStringExtra("user");
         final File videoFile=new File(video);
 
 
@@ -133,7 +135,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("story_reviews").child("cafe_hangout_faridabad").child("user123");
+                                DatabaseReference myRef = database.getReference("story_reviews").child(restaurantName).child(userId);
 
                                 myRef.setValue(new StoryReview(downloadUrl.toString(),epoch));
                                 progressDialog.dismiss();

@@ -24,6 +24,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -148,6 +149,39 @@ public class ReviewActivityFragment extends Fragment {
         }
 
 
+        LinearLayout linearLayoutLeft=(LinearLayout) rootView.findViewById(R.id.click_left_review);
+        linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (curr != 0) {
+                    curr--;
+                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                }
+
+            }
+        });
+
+        LinearLayout linearLayoutCentre=(LinearLayout) rootView.findViewById(R.id.centre_review);
+        linearLayoutCentre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        LinearLayout linearLayoutRight=(LinearLayout) rootView.findViewById(R.id.click_left_review);
+        linearLayoutRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (curr != end - 1) {
+                    curr++;
+                    webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(curr)), "text/html", "UTF-8", "");
+                }
+
+            }
+        });
+
+
         videoBtn = (TextView) rootView.findViewById(R.id.btnSelectVideo);
         videoBtn.performClick();
         videoBtn.setOnClickListener(new View.OnClickListener() {
@@ -251,6 +285,8 @@ public class ReviewActivityFragment extends Fragment {
             Intent intent = new Intent(getActivity(), UploadReviewStoryActivity.class);
             intent.putExtra("epoch",epoch);
             intent.putExtra("video", video);
+            intent.putExtra("restaurant","cafe_hangouts_faridabad");
+            intent.putExtra("user","user1");
             getActivity().startActivity(intent);
         }
     }
@@ -292,10 +328,10 @@ public class ReviewActivityFragment extends Fragment {
                 "          videoId: '"+videoID+"',\n" +
                 " playerVars: { \n" +
                 "         'autoplay': 1,\n" +
-                "          'autohide': 1,\n"+
+                "         'autohide': 1,\n"+
                 "         'controls': 0, \n" +
                 "         'showinfo': 0,\n"+
-                "          'playlist': '"+videoID+"',\n" +
+                "         'playlist': '"+videoID+"',\n" +
                 "         'loop': 1,\n"+
                 "         'rel' : 0\n" +
                 "  },"+

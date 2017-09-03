@@ -12,6 +12,10 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:id="@+id/webview_reviews"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:scaleType="fitXY"></WebView>
 
     <!--<VideoView-->
@@ -39,5 +43,34 @@
         android:gravity="center"
         android:textColor="@color/white_opaque"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:id="@+id/click_left_review"
+            android:orientation="horizontal"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/centre_review"
+            android:orientation="horizontal"></LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:id="@+id/click_right_review"
+            android:orientation="horizontal"></LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
