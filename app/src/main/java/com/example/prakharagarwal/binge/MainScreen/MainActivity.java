@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(com.example.prakharagarwal.binge.R.layout.activity_main);
-        TextView textViewLocation = (TextView) findViewById(R.id.user_location);
+        setContentView(R.layout.activity_main);
+        //TextView textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -52,30 +52,6 @@ public class MainActivity extends AppCompatActivity {
         // Log.e("adapter","set");
 
 
-        final ImageView imageViewFilter = (ImageView) findViewById(R.id.filter);
-        imageViewFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-//                startActivity(intent);
-
-                Toast.makeText(getBaseContext(), "Filter", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        final ImageView imageViewSearch = (ImageView) findViewById(R.id.search);
-        imageViewSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                Intent intent=new Intent(MainActivity.this,SignUpActivity.class);
-//                startActivity(intent);
-
-
-                Toast.makeText(getBaseContext(), "Search", Toast.LENGTH_LONG).show();
-            }
-        });
 
         if (checkUserPermission()) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -100,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
                     Address add = addresses.get(0);
                     String country = add.getCountryName();
                     String city = (add.getAddressLine(2)).split(",")[0];
-                    if (city != null && country != null)
-                        textViewLocation.setText(city + ", " + country);
-                    else if (country != null)
-                        textViewLocation.setText(country);
-                    else if (city != null)
-                        textViewLocation.setText(city);
-                    else
-                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
+//                    if (city != null && country != null)
+                    //    textViewLocation.setText(city + ", " + country);
+//                    else if (country != null)
+//                      //  textViewLocation.setText(country);
+//                    else if (city != null)
+//                        //textViewLocation.setText(city);
+//                    else
+//                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
 
                 } else {
                     Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();

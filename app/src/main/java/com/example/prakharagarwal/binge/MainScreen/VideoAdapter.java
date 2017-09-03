@@ -2,6 +2,8 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,9 +51,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     private String compareStringTwo = "1:45";
 
     SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
-
-
-
 
 
     private void bindActivity() {
@@ -165,9 +165,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
                 Intent intent=new Intent(mContext,StoriesActivity.class);
                 intent.putExtra("restaurantID",id);
+                intent.putExtra("restaurantName",mRestaurants.get(position).name);
                 mContext.startActivity(intent);
 
 
+            }
+        });
+        holder.location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "http://maps.google.com/maps?daddr=" + mRestaurants.get(position).getLattitude() + "," + mRestaurants.get(position).getLongitude();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setPackage("com.google.android.apps.maps");
+                mContext.startActivity(intent);
             }
         });
 
@@ -215,7 +225,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         public TextView textViewTypeOfCuisine;
         public Button buttonReview;
         public Button buttonMenu;
-
+        public ImageView location;
 
 
 
@@ -229,6 +239,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             textViewTypeOfCuisine=(TextView)view.findViewById(R.id.item_type_of_cuisine);
             buttonReview=(Button)view.findViewById(R.id.button_review);
             buttonMenu=(Button)view.findViewById(R.id.button_menu);
+            location=(ImageView)view.findViewById(R.id.feeds_adapter_item_location);
 
             view.setOnClickListener(this);
 

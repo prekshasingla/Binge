@@ -9,6 +9,7 @@ public class Menu {
     String name;
     String desc;
     String price;
+    Long veg;
     Long has_video;
 
 
@@ -50,5 +51,13 @@ public class Menu {
 
     public void setHas_video(Long has_video) {
         this.has_video = has_video;
+    }
+
+    public Long getVeg() {
+        return veg;
+    }
+
+    public void setVeg(Long veg) {
+        this.veg = veg;
     }
 }

@@ -1,101 +1,159 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.prakharagarwal.binge.StoriesMenu.StoriesActivityFragment">
 
 
-    <WebView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:clickable="false"
-           android:focusable="false"
-           android:focusableInTouchMode="false"
-           android:id="@+id/webview_stories"
-           android:scaleType="fitXY"></WebView>
-      <!-- <FrameLayout
-          android:id="@+id/blank_fragment_stories"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:scaleType="fitXY"
-          android:visibility="visible" ></FrameLayout>
-          -->
-
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <WebView
+        android:id="@+id/webview_stories"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relative_layout_stories">
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:scaleType="fitXY"></WebView>
+    <!-- <FrameLayout
+        android:id="@+id/blank_fragment_stories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:visibility="visible" ></FrameLayout>
+        -->
+    <LinearLayout
+        android:id="@+id/frag_stories_lin_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/photo_background_protection_top"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/restaurant_name_stories"
+            android:layout_width="0dp"
+            android:paddingLeft="10dp"
+            android:drawableLeft="@drawable/ic_keyboard_backspace_white_24dp"
+            android:drawablePadding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:text="Name"
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_above="@+id/frag_stories_lin_lay2">
+
+        <TextView
+            android:id="@+id/frag_stories_dish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@string/abc_font_family_body_1_material"
+            android:text="Dish"
+            android:textStyle="bold"
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"
+            android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/frag_stories_veg_image"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/veg"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/frag_stories_lin_lay2"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:layout_above="@+id/black_view"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/frag_stories_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="description of the dish will be very long."
+            android:textColor="@color/white_opaque"
+            />
+    </LinearLayout>
+
+        <View
+            android:id="@+id/black_view"
+            android:layout_width="match_parent"
+            android:layout_height="60.2sp"
+            android:layout_alignParentBottom="true"></View>
+
+    </RelativeLayout>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+        android:layout_marginTop="25sp"
+        android:layout_marginBottom="40sp"
+    android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/click_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:src="@mipmap/ic_keyboard_arrow_left_white_24dp"/>
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/center"
+            android:layout_height="match_parent"
+            android:orientation="vertical" ></LinearLayout>
+
+    <LinearLayout
+    android:layout_width="0dp"
+    android:layout_weight="0.5"
+    android:layout_height="match_parent"
+
+    android:id="@+id/click_right"
+    android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_keyboard_arrow_right_white_24dp"/>
+
         </RelativeLayout>
-
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:background="@drawable/photo_background_protection_top">
-
-       <TextView
-           android:layout_width="0dp"
-           android:layout_weight="2"
-           android:layout_height="wrap_content"
-           android:text="Name"
-           android:gravity="center"
-           android:textSize="40sp"
-           android:background="#5c000000"
-           android:id="@+id/restaurant_name_stories"
-           android:fontFamily="cursive"
-           android:textColor="@color/abc_primary_text_disable_only_material_dark" />
-
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="1"
-                   android:layout_height="wrap_content"
-                   android:text="Dish"
-                   android:textSize="20sp"
-                   android:fontFamily="@string/abc_font_family_body_1_material"
-                   android:textColor="@color/abc_primary_text_disable_only_material_dark" />
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="1"
-                   android:layout_height="wrap_content"
-                   android:text="Rs.300"
-                   android:textSize="20sp"
-                   android:layout_gravity="right"
-                   android:gravity="right"
-                   android:fontFamily="@string/abc_font_family_body_1_material"
-                   android:textColor="@color/abc_primary_text_material_dark" />
-
-           </LinearLayout>
+    </LinearLayout>
 
 
-
-       <!--<LinearLayout-->
-          <!--android:layout_width="match_parent"-->
-          <!--android:layout_height="match_parent"-->
-          <!--android:orientation="horizontal"-->
-          <!--android:weightSum="2">-->
-
-          <!--<LinearLayout-->
-              <!--android:layout_width="0dp"-->
-              <!--android:layout_weight="0.5"-->
-              <!--android:layout_height="match_parent"-->
-              <!--android:id="@+id/click_left"-->
-              <!--android:orientation="horizontal"/>-->
-
-          <!--<LinearLayout-->
-              <!--android:layout_width="0dp"-->
-              <!--android:layout_weight="1"-->
-              <!--android:layout_height="match_parent"-->
-              <!--android:orientation="vertical" ></LinearLayout>-->
-
-          <!--<LinearLayout-->
-              <!--android:layout_width="0dp"-->
-              <!--android:layout_weight="0.5"-->
-              <!--android:layout_height="match_parent"-->
-              <!--android:id="@+id/click_right"-->
-              <!--android:orientation="horizontal" />-->
+    </LinearLayout>
 
 
-      <!--</LinearLayout>-->
-
-
-</FrameLayout>
+</RelativeLayout>
