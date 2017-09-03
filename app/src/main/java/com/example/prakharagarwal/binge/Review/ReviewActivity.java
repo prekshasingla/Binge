@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
@@ -68,7 +69,7 @@ public class ReviewActivity extends FragmentActivity {
         }
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        Button buttonWriteReview=(Button)findViewById(R.id.button_write_review);
+        TextView buttonWriteReview=(TextView) findViewById(R.id.button_write_review);
         buttonWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

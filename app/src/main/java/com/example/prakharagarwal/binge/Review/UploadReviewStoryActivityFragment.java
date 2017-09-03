@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -71,6 +75,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
         Intent intent=getActivity().getIntent();
         final String video=intent.getStringExtra("video");
+        final Long epoch=intent.getLongExtra("epoch",0);
         final File videoFile=new File(video);
 
 
@@ -103,7 +108,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
 
 
-        Button uploadBtn=(Button)rootView.findViewById(R.id.btn_upload_review_upload);
+        TextView uploadBtn=(TextView)rootView.findViewById(R.id.btn_upload_review_upload);
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,25 +133,42 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("story_reviews");
+                                DatabaseReference myRef = database.getReference("story_reviews").child("cafe_hangout_faridabad").child("user123");
 
-                                myRef.push().setValue(new StoryReview(downloadUrl.toString(),"restaurant","user123"));
+                                myRef.setValue(new StoryReview(downloadUrl.toString(),epoch));
                                 progressDialog.dismiss();
+                                Toast.makeText(getActivity(),"Story uploaded successfully",Toast.LENGTH_SHORT).show();
+                                getActivity().onBackPressed();
 
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                Log.e("Failed","true"+exception);
+                                videoFile.delete();
+                                Toast.makeText(getActivity(),"Could not Upload. Please try again",Toast.LENGTH_SHORT).show();
                             }
                         });
 
 
             }
         });
+
+        TextView uploadCancel=(TextView)rootView.findViewById(R.id.btn_upload_review_cancel);
+        uploadCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                videoFile.delete();
+                getActivity().onBackPressed();
+
+
+
+            }
+        });
         return rootView;
     }
+
 
 
     private void signInAnonymously() {

@@ -8,8 +8,18 @@ public class Review {
 
     String review;
     float rating;
-    String restaurant;
     String userid;
+    long epoch;
+
+
+    public long getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(long epoch) {
+        this.epoch = epoch;
+    }
+
 
     public String getReview() {
         return review;
@@ -27,13 +37,6 @@ public class Review {
         this.rating = rating;
     }
 
-    public String getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(String restaurant) {
-        this.restaurant = restaurant;
-    }
 
     public String getUserid() {
         return userid;
@@ -48,11 +51,10 @@ public class Review {
     };
 
 
-    public Review(String review,float rating, String restaurant, String userid){
+    public Review(String review,float rating, long epoch){
         this.review=review;
         this.rating=rating;
-        this.restaurant=restaurant;
-        this.userid=userid;
+        this.epoch=epoch;
     }
 
 

@@ -8,8 +8,19 @@ public class StoryReview {
 
 
      String uri;
-     String restaurant;
      String userid;
+
+    public long getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(long epoch) {
+        this.epoch = epoch;
+    }
+
+    long epoch;
+
+
 
     public String getUri() {
         return uri;
@@ -17,14 +28,6 @@ public class StoryReview {
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public String getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(String restaurant) {
-        this.restaurant = restaurant;
     }
 
     public String getUserid() {
@@ -40,10 +43,9 @@ public class StoryReview {
     };
 
 
-    public StoryReview(String uri, String restaurant, String userid){
+    public StoryReview(String uri, long epoch){
         this.uri=uri;
-        this.restaurant=restaurant;
-        this.userid=userid;
+        this.epoch=epoch;
     }
 
 }

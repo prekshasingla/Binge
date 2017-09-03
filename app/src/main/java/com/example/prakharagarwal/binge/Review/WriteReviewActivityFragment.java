@@ -37,14 +37,13 @@ public class WriteReviewActivityFragment extends Fragment {
                 RatingBar ratingBarReview=(RatingBar)rootView.findViewById(R.id.rating_bar);
                 float rating=ratingBarReview.getRating();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("reviews");
-                //Map<String, Review> users = new HashMap<String, Review>();
-                //users.put(new Review(review,rating,"restaurant","user123"));
-                myRef.push().setValue(new Review(review,rating,"restaurant","user123"));
+                DatabaseReference myRef = database.getReference("reviews").child("cafe_hangout_faridabad").child("user123");
+
+                long epoch= System.currentTimeMillis();
+
+                myRef.setValue(new Review(review,rating,epoch));
 
                 getActivity().finish();
-
-
 
             }
         });

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white_opaque"
     android:orientation="vertical"
     android:paddingTop="10dp"
     tools:ignore="HardcodedText,ContentDescription,RtlHardcoded,UseCompoundDrawables">
@@ -40,7 +39,7 @@
                 android:text="Karan"
                 android:textSize="12sp"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/pitch_black"/>
+                android:textColor="@color/white_opaque"/>
 
             <View
                 android:layout_width="1dp"
@@ -53,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="4 Dec, 2015"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/pitch_black"/>
+                android:textColor="@color/white_opaque"/>
 
         </LinearLayout>
 
@@ -62,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/review_text_name_layout"
-            android:textColor="#141515"
+            android:textColor="@color/white_opaque"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:text="Title"/>
@@ -74,7 +73,7 @@
             android:layout_below="@+id/review_text_title"
             android:layout_marginTop="2dp"
             android:text="Dish Name"
-            android:textColor="@color/pitch_black"
+            android:textColor="@color/white_opaque"
             />
 
         <TextView
@@ -86,7 +85,7 @@
             android:maxLines="4"
             android:textSize="12sp"
             android:text="Best product till now, lower in price, good in results"
-            android:textColor="@color/pitch_black"/>
+            android:textColor="@color/white_opaque"/>
 
         <TextView
             android:id="@+id/see_more"
@@ -94,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="+ SHOW MORE"
-            android:textColor="@color/pitch_black"
+            android:textColor="@color/white_opaque"
             android:textSize="12sp"
             android:visibility="gone"/>
 

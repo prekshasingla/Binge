@@ -1,20 +1,31 @@
 package com.example.prakharagarwal.binge.Review;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.prakharagarwal.binge.R;
@@ -34,6 +45,9 @@ import java.util.List;
 public class ReviewActivityFragment extends Fragment {
 
     static final int REQUEST_VIDEO_CAPTURE = 1;
+    private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+
 
     TextView videoBtn;
     View rootView;
@@ -43,9 +57,13 @@ public class ReviewActivityFragment extends Fragment {
     Uri videoUri;
     String video = null;
 
+    WebView webView;
+
+
     VideoView videoView;
     ArrayList<String> Videos;
     int end = -1, curr = -1;
+    final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE=100;
 
 
     public ReviewActivityFragment() {
@@ -93,35 +111,41 @@ public class ReviewActivityFragment extends Fragment {
         curr = 0;
         end = Videos.size();
 
-        videoView = (VideoView) rootView.findViewById(R.id.videoview_reviews);
+
+        webView= (WebView)rootView.findViewById(R.id.webview_reviews);
 
         hideSystemUi();
 
-        videoView.setVerticalScrollBarEnabled(false);
-        videoView.setHorizontalScrollBarEnabled(false);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setAllowFileAccess(true);
+        webView.setWebChromeClient(new WebChromeClient());
+
+        webView.setWebViewClient(new WebViewClient());
+
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
 
 
-        videoView.setScrollContainer(false);
+        webView.setScrollContainer(false);
 
-        videoView.setOnTouchListener(new View.OnTouchListener() {
+        webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
 
-        String video = "https://firebasestorage.googleapis.com/v0/b/finalfingerlickingawesome.appspot.com/o/videos%2Friver4.mp4?alt=media&token=8f72b197-f211-405a-870d-09ec444149c9";
 
-//        videoView.setVideoURI(Uri.parse(video));
 
-        videoView.start();
-
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-            }
-        });
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 16) {
+            webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        }
+        else {
+            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        }
 
 
         videoBtn = (TextView) rootView.findViewById(R.id.btnSelectVideo);
@@ -130,55 +154,87 @@ public class ReviewActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
 
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        Toast.makeText(getActivity(), "Please grant storage permission in Settings/Apps/Binge/Permissions", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                    }
+                }else
+                {
+                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+                }
             }
         });
 
         return rootView;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+                } else {
+                    Toast.makeText(getActivity(), "Please Grant Storage Permission", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideSystemUi();
+    }
 
     public void getVideoReviews(DataSnapshot dataSnapshot) {
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
             for(DataSnapshot child2: child1.getChildren()) {
-                if (child2.getKey().equals("uri")) {
-                    Videos.add("" + child2.getValue());
+                for (DataSnapshot child3 : child2.getChildren()) {
+                    if (child3.getKey().equals("youtube_id")) {
+                        Videos.add("" + child3.getValue());
+                    }
                 }
+
             }
 
         }
-        videoView.setVideoURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/finalfingerlickingawesome.appspot.com/o/videos%2Friver4.mp4?alt=media&token=8f72b197-f211-405a-870d-09ec444149c9"));
-
+        if(Videos.size()!=0)
+            webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
     }
 
     public void getData(DataSnapshot dataSnapshot) {
-
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-            Review review = new Review();
-
             for (DataSnapshot child2 : child1.getChildren()) {
 
-                if (child2.getKey().equals("userid")) {
-                    // Log.e("Restaurant",""+child2.getValue());
-                    review.setUserid("" + child2.getValue());
-                }
-                if (child2.getKey().equals("review")) {
-                    // Log.e("Restaurant",""+child2.getValue());
-                    review.setReview("" + child2.getValue());
-                }
-                if (child2.getKey().equals("rating")) {
-                    // Log.e("Restaurant",""+child2.getValue());
-                    review.setRating(Float.parseFloat("" + child2.getValue()));
-                }
-                if (child2.getKey().equals("restaurant")) {
-                    // Log.e("Restaurant",""+child2.getValue());
-                    review.setRestaurant("" + child2.getValue());
-                }
+                    Review review = new Review();
+                    review.setUserid("" + child2.getKey());
+                    Log.e("userid",child2.getKey());
 
-            }
-            reviews.add(review);
+                    for (DataSnapshot child3 : child2.getChildren()) {
 
+                        if (child3.getKey().equals("review")) {
+                            review.setReview("" + child3.getValue());
+                        }
+                        if (child3.getKey().equals("rating")) {
+                            review.setRating(Float.parseFloat("" + child3.getValue()));
+                        }
+                    }
+                    reviews.add(review);
+                }
         }
 
         ((ReviewActivity) getActivity()).addAllReviews(reviews);
@@ -190,12 +246,12 @@ public class ReviewActivityFragment extends Fragment {
             videoUri = data.getData();
             videoFile = new File(getRealPathFromUri(videoUri));
             video = getRealPathFromUri(videoUri);
+            long epoch= System.currentTimeMillis();
 
             Intent intent = new Intent(getActivity(), UploadReviewStoryActivity.class);
+            intent.putExtra("epoch",epoch);
             intent.putExtra("video", video);
             getActivity().startActivity(intent);
-
-            Log.d("data video", "" + videoFile);
         }
     }
 
@@ -214,15 +270,72 @@ public class ReviewActivityFragment extends Fragment {
         }
     }
 
+    String getYoutubeURL(String videoID){
+
+        String url ="<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "  <body style=\"margin:0; padding:0\">\n" +
+                "    <div id=\"player\"></div>\n" +
+                "\n" +
+                "    <script>\n" +
+                "      var tag = document.createElement('script');\n" +
+                "\n" +
+                "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
+                "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
+                "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
+                "\n" +
+                "      var player;\n" +
+                "      function onYouTubeIframeAPIReady() {\n" +
+                "        player = new YT.Player('player', {\n" +
+                "          height: '640',\n" +
+                "          width: '360',\n" +
+                "          videoId: '"+videoID+"',\n" +
+                " playerVars: { \n" +
+                "         'autoplay': 1,\n" +
+                "          'autohide': 1,\n"+
+                "         'controls': 0, \n" +
+                "         'showinfo': 0,\n"+
+                "          'playlist': '"+videoID+"',\n" +
+                "         'loop': 1,\n"+
+                "         'rel' : 0\n" +
+                "  },"+
+                "          events: {\n" +
+                "            'onReady': onPlayerReady,\n" +
+                "            'onStateChange': onPlayerStateChange\n" +
+                "          }\n" +
+
+
+                "        });\n" +
+                "      }\n" +
+                "\n" +
+                "      function onPlayerReady(event) {\n" +
+                "        event.target.playVideo();\n" +
+                "      }\n" +
+                "\n" +
+                "      var done = false;\n" +
+                "      function onPlayerStateChange(event) {\n" +
+                "      }\n" +
+                "      function stopVideo() {\n" +
+                "        player.stopVideo();\n" +
+                "      }\n" +
+                "    </script>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        return url;
+    }
+
+
 
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+        webView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
 
 }
