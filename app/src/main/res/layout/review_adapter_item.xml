@@ -1,30 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    tools:ignore="HardcodedText,ContentDescription,RtlHardcoded,UseCompoundDrawables">
 
-    <RatingBar
-        android:id="@+id/review_text_rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:layout_alignParentTop="true"
-
-        />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:textColor="@color/white_opaque"
         android:layout_height="wrap_content"
-        android:id="@+id/review_text_userid"/>
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <RatingBar
+            android:id="@+id/review_text_rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:numStars="5"
+            android:progress="90"/>
 
-    <TextView
+        <LinearLayout
+            android:id="@+id/review_text_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_below="@id/review_text_rating_bar">
+
+
+            <TextView
+                android:id="@+id/review_text_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Karan"
+                android:textSize="12sp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/white_opaque"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black85"/>
+
+            <TextView
+                android:id="@+id/review_text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 Dec, 2015"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white_opaque"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/review_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/review_text_name_layout"
+            android:textColor="@color/white_opaque"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:text="Title"/>
+
+        <TextView
+            android:id="@+id/review_text_dish_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/review_text_title"
+            android:layout_marginTop="2dp"
+            android:text="Dish Name"
+            android:textColor="@color/white_opaque"
+            />
+
+        <TextView
+            android:id="@+id/review_text_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/review_text_dish_name"
+            android:layout_marginTop="10dp"
+            android:maxLines="4"
+            android:textSize="12sp"
+            android:text="Best product till now, lower in price, good in results"
+            android:textColor="@color/white_opaque"/>
+
+        <TextView
+            android:id="@+id/see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="+ SHOW MORE"
+            android:textColor="@color/white_opaque"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator"
         android:layout_width="match_parent"
-        android:textColor="@color/white_opaque"
-        android:layout_height="wrap_content"
-        android:id="@+id/review_text_review"/>
-
-
-
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/cardview_dark_background"/>
 
 </LinearLayout>

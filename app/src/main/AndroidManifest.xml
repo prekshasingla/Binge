@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Extra.DetailActivity"
+            android:name="com.example.prakharagarwal.binge.Extra.DetailActivity"
             android:label="@string/title_activity_detail"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainScreen.MainActivity" />

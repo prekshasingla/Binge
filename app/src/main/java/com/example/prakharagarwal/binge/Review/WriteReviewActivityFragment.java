@@ -1,6 +1,8 @@
 package com.example.prakharagarwal.binge.Review;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +30,13 @@ public class WriteReviewActivityFragment extends Fragment {
 
         final View rootView=(View)inflater.inflate(R.layout.fragment_write_review, container, false);
 
+        Intent intent=getActivity().getIntent();
+        final String restaurantName=intent.getStringExtra("restaurant");
+        final String userId=intent.getStringExtra("user");
+
+
+        TextView textViewRestaurant=(TextView) rootView.findViewById(R.id.title_write_review);
+        textViewRestaurant.setText(restaurantName);
         Button buttonSubmitReviewText=(Button)rootView.findViewById(R.id.button_submit_review);
         buttonSubmitReviewText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,14 +47,13 @@ public class WriteReviewActivityFragment extends Fragment {
                 RatingBar ratingBarReview=(RatingBar)rootView.findViewById(R.id.rating_bar);
                 float rating=ratingBarReview.getRating();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("reviews");
-                //Map<String, Review> users = new HashMap<String, Review>();
-                //users.put(new Review(review,rating,"restaurant","user123"));
-                myRef.push().setValue(new Review(review,rating,"restaurant","user123"));
+                DatabaseReference myRef = database.getReference("reviews").child(restaurantName).child(userId);
+
+                long epoch= System.currentTimeMillis();
+
+                myRef.setValue(new Review(review,rating,epoch));
 
                 getActivity().finish();
-
-
 
             }
         });
@@ -52,4 +61,6 @@ public class WriteReviewActivityFragment extends Fragment {
 
         return rootView;
     }
+
+
 }

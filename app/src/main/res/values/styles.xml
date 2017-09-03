@@ -9,11 +9,16 @@
         <item name="colorPrimary">@color/white_opaque</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
-
+        <!--<item name="android:statusBarColor">#FF000000</item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBarOverlay">false</item>
+    </style>
 
+    <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColorSecondary">@color/text_color</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

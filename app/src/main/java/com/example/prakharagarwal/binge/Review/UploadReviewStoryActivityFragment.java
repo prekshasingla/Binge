@@ -1,23 +1,33 @@
 package com.example.prakharagarwal.binge.Review;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+
+import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,6 +44,8 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
     private StorageReference storageRef;
 
+    ProgressDialog progressDialog;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public UploadReviewStoryActivityFragment() {
@@ -45,7 +57,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            // do your stuff
+
         } else {
             signInAnonymously();
         }
@@ -64,20 +76,56 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
         Intent intent=getActivity().getIntent();
         final String video=intent.getStringExtra("video");
+        final Long epoch=intent.getLongExtra("epoch",0);
+        final String restaurantName=intent.getStringExtra("restaurant");
+        final String userId=intent.getStringExtra("user");
         final File videoFile=new File(video);
 
-        final VideoView videoViewStory=(VideoView)rootView.findViewById(R.id.video_view_review_upload);
-        videoViewStory.setVideoPath(video);
 
-        Button uploadBtn=(Button)rootView.findViewById(R.id.btn_upload_review_upload);
+        final VideoView videoViewStory=(VideoView)rootView.findViewById(R.id.video_view_review_upload);
+        videoViewStory.setVideoURI(Uri.parse(video));
+        videoViewStory.start();
+
+        videoViewStory.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+//        videoViewStory.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+//            @Override
+//            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+//                    //progressBarLandScape.setVisibility(View.GONE);
+//                    return true;
+//                }
+//                else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
+//                    //progressBarLandScape.setVisibility(View.VISIBLE);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
+
+
+
+        TextView uploadBtn=(TextView)rootView.findViewById(R.id.btn_upload_review_upload);
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("Uploading...");
+                progressDialog.setTitle("Uploading Video");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+
                 Uri file = Uri.fromFile(videoFile);
-                StorageReference riversRef = storageRef.child("videos/river4.mp4");
+                StorageReference riversRef = storageRef.child("videos/river5.mp4");
 
                 riversRef.putFile(file)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -86,25 +134,44 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                                 // Get a URL to the uploaded content
                                 @SuppressWarnings("VisibleForTests")
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                Log.e("Success",""+downloadUrl);
+
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef = database.getReference("story_reviews").child(restaurantName).child(userId);
+
+                                myRef.setValue(new StoryReview(downloadUrl.toString(),epoch));
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(),"Story uploaded successfully",Toast.LENGTH_SHORT).show();
+                                getActivity().onBackPressed();
 
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-
-                                Log.e("Failed","true"+exception);
-                                // Handle unsuccessful uploads
-                                // ...
+                                videoFile.delete();
+                                Toast.makeText(getActivity(),"Could not Upload. Please try again",Toast.LENGTH_SHORT).show();
                             }
                         });
 
 
             }
         });
+
+        TextView uploadCancel=(TextView)rootView.findViewById(R.id.btn_upload_review_cancel);
+        uploadCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                videoFile.delete();
+                getActivity().onBackPressed();
+
+
+
+            }
+        });
         return rootView;
     }
+
 
 
     private void signInAnonymously() {
