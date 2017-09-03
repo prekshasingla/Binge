@@ -7,9 +7,18 @@ package com.example.prakharagarwal.binge.Review;
 public class Review {
 
     String review;
+    String title;
     float rating;
     String userid;
     long epoch;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 
     public long getEpoch() {
@@ -51,7 +60,8 @@ public class Review {
     };
 
 
-    public Review(String review,float rating, long epoch){
+    public Review(String title,String review,float rating, long epoch){
+        this.title=title;
         this.review=review;
         this.rating=rating;
         this.epoch=epoch;

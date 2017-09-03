@@ -92,7 +92,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         final  String url= "  <body style=\"margin:0; padding:0\">\n" +
                 "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"+
                 "  </body>";
-        final String url1=getYoutubeURL(video);
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setDomStorageEnabled(true);
@@ -113,7 +112,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             holder.webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        String videoUrl=getYoutubeURL(video);
         holder.webView.loadDataWithBaseURL("",url, "text/html", "UTF-8", "");
 
         final int currentVisible=linearLayoutManager.findLastCompletelyVisibleItemPosition();
@@ -154,6 +152,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             public void onClick(View v) {
 
                 Intent intent=new Intent(mContext,ReviewActivity.class);
+                intent.putExtra("restaurantID",id);
+                intent.putExtra("restaurantName",mRestaurants.get(position).name);
                 mContext.startActivity(intent);
 
 
@@ -275,63 +275,4 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     public void addAll(List<Restaurant> restaurants) {
         mRestaurants=restaurants;
     }
-
-
-    String getYoutubeURL(String videoID){
-
-        String url ="<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "  <body style=\"margin:0; padding:0\">\n" +
-                "    <div id=\"player\"></div>\n" +
-                "\n" +
-                "    <script>\n" +
-                "      var tag = document.createElement('script');\n" +
-                "\n" +
-                "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
-                "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
-                "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
-                "\n" +
-                "      var player;\n" +
-                "      function onYouTubeIframeAPIReady() {\n" +
-                "        player = new YT.Player('player', {\n" +
-                "          height: '170',\n" +
-                "          width: '360',\n" +
-                "          videoId: '"+videoID+"',\n" +
-                " playerVars: { \n" +
-                //"         'autoplay': 1,\n" +
-                "          'autohide': 1,\n"+
-                "         'controls': 0, \n" +
-                "         'showinfo': 0,\n"+
-                "          'playlist': '"+videoID+"',\n" +
-                "         'loop': 1,\n"+
-                "         'rel' : 0\n" +
-                "  },"+
-                "          events: {\n" +
-                "            'onReady': onPlayerReady,\n" +
-                "            'onStateChange': onPlayerStateChange\n" +
-                "          }\n" +
-
-
-                "        });\n" +
-                "      }\n" +
-                "\n" +
-                "      function onPlayerReady(event) {\n" +
-                "        event.target.playVideo();\n" +
-                "      }\n" +
-                "\n" +
-                "      var done = false;\n" +
-                "      function onPlayerStateChange(event) {\n" +
-                "      }\n" +
-                "      function stopVideo() {\n" +
-                "        player.stopVideo();\n" +
-                "      }\n" +
-                "    </script>\n" +
-                "  </body>\n" +
-                "</html>";
-
-        return url;
-    }
-
-
-
 }

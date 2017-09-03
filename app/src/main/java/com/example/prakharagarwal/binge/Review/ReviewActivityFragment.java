@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,11 +63,14 @@ public class ReviewActivityFragment extends Fragment {
 
     WebView webView;
 
+    String id;
+    String restaurantName;
+
 
     VideoView videoView;
     ArrayList<String> Videos;
     int end = -1, curr = -1;
-    final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE=100;
+    final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 100;
 
 
     public ReviewActivityFragment() {
@@ -78,6 +84,10 @@ public class ReviewActivityFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_review, container, false);
         reviews = new ArrayList<Review>();
+
+        Intent intent = getActivity().getIntent();
+        id = intent.getStringExtra("restaurantID");
+        restaurantName = intent.getStringExtra("restaurantName");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("reviews");
@@ -113,7 +123,7 @@ public class ReviewActivityFragment extends Fragment {
         end = Videos.size();
 
 
-        webView= (WebView)rootView.findViewById(R.id.webview_reviews);
+        webView = (WebView) rootView.findViewById(R.id.webview_reviews);
 
         hideSystemUi();
 
@@ -139,17 +149,15 @@ public class ReviewActivityFragment extends Fragment {
         });
 
 
-
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
             webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        }
-        else {
+        } else {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
 
-        LinearLayout linearLayoutLeft=(LinearLayout) rootView.findViewById(R.id.click_left_review);
+        LinearLayout linearLayoutLeft = (LinearLayout) rootView.findViewById(R.id.click_left_review);
         linearLayoutLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,14 +169,14 @@ public class ReviewActivityFragment extends Fragment {
             }
         });
 
-        LinearLayout linearLayoutCentre=(LinearLayout) rootView.findViewById(R.id.centre_review);
+        LinearLayout linearLayoutCentre = (LinearLayout) rootView.findViewById(R.id.centre_review);
         linearLayoutCentre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
 
-        LinearLayout linearLayoutRight=(LinearLayout) rootView.findViewById(R.id.click_left_review);
+        LinearLayout linearLayoutRight = (LinearLayout) rootView.findViewById(R.id.click_left_review);
         linearLayoutRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,30 +195,39 @@ public class ReviewActivityFragment extends Fragment {
         videoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences prefs = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+//            prefs.edit().clear();
+                String uID = prefs.getString("username", null);
+//                Log.e("Uid", uID);
+                if (uID == null) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                } else {
 
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
 
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        Toast.makeText(getActivity(), "Please grant storage permission in Settings/Apps/Binge/Permissions", Toast.LENGTH_SHORT).show();
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            Toast.makeText(getActivity(), "Please grant storage permission in Settings/Apps/Binge/Permissions", Toast.LENGTH_SHORT).show();
 
+                        } else {
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                        }
                     } else {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
                     }
-                }else
-                {
-                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
                 }
             }
         });
 
         return rootView;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -236,42 +253,51 @@ public class ReviewActivityFragment extends Fragment {
 
     public void getVideoReviews(DataSnapshot dataSnapshot) {
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-            for(DataSnapshot child2: child1.getChildren()) {
-                for (DataSnapshot child3 : child2.getChildren()) {
-                    if (child3.getKey().equals("youtube_id")) {
-                        Videos.add("" + child3.getValue());
+            if (child1.getKey().equals(id)) {
+                for (DataSnapshot child2 : child1.getChildren()) {
+                    for (DataSnapshot child3 : child2.getChildren()) {
+                        if (child3.getKey().equals("youtube_id")) {
+                            Videos.add("" + child3.getValue());
+                        }
                     }
                 }
 
             }
 
         }
-        if(Videos.size()!=0)
-            webView.loadDataWithBaseURL("",getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
+        if (Videos.size() != 0)
+            webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
     }
 
     public void getData(DataSnapshot dataSnapshot) {
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-            for (DataSnapshot child2 : child1.getChildren()) {
+            if (child1.getKey().equals(id)) {
+                for (DataSnapshot child2 : child1.getChildren()) {
+                    Review review = new Review();
+                    review.setUserid("" + child2.getKey());
+                    Log.e("userid", child2.getKey());
 
-                Review review = new Review();
-                review.setUserid("" + child2.getKey());
-                Log.e("userid",child2.getKey());
+                    for (DataSnapshot child3 : child2.getChildren()) {
 
-                for (DataSnapshot child3 : child2.getChildren()) {
-
-                    if (child3.getKey().equals("review")) {
-                        review.setReview("" + child3.getValue());
+                        if (child3.getKey().equals("review")) {
+                            review.setReview("" + child3.getValue());
+                        }
+                        if (child3.getKey().equals("rating")) {
+                            review.setRating(Float.parseFloat("" + child3.getValue()));
+                        }
+                        if (child3.getKey().equals("title")) {
+                            review.setTitle("" + child3.getValue());
+                        }
+                        if (child3.getKey().equals("epoch")) {
+                            review.setEpoch((long) child3.getValue());
+                        }
                     }
-                    if (child3.getKey().equals("rating")) {
-                        review.setRating(Float.parseFloat("" + child3.getValue()));
-                    }
+                    reviews.add(review);
                 }
-                reviews.add(review);
             }
         }
 
-        ((ReviewActivity) getActivity()).addAllReviews(reviews);
+        ((ReviewActivity) getActivity()).addAllReviews(reviews, id, restaurantName);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -280,13 +306,14 @@ public class ReviewActivityFragment extends Fragment {
             videoUri = data.getData();
             videoFile = new File(getRealPathFromUri(videoUri));
             video = getRealPathFromUri(videoUri);
-            long epoch= System.currentTimeMillis();
+            long epoch = System.currentTimeMillis();
 
             Intent intent = new Intent(getActivity(), UploadReviewStoryActivity.class);
-            intent.putExtra("epoch",epoch);
+            intent.putExtra("epoch", epoch);
             intent.putExtra("video", video);
-            intent.putExtra("restaurant","cafe_hangouts_faridabad");
-            intent.putExtra("user","user1");
+            intent.putExtra("restaurantID", id);
+            intent.putExtra("restaurantName", restaurantName);
+            intent.putExtra("user", "user1");
             getActivity().startActivity(intent);
         }
     }
@@ -306,9 +333,9 @@ public class ReviewActivityFragment extends Fragment {
         }
     }
 
-    String getYoutubeURL(String videoID){
+    String getYoutubeURL(String videoID) {
 
-        String url ="<!DOCTYPE html>\n" +
+        String url = "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "  <body style=\"margin:0; padding:0\">\n" +
                 "    <div id=\"player\"></div>\n" +
@@ -325,16 +352,16 @@ public class ReviewActivityFragment extends Fragment {
                 "        player = new YT.Player('player', {\n" +
                 "          height: '640',\n" +
                 "          width: '360',\n" +
-                "          videoId: '"+videoID+"',\n" +
+                "          videoId: '" + videoID + "',\n" +
                 " playerVars: { \n" +
                 "         'autoplay': 1,\n" +
-                "         'autohide': 1,\n"+
+                "         'autohide': 1,\n" +
                 "         'controls': 0, \n" +
-                "         'showinfo': 0,\n"+
-                "         'playlist': '"+videoID+"',\n" +
-                "         'loop': 1,\n"+
+                "         'showinfo': 0,\n" +
+                "         'playlist': '" + videoID + "',\n" +
+                "         'loop': 1,\n" +
                 "         'rel' : 0\n" +
-                "  },"+
+                "  }," +
                 "          events: {\n" +
                 "            'onReady': onPlayerReady,\n" +
                 "            'onStateChange': onPlayerStateChange\n" +
@@ -360,7 +387,6 @@ public class ReviewActivityFragment extends Fragment {
 
         return url;
     }
-
 
 
     @SuppressLint("InlinedApi")

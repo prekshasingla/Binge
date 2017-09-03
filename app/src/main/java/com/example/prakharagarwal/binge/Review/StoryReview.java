@@ -10,6 +10,9 @@ public class StoryReview {
      String uri;
      String userid;
 
+
+    String youtube_id;
+
     public long getEpoch() {
         return epoch;
     }
@@ -21,6 +24,13 @@ public class StoryReview {
     long epoch;
 
 
+    public String getYoutube_id() {
+        return youtube_id;
+    }
+
+    public void setYoutube_id(String youtube_id) {
+        this.youtube_id = youtube_id;
+    }
 
     public String getUri() {
         return uri;
@@ -43,9 +53,10 @@ public class StoryReview {
     };
 
 
-    public StoryReview(String uri, long epoch){
+    public StoryReview(String uri, long epoch, String youtube_id){
         this.uri=uri;
         this.epoch=epoch;
+        this.youtube_id=youtube_id;
     }
 
 }

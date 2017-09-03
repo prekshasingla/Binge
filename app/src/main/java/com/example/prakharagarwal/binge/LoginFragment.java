@@ -59,6 +59,8 @@ public class LoginFragment extends Fragment implements
     Button login;
     private boolean passwordVerified=false;
     private boolean emailVerified=false;
+    FirebaseDatabase mDatabase;
+
 
     public LoginFragment(){
 
@@ -91,6 +93,8 @@ public class LoginFragment extends Fragment implements
         });
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase=FirebaseDatabase.getInstance();
+
 
         mGoogleApiClient=((LoginActivity)getActivity()).getGAC();
         rootView.findViewById(R.id.google_sign_in_button).setOnClickListener(this);
@@ -159,13 +163,15 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
     if(emailVerified && passwordVerified) {
         Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
         SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
-        editor.putString("username", "Elena");
+
+        editor.putString("username", email);
         editor.apply();
         emailVerified=false;
         passwordVerified=false;
+        getActivity().onBackPressed();
 
     }else{
-        Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Invalid Credentials. Please Try Again", Toast.LENGTH_LONG).show();
         emailVerified=false;
         passwordVerified=false;
     }
@@ -203,10 +209,19 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("G_Logn", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            loginstatus.setText(user.getEmail());
+                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(""+user.getEmail());
+                            User user1 = new User();
+                            user1.setPassword("fb_login");
+                            ref1.setValue(user);
+                            SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
+
+                            editor.putString("username", user.getEmail());
+                            editor.apply();
+                            getActivity().onBackPressed();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("G_Logn", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(getActivity(), "Login Failed. Please Retry", Toast.LENGTH_SHORT).show();
 
                         }
 

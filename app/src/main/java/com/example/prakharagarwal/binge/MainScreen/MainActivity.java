@@ -2,16 +2,19 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     String latitude=null;
     String longitude=null;
 
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         // getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+//        sharedpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedpreferences.edit();
+//
+//        editor.putString("userid","123");
+//        editor.commit();
+
+//        SharedPreferences mySPrefs = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = mySPrefs.edit();
+//        editor.remove("userid");
+//        editor.apply();
+
+//        SharedPreferences prefs = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+//        prefs.edit().clear();
+//        String uID = prefs.getString("userid","Null");
+//        Log.e("Uid",uID);
 
 
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -111,7 +132,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
            // startActivity(new Intent(this, SettingsActivity.class));
-            Toast.makeText(this,"settings",Toast.LENGTH_LONG).show();
+            SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String uID = prefs.getString("username", null);
+            if(uID!=null)
+            {
+                SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
+                editor.remove("username").commit();
+            }
             return true;
         }
 

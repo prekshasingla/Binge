@@ -31,7 +31,8 @@ public class WriteReviewActivityFragment extends Fragment {
         final View rootView=(View)inflater.inflate(R.layout.fragment_write_review, container, false);
 
         Intent intent=getActivity().getIntent();
-        final String restaurantName=intent.getStringExtra("restaurant");
+        final String restaurantID=intent.getStringExtra("restaurantID");
+        final String restaurantName=intent.getStringExtra("restaurantName");
         final String userId=intent.getStringExtra("user");
 
 
@@ -44,14 +45,17 @@ public class WriteReviewActivityFragment extends Fragment {
 
                 EditText editTextReview=(EditText)rootView.findViewById(R.id.review_text);
                 String review= ""+editTextReview.getText();
+                EditText editTextTitle=(EditText)rootView.findViewById(R.id.review_title);
+                String title= ""+editTextTitle.getText();
+
                 RatingBar ratingBarReview=(RatingBar)rootView.findViewById(R.id.rating_bar);
                 float rating=ratingBarReview.getRating();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("reviews").child(restaurantName).child(userId);
+                DatabaseReference myRef = database.getReference("reviews").child(restaurantID).child(userId);
 
                 long epoch= System.currentTimeMillis();
 
-                myRef.setValue(new Review(review,rating,epoch));
+                myRef.setValue(new Review(title,review,rating,epoch));
 
                 getActivity().finish();
 

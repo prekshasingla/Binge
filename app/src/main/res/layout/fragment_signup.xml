@@ -82,67 +82,15 @@
         android:layout_marginRight="3dp"
         android:text="Create Account"/>
 
+
+
+
+
+
     <LinearLayout
-        android:id="@+id/fsu_or_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/signup_button"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:text="OR"
-            android:textAppearance="?android:textAppearanceMedium"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/thirdPartyBtn"
-        android:layout_width="fill_parent"
-        android:layout_height="35dp"
-        android:layout_below="@+id/fsu_or_layout"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginTop="10dp">
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/fb_sign_in_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"/>
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_sign_in_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/thirdPartyBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"

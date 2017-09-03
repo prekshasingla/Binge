@@ -28,6 +28,9 @@ public class ReviewActivity extends FragmentActivity {
     ReviewTextAdapter reviewTextAdapter;
     List<Review> reviews;
     SlidingUpPanelLayout slidingUpPanelLayout;
+    String id;
+    String restaurantName;
+
 
 
     @Override
@@ -74,7 +77,8 @@ public class ReviewActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(ReviewActivity.this,WriteReviewActivity.class);
-                intent.putExtra("restaurant","cafe_hangouts_faridabad");
+                intent.putExtra("restaurantID",id);
+                intent.putExtra("restaurantName",restaurantName);
                 intent.putExtra("user","user1");
                 startActivity(intent);
 
@@ -85,7 +89,9 @@ public class ReviewActivity extends FragmentActivity {
 
     }
 
-    public void addAllReviews(List<Review> reviews){
+    public void addAllReviews(List<Review> reviews, String id, String restaurantName){
+        this.id=id;
+        this.restaurantName=restaurantName;
         reviewTextAdapter.addAll(reviews);
         reviewTextAdapter.notifyDataSetChanged();
     }
