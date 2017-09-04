@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Binge</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="player_error">Error initializing YouTube player: %s</string>
@@ -35,4 +34,9 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <!--Facebook login-->
     <string name="facebook_app_id">1588416427876072</string>
     <string name="fb_login_protocol_scheme">fb1588416427876072</string>
+    <string name="encode_period">%2E</string>
+    <string name="encode_attherate">%40</string>
+    <string name="encode_dollar">%24</string>
+    <string name="encode_left_square_bracket">%5B</string>
+    <string name="encode_right_square_bracket">%5D</string>
 </resources>

@@ -148,7 +148,7 @@ public class LoginFragment extends Fragment implements
 public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
 
     for (DataSnapshot child : dataSnapshot.getChildren()) {
-        if (child.getKey().equals(email)) {
+        if (child.getKey().equals(encodeEmail(email))) {
             emailVerified=true;
             for(DataSnapshot child1 : child.getChildren()){
                 if(child1.getKey().equals("password")){
@@ -209,9 +209,9 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("G_Logn", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(""+user.getEmail());
+                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
                             User user1 = new User();
-                            user1.setPassword("fb_login");
+                            user1.setPassword("google_login");
                             ref1.setValue(user);
                             SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
 
@@ -241,7 +241,15 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                             // Sign in success, update UI with the signed-in user's information
                             Log.e("FB_Logn", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            loginstatus.setText(user.getDisplayName() + user.getEmail());
+                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
+                            User user1 = new User();
+                            user1.setPassword("fb_login");
+                            ref1.setValue(user);
+                            SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
+
+                            editor.putString("username", user.getEmail());
+                            editor.apply();
+                            getActivity().onBackPressed();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("FB_Logn", "signInWithCredential:failure", task.getException());
@@ -253,6 +261,20 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                 });
     }
 
+    public String encodeEmail(String email){
+        return email.replace(".",getString(R.string.encode_period))
+                .replace("@",getString(R.string.encode_attherate))
+                .replace("$",getString(R.string.encode_dollar))
+                .replace("[",getString(R.string.encode_left_square_bracket))
+                .replace("]",getString(R.string.encode_right_square_bracket));
+    }
+    public String decodeEmail(String email){
+        return email.replace(getString(R.string.encode_period),".")
+                .replace(getString(R.string.encode_attherate),"@")
+                .replace(getString(R.string.encode_dollar),"$")
+                .replace(getString(R.string.encode_left_square_bracket),"[")
+                .replace(getString(R.string.encode_right_square_bracket),"]");
+    }
 
     @Override
     public void onClick(View view) {

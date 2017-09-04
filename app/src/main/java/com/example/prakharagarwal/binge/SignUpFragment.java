@@ -117,7 +117,7 @@ public class SignUpFragment extends Fragment {
     public void checkExistingUser(DataSnapshot dataSnapshot,String email,String password){
         boolean flag=true;
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-            if (child.getKey().equals(email)) {
+            if (child.getKey().equals(encodeEmail(email))) {
                 flag=false;
                 break;
             }
@@ -135,7 +135,7 @@ public class SignUpFragment extends Fragment {
     private void updateUser(String email, String password) {
 
         if(email!=null && password!=null) {
-            DatabaseReference ref1 = mDatabase.getReference().child("users").child(email);
+            DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(email));
             User user = new User();
             user.setPassword(password);
             ref1.setValue(user);
@@ -150,7 +150,20 @@ public class SignUpFragment extends Fragment {
         }
     }
 
-
+public String encodeEmail(String email){
+    return email.replace(".",getString(R.string.encode_period))
+                .replace("@",getString(R.string.encode_attherate))
+                .replace("$",getString(R.string.encode_dollar))
+                .replace("[",getString(R.string.encode_left_square_bracket))
+                .replace("]",getString(R.string.encode_right_square_bracket));
+}
+    public String decodeEmail(String email){
+        return email.replace(getString(R.string.encode_period),".")
+                .replace(getString(R.string.encode_attherate),"@")
+                .replace(getString(R.string.encode_dollar),"$")
+                .replace(getString(R.string.encode_left_square_bracket),"[")
+                .replace(getString(R.string.encode_right_square_bracket),"]");
+    }
 
 
 
