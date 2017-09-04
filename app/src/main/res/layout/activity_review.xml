@@ -27,6 +27,7 @@
         layout="@layout/fragment_review" />
 
 
+
     <LinearLayout android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_weight="0.8"
@@ -79,14 +80,30 @@
             android:gravity="center"/>
 
 
-        <android.support.v7.widget.RecyclerView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_reviews"
+            android:id="@+id/review_text_fragment_relative_layout">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="10dp"
             android:id="@+id/review_text_fragment_recycler_view"
             android:paddingTop="48dp"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/review_text_empty"
+            android:visibility="visible"
+            android:textColor="@color/white_opaque"
+            android:gravity="center"
+            android:text="No Reviews Yet"
+            />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 

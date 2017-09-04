@@ -169,7 +169,8 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         linearLayoutright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (curr != end - 1 && mVideos.size()>0) {
+                if (curr !=end-1 && mVideos.size()>0) {
+
                     curr++;
                     webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr).getUrl()), "text/html", "UTF-8", "");
                     dishName.setText(mVideos.get(curr).getName());
@@ -317,6 +318,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
             pojo.setVeg(menu.getVeg());
             mVideos.add(pojo);
         }
+        end = mVideos.size();
     }
 
     public void playStories() {

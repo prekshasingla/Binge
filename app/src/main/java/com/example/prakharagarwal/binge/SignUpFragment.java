@@ -68,6 +68,8 @@ public class SignUpFragment extends Fragment {
                         .replace(R.id.login_activity_container,new LoginFragment()).commit();
             }
         });
+
+        ((LoginActivity) getActivity()).setActionBarTitle("Sign Up");
         user_email=(EditText) rootView.findViewById(R.id.user_email);
         user_password=(EditText) rootView.findViewById(R.id.user_password);
         signup=(Button)rootView.findViewById(R.id.signup_button);

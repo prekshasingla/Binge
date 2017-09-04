@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#5c000000">
 
 
 
@@ -10,6 +11,7 @@
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
+        android:background="#5c000000"
         android:focusableInTouchMode="false"
         android:id="@+id/webview_reviews"
         android:layout_alignParentTop="true"
@@ -48,6 +50,16 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/review_story_empty"
+        android:visibility="visible"
+        android:background="@color/black85"
+        android:textColor="@color/white_opaque"
+        android:gravity="center"
+        android:text="No Stories Yet"
+        />
 
     <TextView
         android:layout_width="match_parent"
@@ -61,4 +73,6 @@
         android:gravity="center"
         android:textColor="@color/white_opaque"
         />
+
+
 </FrameLayout>

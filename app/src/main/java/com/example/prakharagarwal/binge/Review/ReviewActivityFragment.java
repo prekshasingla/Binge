@@ -52,6 +52,7 @@ public class ReviewActivityFragment extends Fragment {
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
 
+    static TextView emptyView;
 
     TextView videoBtn;
     View rootView;
@@ -83,6 +84,9 @@ public class ReviewActivityFragment extends Fragment {
 
 
         rootView = inflater.inflate(R.layout.fragment_review, container, false);
+
+        emptyView = (TextView)rootView.findViewById(R.id.review_story_empty);
+
         reviews = new ArrayList<Review>();
 
         Intent intent = getActivity().getIntent();
@@ -265,8 +269,11 @@ public class ReviewActivityFragment extends Fragment {
             }
 
         }
-        if (Videos.size() != 0)
+        if (Videos.size() != 0) {
             webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
+            emptyView.setVisibility(View.INVISIBLE);
+            webView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void getData(DataSnapshot dataSnapshot) {

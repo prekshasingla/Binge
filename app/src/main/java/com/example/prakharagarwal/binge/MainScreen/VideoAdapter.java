@@ -90,7 +90,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
         final  String url= "  <body style=\"margin:0; padding:0\">\n" +
-                "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"+
+                "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1&playlist="+video+"&loop=1\" frameborder=\"0\" allowfullscreen></iframe>"+
                 "  </body>";
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);

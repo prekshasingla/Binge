@@ -22,6 +22,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class ReviewActivity extends FragmentActivity {
 
     RecyclerView mRecyclerView;
@@ -29,6 +32,7 @@ public class ReviewActivity extends FragmentActivity {
     List<Review> reviews;
     SlidingUpPanelLayout slidingUpPanelLayout;
     String id;
+    static TextView emptyView;
     String restaurantName;
 
 
@@ -38,6 +42,7 @@ public class ReviewActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         reviews=new ArrayList<Review>();
+        emptyView = (TextView)findViewById(R.id.review_text_empty);
 
 
         slidingUpPanelLayout=(SlidingUpPanelLayout)findViewById(R.id.reviews_sliding_up);
@@ -71,6 +76,7 @@ public class ReviewActivity extends FragmentActivity {
 
         }
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        checkIfEmpty();
 
         TextView buttonWriteReview=(TextView) findViewById(R.id.button_write_review);
         buttonWriteReview.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +96,24 @@ public class ReviewActivity extends FragmentActivity {
     }
 
     public void addAllReviews(List<Review> reviews, String id, String restaurantName){
+
         this.id=id;
         this.restaurantName=restaurantName;
         reviewTextAdapter.addAll(reviews);
         reviewTextAdapter.notifyDataSetChanged();
+        checkIfEmpty();
     }
+
+    void checkIfEmpty() {
+        if (emptyView != null && reviewTextAdapter != null) {
+            final boolean emptyViewVisible =
+                    reviewTextAdapter.getItemCount() == 0;
+            emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+            mRecyclerView.setVisibility(emptyViewVisible ? GONE : VISIBLE);
+        }
+    }
+
+
     public SlidingUpPanelLayout getSlidingUpPanelLayout(){
         return slidingUpPanelLayout;
     }

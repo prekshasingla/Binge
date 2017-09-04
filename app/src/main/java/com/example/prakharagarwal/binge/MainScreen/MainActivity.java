@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        //TextView textViewLocation = (TextView) findViewById(R.id.user_location);
+        TextView textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
                     Address add = addresses.get(0);
                     String country = add.getCountryName();
                     String city = (add.getAddressLine(2)).split(",")[0];
-//                    if (city != null && country != null)
-                    //    textViewLocation.setText(city + ", " + country);
-//                    else if (country != null)
-//                      //  textViewLocation.setText(country);
-//                    else if (city != null)
-//                        //textViewLocation.setText(city);
-//                    else
-//                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
+                    if (city != null && country != null)
+                        textViewLocation.setText(city + ", " + country);
+                    else if (country != null)
+                        textViewLocation.setText(country);
+                    else if (city != null)
+                        textViewLocation.setText(city);
+                    else
+                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
 
                 } else {
                     Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();

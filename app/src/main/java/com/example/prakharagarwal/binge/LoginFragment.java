@@ -69,6 +69,9 @@ public class LoginFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+        ((LoginActivity) getActivity()).setActionBarTitle("Login");
+
         user_email=(EditText) rootView.findViewById(R.id.user_email);
         user_password=(EditText) rootView.findViewById(R.id.user_password);
         login=(Button)rootView.findViewById(R.id.login_button);

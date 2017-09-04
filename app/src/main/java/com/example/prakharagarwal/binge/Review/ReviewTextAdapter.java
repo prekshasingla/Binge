@@ -63,6 +63,8 @@ public class ReviewTextAdapter extends RecyclerView.Adapter<ReviewTextAdapter.Re
         holder.textViewReview.setText(review);
         holder.ratingBar.setRating(rating);
         holder.textViewDate.setText(epoch);
+        //ReviewActivity.emptyView.setVisibility(View.INVISIBLE);
+
         holder.ratingBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
