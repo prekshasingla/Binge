@@ -2,7 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.prakharagarwal.binge.Extra.DetailActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menu_login_status"
         android:orderInCategory="100"
         android:title="Logout" />
+    <item
+        android:id="@+id/menu_username"
+        android:title="User"
+        >
+
+    </item>
 </menu>

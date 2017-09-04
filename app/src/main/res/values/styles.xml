@@ -4,7 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_account_circle_black_24dp</item>
+    </style>
     <style name="AppTheme.NoActionBar" parent="Base.Theme.AppCompat.Light">
         <item name="colorPrimary">@color/white_opaque</item>
         <item name="android:textColor">@color/text_color</item>
@@ -13,7 +15,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBarOverlay">false</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
+
 
     <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>

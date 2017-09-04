@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 
 import java.io.IOException;
@@ -34,9 +35,71 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mviewPager;
     String latitude=null;
     String longitude=null;
+    private Menu menu;
+
 
     SharedPreferences sharedpreferences;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String uID = prefs.getString("username", null);
+        MenuItem menuItemLogin = menu.findItem(R.id.menu_login_status);
+        MenuItem menuItemUser = menu.findItem(R.id.menu_username);
 
+        if(uID!=null)
+        {
+            menuItemUser.setTitle(uID);
+            menuItemLogin.setTitle("Logout");
+
+        }
+        else {
+            menuItemUser.setTitle("");
+            menuItemLogin.setTitle("Login");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_login_status) {
+            if(item.getTitle().equals("Logout")){
+            SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String uID = prefs.getString("username", null);
+            if(uID!=null)
+            {
+                SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
+                editor.remove("username").commit();
+            }
+            }else{
+                Intent intent=new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    private void updateMenuTitles() {
+        SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String uID = prefs.getString("username", null);
+        MenuItem menuItemLogin = menu.findItem(R.id.menu_login_status);
+        MenuItem menuItemUser = menu.findItem(R.id.menu_username);
+
+        if(uID!=null)
+        {
+            menuItemUser.setVisible(true);
+            menuItemUser.setTitle(uID);
+            menuItemLogin.setTitle("Logout");
+
+        }
+        else {
+            menuItemUser.setVisible(false);
+            menuItemLogin.setTitle("Login");
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+       // updateMenuTitles();
 
         // getSupportActionBar().setDisplayShowTitleEnabled(true);
 
@@ -120,30 +184,7 @@ public class MainActivity extends AppCompatActivity {
         String appLinkAction = appLinkIntent.getAction();
         Uri appLinkData = appLinkIntent.getData();
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-           // startActivity(new Intent(this, SettingsActivity.class));
-            SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
-            String uID = prefs.getString("username", null);
-            if(uID!=null)
-            {
-                SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
-                editor.remove("username").commit();
-            }
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     public boolean checkUserPermission()

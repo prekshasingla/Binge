@@ -189,10 +189,23 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                String email=account.getEmail();
+                DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(email));
+                User user1 = new User();
+                user1.setPassword("google_login");
+                ref1.setValue(user1);
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
+
+                editor.putString("username",email);
+                editor.apply();
+                getActivity().onBackPressed();
+                //firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
+                Log.w("G_Logn", "signInWithCredential:failure");
+                Toast.makeText(getActivity(), "Login Failed. Please Retry", Toast.LENGTH_SHORT).show();
+
             }
         }else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -215,7 +228,7 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                             DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
                             User user1 = new User();
                             user1.setPassword("google_login");
-                            ref1.setValue(user);
+                            ref1.setValue(user1);
                             SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
 
                             editor.putString("username", user.getEmail());
@@ -236,6 +249,7 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
         Log.d("FB_Logn", "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
