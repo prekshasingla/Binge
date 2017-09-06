@@ -79,7 +79,7 @@ public class WriteReviewActivityFragment extends Fragment {
 
                     float rating = ratingBarReview.getRating();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("reviews").child(restaurantID).child(userId);
+                    DatabaseReference myRef = database.getReference("reviews").child(restaurantID).child(encodeEmail(userId));
 
                     long epoch = System.currentTimeMillis();
 
@@ -93,6 +93,14 @@ public class WriteReviewActivityFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    public String encodeEmail(String email) {
+        return email.replace(".", getString(R.string.encode_period))
+                .replace("@", getString(R.string.encode_attherate))
+                .replace("$", getString(R.string.encode_dollar))
+                .replace("[", getString(R.string.encode_left_square_bracket))
+                .replace("]", getString(R.string.encode_right_square_bracket));
     }
 
 

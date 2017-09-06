@@ -67,6 +67,7 @@ public class ReviewActivityFragment extends Fragment {
     String id;
     String restaurantName;
 
+    String uID;
 
     VideoView videoView;
     ArrayList<String> Videos;
@@ -201,7 +202,7 @@ public class ReviewActivityFragment extends Fragment {
             public void onClick(View v) {
                 SharedPreferences prefs = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
 //            prefs.edit().clear();
-                String uID = prefs.getString("username", null);
+                uID = prefs.getString("username", null);
 //                Log.e("Uid", uID);
                 if (uID == null) {
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -322,7 +323,7 @@ public class ReviewActivityFragment extends Fragment {
             intent.putExtra("video", video);
             intent.putExtra("restaurantID", id);
             intent.putExtra("restaurantName", restaurantName);
-            intent.putExtra("user", "user1");
+            intent.putExtra("user", uID);
             getActivity().startActivity(intent);
         }
     }

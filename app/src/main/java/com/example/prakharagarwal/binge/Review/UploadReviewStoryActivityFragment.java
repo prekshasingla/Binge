@@ -126,7 +126,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                 progressDialog.setCancelable(false);
 
                 Uri file = Uri.fromFile(videoFile);
-                StorageReference riversRef = storageRef.child("videos/river5.mp4");
+                StorageReference riversRef = storageRef.child("videos/"+userId+restaurantID+".mp4");
 
                 riversRef.putFile(file)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -137,7 +137,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("story_reviews").child(restaurantID).child(userId);
+                                DatabaseReference myRef = database.getReference("story_reviews").child(restaurantID).child(encodeEmail(userId));
 
                                 myRef.setValue(new StoryReview(downloadUrl.toString(),epoch," "));
                                 progressDialog.dismiss();
@@ -174,6 +174,13 @@ public class UploadReviewStoryActivityFragment extends Fragment {
     }
 
 
+    public String encodeEmail(String email) {
+        return email.replace(".", getString(R.string.encode_period))
+                .replace("@", getString(R.string.encode_attherate))
+                .replace("$", getString(R.string.encode_dollar))
+                .replace("[", getString(R.string.encode_left_square_bracket))
+                .replace("]", getString(R.string.encode_right_square_bracket));
+    }
 
     private void signInAnonymously() {
         mAuth.signInAnonymously().addOnSuccessListener(getActivity(), new  OnSuccessListener<AuthResult>() {

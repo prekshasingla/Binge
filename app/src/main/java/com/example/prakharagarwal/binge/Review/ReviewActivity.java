@@ -1,8 +1,15 @@
 package com.example.prakharagarwal.binge.Review;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +17,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,18 +91,28 @@ public class ReviewActivity extends FragmentActivity {
         buttonWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ReviewActivity.this,WriteReviewActivity.class);
-                intent.putExtra("restaurantID",id);
-                intent.putExtra("restaurantName",restaurantName);
-                intent.putExtra("user","user1");
-                startActivity(intent);
+                SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+//            prefs.edit().clear();
+                String uID = prefs.getString("username", null);
+//                Log.e("Uid", uID);
+                if (uID == null) {
+                    Intent intent = new Intent(ReviewActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(ReviewActivity.this, WriteReviewActivity.class);
+                    intent.putExtra("restaurantID", id);
+                    intent.putExtra("restaurantName", restaurantName);
+                    intent.putExtra("user", uID);
+                    startActivity(intent);
 
+                }
             }
         });
 
 
 
     }
+
 
     public void addAllReviews(List<Review> reviews, String id, String restaurantName){
 
