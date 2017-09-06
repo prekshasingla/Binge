@@ -94,7 +94,6 @@ public class ReviewActivity extends FragmentActivity {
                 SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
 //            prefs.edit().clear();
                 String uID = prefs.getString("username", null);
-//                Log.e("Uid", uID);
                 if (uID == null) {
                     Intent intent = new Intent(ReviewActivity.this, LoginActivity.class);
                     startActivity(intent);

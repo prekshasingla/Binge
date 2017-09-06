@@ -14,14 +14,11 @@ public class CheckNetwork {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
         if (info == null) {
-            //Log.d(TAG,"no internet connection");
             return false;
         } else {
             if (info.isConnected()) {
-                //  Log.d(TAG," internet connection available...");
                 return true;
             } else {
-                //Log.d(TAG, " internet connection");
                 return true;
             }
         }

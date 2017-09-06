@@ -203,7 +203,6 @@ public class ReviewActivityFragment extends Fragment {
                 SharedPreferences prefs = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
 //            prefs.edit().clear();
                 uID = prefs.getString("username", null);
-//                Log.e("Uid", uID);
                 if (uID == null) {
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     getActivity().startActivity(intent);
@@ -285,7 +284,6 @@ public class ReviewActivityFragment extends Fragment {
                 for (DataSnapshot child2 : child1.getChildren()) {
                     Review review = new Review();
                     review.setUserid("" + child2.getKey());
-                    Log.e("userid", child2.getKey());
 
                     for (DataSnapshot child3 : child2.getChildren()) {
 

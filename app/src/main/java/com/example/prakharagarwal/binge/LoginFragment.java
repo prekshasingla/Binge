@@ -119,14 +119,12 @@ public class LoginFragment extends Fragment implements
 //        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 //            @Override
 //            public void onSuccess(LoginResult loginResult) {
-//                Log.d("FB_Logn", "facebook:onSuccess:" + loginResult);
 //                handleFacebookAccessToken(loginResult.getAccessToken());
 //            }
 //
 //            @Override
 //            public void onCancel() {
 //                Log.d("FB_Logn", "facebook:onCancel");
-//                // ...
 //            }
 //
 //            @Override
@@ -215,7 +213,6 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
-                Log.w("G_Logn", "signInWithCredential:failure");
                 Toast.makeText(getActivity(), "Login Failed. Please Retry", Toast.LENGTH_SHORT).show();
 
             }
@@ -226,7 +223,6 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
 
     }
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("G_Logn", "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -235,7 +231,6 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("G_Logn", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
                             User user1 = new User();
@@ -248,7 +243,6 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                             getActivity().onBackPressed();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("G_Logn", "signInWithCredential:failure", task.getException());
                             Toast.makeText(getActivity(), "Login Failed. Please Retry", Toast.LENGTH_SHORT).show();
 
                         }

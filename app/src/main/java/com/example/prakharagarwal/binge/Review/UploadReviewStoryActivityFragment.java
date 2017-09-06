@@ -218,7 +218,6 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                 .addOnFailureListener(getActivity(), new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Log.e(TAG, "signInAnonymously:FAILURE", exception);
                     }
                 });
     }

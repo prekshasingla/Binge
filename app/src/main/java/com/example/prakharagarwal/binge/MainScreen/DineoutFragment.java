@@ -71,14 +71,12 @@ public class DineoutFragment extends Fragment {
       }
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        //Log.e("position",""+linearLayoutManager.findLastCompletelyVisibleItemPosition());
         //update();
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //Log.d("Refresh", "running");
                 update();
                 swipeContainer.setRefreshing(false);
             }
@@ -104,7 +102,6 @@ public class DineoutFragment extends Fragment {
                         //restaurants.add(restaurant);
 
                         if (child2.getKey().equals("hname")){
-                            // Log.e("Restaurant",""+child2.getValue());
                             restaurant.setName(""+child2.getValue());
 
                         }
@@ -184,7 +181,6 @@ public class DineoutFragment extends Fragment {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-                    Log.e("error","error");
                 }
             });
 

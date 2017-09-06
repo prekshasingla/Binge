@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -103,7 +102,6 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                Log.e("error", "error");
             }
         });
 

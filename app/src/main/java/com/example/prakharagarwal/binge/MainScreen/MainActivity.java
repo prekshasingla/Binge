@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 //        SharedPreferences prefs = this.getSharedPreferences("User", Context.MODE_PRIVATE);
 //        prefs.edit().clear();
 //        String uID = prefs.getString("userid","Null");
-//        Log.e("Uid",uID);
 
 
         mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -151,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         mviewPager = (ViewPager) findViewById(R.id.viewpager);
 
         mviewPager.setAdapter(mviewPagerAdapter);
-        // Log.e("adapter","set");
 
 
         checkLocationPermission();
