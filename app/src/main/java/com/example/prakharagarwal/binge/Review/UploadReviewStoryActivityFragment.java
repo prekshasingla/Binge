@@ -1,13 +1,17 @@
 package com.example.prakharagarwal.binge.Review;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 
+import com.example.prakharagarwal.binge.MainScreen.MainActivity;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -141,8 +146,19 @@ public class UploadReviewStoryActivityFragment extends Fragment {
 
                                 myRef.setValue(new StoryReview(downloadUrl.toString(),epoch," "));
                                 progressDialog.dismiss();
-                                Toast.makeText(getActivity(),"Story uploaded successfully",Toast.LENGTH_SHORT).show();
-                                getActivity().onBackPressed();
+                                //Toast.makeText(getActivity(),"Story uploaded successfully",Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Upload Story")
+                                        .setMessage("Your  story has been successfully uploaded. It will get reflected shortly.")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                getActivity().onBackPressed();
+                                            }
+                                        })
+                                        .create()
+                                        .show();
+
 
                             }
                         })
