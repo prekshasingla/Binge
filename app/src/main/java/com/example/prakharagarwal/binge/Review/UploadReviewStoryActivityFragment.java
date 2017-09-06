@@ -166,7 +166,18 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
                                 videoFile.delete();
-                                Toast.makeText(getActivity(),"Could not Upload. Please try again",Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Upload Story")
+                                        .setMessage("Your  story could not be uploaded. Please try again.")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                getActivity().onBackPressed();
+                                            }
+                                        })
+                                        .create()
+                                        .show();
+                                //Toast.makeText(getActivity(),"Could not Upload. Please try again",Toast.LENGTH_SHORT).show();
                             }
                         });
 
