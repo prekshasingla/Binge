@@ -23,7 +23,7 @@
             android:hint="Enter Email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:maxLength="10"
+            android:maxLength="50"
             />
     </android.support.design.widget.TextInputLayout>
 
