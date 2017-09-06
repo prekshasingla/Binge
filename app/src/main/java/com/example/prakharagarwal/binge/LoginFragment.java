@@ -15,12 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -53,7 +47,6 @@ public class LoginFragment extends Fragment implements
     private static final int FB_SIGN_IN = 8001;
     TextView loginstatus;
     FirebaseAuth mAuth;
-    CallbackManager mCallbackManager;
     EditText user_email;
     EditText user_password;
     Button login;
@@ -227,7 +220,7 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
 
             }
         }else {
-            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+            //mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
 
@@ -264,38 +257,38 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                     }
                 });
     }
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("FB_Logn", "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.e("FB_Logn", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
-                            User user1 = new User();
-                            user1.setPassword("fb_login");
-                            ref1.setValue(user);
-                            SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
-
-                            editor.putString("username", user.getEmail());
-                            editor.apply();
-                            getActivity().onBackPressed();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.e("FB_Logn", "signInWithCredential:failure", task.getException());
-
-                        }
-
-                        // ...
-                    }
-                });
-    }
+//    private void handleFacebookAccessToken(AccessToken token) {
+//        Log.d("FB_Logn", "handleFacebookAccessToken:" + token);
+//
+//        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+//
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.e("FB_Logn", "signInWithCredential:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(user.getEmail()));
+//                            User user1 = new User();
+//                            user1.setPassword("fb_login");
+//                            ref1.setValue(user);
+//                            SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
+//
+//                            editor.putString("username", user.getEmail());
+//                            editor.apply();
+//                            getActivity().onBackPressed();
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.e("FB_Logn", "signInWithCredential:failure", task.getException());
+//
+//                        }
+//
+//                        // ...
+//                    }
+//                });
+//    }
 
     public String encodeEmail(String email){
         return email.replace(".",getString(R.string.encode_period))

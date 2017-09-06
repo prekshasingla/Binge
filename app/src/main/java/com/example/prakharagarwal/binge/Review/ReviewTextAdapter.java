@@ -59,7 +59,7 @@ public class ReviewTextAdapter extends RecyclerView.Adapter<ReviewTextAdapter.Re
         final String epoch=formattedDate;
 
         holder.textViewTitle.setText(title);
-        holder.textViewUserid.setText(userid);
+        holder.textViewUserid.setText(decodeEmail(userid));
         holder.textViewReview.setText(review);
         holder.ratingBar.setRating(rating);
         holder.textViewDate.setText(epoch);
@@ -104,6 +104,14 @@ public class ReviewTextAdapter extends RecyclerView.Adapter<ReviewTextAdapter.Re
 
     public void removeAll(){
         ReviewTextAdapter.this.reviews=null;
+    }
+
+    public String decodeEmail(String email){
+        return email.replace("%2E",".")
+                .replace("%40","@")
+                .replace("%24","$")
+                .replace("%5B","[")
+                .replace("%5D","]");
     }
 
 }
