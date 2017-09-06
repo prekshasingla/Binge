@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class DineoutFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
 
     TextView textViewEmpty;
+    private ProgressBar progress;
 
 
     @Override
@@ -49,6 +51,15 @@ public class DineoutFragment extends Fragment {
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
         textViewEmpty=(TextView)rootView.findViewById(R.id.main_activity_empty);
+        textViewEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                update();
+            }
+        });
+        progress=(ProgressBar)rootView.findViewById(R.id.main_activity_progress);
+        progress.setVisibility(View.VISIBLE);
+        progress.setIndeterminate(true);
 
 
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
@@ -147,6 +158,7 @@ public class DineoutFragment extends Fragment {
         }
         mFeedsAdapter.addAll(restaurants);
         mFeedsAdapter.notifyDataSetChanged();
+        progress.setVisibility(View.GONE);
     }
 
 
@@ -154,7 +166,9 @@ public class DineoutFragment extends Fragment {
 
         if(CheckNetwork.isInternetAvailable(getActivity())) {
 
-            textViewEmpty.setVisibility(View.INVISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+            progress.setIndeterminate(true);
             mRecyclerView.setVisibility(View.VISIBLE);
 
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -180,6 +194,7 @@ public class DineoutFragment extends Fragment {
         else{
 
             textViewEmpty.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.INVISIBLE);
 
             new AlertDialog.Builder(getActivity())

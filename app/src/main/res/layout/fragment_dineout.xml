@@ -26,11 +26,16 @@
             android:layout_height="match_parent"
             android:id="@+id/main_activity_empty"
             android:visibility="visible"
-            android:background="@color/black85"
-            android:textColor="@color/white_opaque"
             android:gravity="center"
-            android:text="No data available. Please try again later."
+            android:text="Cannot Load. Try Again?"
             />
+            <ProgressBar
+                android:id="@+id/main_activity_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
         </RelativeLayout>
 
 

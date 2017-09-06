@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:maxLines="1"
             />
 
@@ -83,7 +83,7 @@
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_error"
+        android:layout_below="@+id/login_error"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
@@ -129,6 +129,7 @@
         android:layout_below="@+id/fsu_or_layout"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
+        android:gravity="center"
         android:layout_marginTop="10dp">
 
         <!--<com.facebook.login.widget.LoginButton-->
@@ -141,8 +142,8 @@
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign_in_button"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
     <LinearLayout

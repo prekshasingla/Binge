@@ -62,6 +62,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
             holder.play.setVisibility(View.INVISIBLE);
         }
 
+        if (menus.get(position).getVeg() != null) {
+            if (menus.get(position).getVeg() == 0) {
+                holder.imageViewVeg.setImageResource(R.mipmap.veg);
+            } else {
+                holder.imageViewVeg.setImageResource(R.mipmap.nonveg);
+            }
+        }
         holder.textViewName.setText(name);
         holder.textViewPrice.setText(price);
         holder.textViewDescription.setText(description);
@@ -75,6 +82,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
                 }
             }
         });
+
 
 
     }
