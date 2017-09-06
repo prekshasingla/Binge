@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 
 public class StoriesActivity extends FragmentActivity implements MenuAdapter.Callback{
 
@@ -39,6 +43,13 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     ArrayList<String> Videos;
     String ID;
     List<Menu> menus;
+
+    RelativeLayout relativeLayoutData;
+
+    static TextView emptyView;
+    static TextView emptyViewMenu;
+
+
 
     WebView webView;
     ArrayList<MenuVideoPojo> mVideos;
@@ -55,6 +66,12 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         setContentView(R.layout.activity_stories);
         mVideos = new ArrayList<>();
         menus = new ArrayList<Menu>();
+
+        emptyView = (TextView)findViewById(R.id.menu_story_empty);
+        emptyViewMenu = (TextView)findViewById(R.id.stories_text_menu_empty);
+
+        relativeLayoutData=(RelativeLayout)findViewById(R.id.relative_layout_data);
+
         resName=(TextView) findViewById(R.id.restaurant_name_stories);
         desc=(TextView)findViewById(R.id.frag_stories_desc);
         dishName=(TextView)findViewById(R.id.frag_stories_dish);
@@ -282,6 +299,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
         }
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        checkIfEmpty();
 
 
     }
@@ -322,19 +340,31 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     }
 
     public void playStories() {
-        if (mVideos.size() > 0)
+        if (mVideos.size() > 0) {
+            emptyView.setVisibility(View.INVISIBLE);
+            relativeLayoutData.setVisibility(View.VISIBLE);
             webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(0).getUrl()), "text/html", "UTF-8", "");
-        dishName.setText(mVideos.get(0).getName());
-        desc.setText(mVideos.get(0).getDesc());
-        if(mVideos.get(0).getVeg()!=null)
-        {if(mVideos.get(0).getVeg()==0 ){
-            veg.setImageResource(R.mipmap.veg);
-        }else{
-            veg.setImageResource(R.mipmap.nonveg);
-        }}
+            dishName.setText(mVideos.get(0).getName());
+            desc.setText(mVideos.get(0).getDesc());
+            if (mVideos.get(0).getVeg() != null) {
+                if (mVideos.get(0).getVeg() == 0) {
+                    veg.setImageResource(R.mipmap.veg);
+                } else {
+                    veg.setImageResource(R.mipmap.nonveg);
+                }
+            }
+        }
 
 
+    }
 
+    void checkIfEmpty() {
+        if (emptyViewMenu != null && menuAdapter != null) {
+            final boolean emptyViewVisible =
+                    menuAdapter.getItemCount() == 0;
+            emptyViewMenu.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+            mRecyclerView.setVisibility(emptyViewVisible ? GONE : VISIBLE);
+        }
     }
 
     String getYoutubeURL(String videoID) {
@@ -395,6 +425,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     public void addAllMenus(List<Menu> menus) {
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
+        checkIfEmpty();
 
 
     }

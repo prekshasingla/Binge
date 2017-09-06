@@ -78,12 +78,25 @@
             />
     </android.support.design.widget.TextInputLayout>
 
+    <TextView
+        android:id="@+id/write_review_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/review_text_layout"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:text=""
+        android:textColor="#F44336"
+        android:textSize="16sp"/>
+
     <Button
         android:id="@+id/button_submit_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_below="@+id/review_text_layout"
+        android:layout_below="@+id/write_review_error"
         android:text="Submit" />
 </RelativeLayout>

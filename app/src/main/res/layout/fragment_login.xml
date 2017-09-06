@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     >
 
 
@@ -64,12 +65,25 @@
 
 
 
+    <TextView
+        android:id="@+id/login_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fsu_show_password"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:text=""
+        android:textColor="#F44336"
+        android:textSize="16sp"/>
+
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fsu_show_password"
+        android:layout_below="@id/login_error"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
@@ -117,19 +131,18 @@
         android:layout_marginRight="3dp"
         android:layout_marginTop="10dp">
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/fb_sign_in_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"/>
+        <!--<com.facebook.login.widget.LoginButton-->
+            <!--android:id="@+id/fb_sign_in_button"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_weight="1"/>-->
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign_in_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"/>
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -161,6 +174,8 @@
             android:textColor="#06a9f4"
             android:textSize="16sp"/>
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

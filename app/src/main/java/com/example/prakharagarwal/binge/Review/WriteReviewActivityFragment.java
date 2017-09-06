@@ -21,6 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class WriteReviewActivityFragment extends Fragment {
 
+
+    EditText editTextReview;
+    EditText editTextTitle;
+    RatingBar ratingBarReview;
     public WriteReviewActivityFragment() {
     }
 
@@ -35,6 +39,15 @@ public class WriteReviewActivityFragment extends Fragment {
         final String restaurantName=intent.getStringExtra("restaurantName");
         final String userId=intent.getStringExtra("user");
 
+        editTextReview=(EditText)rootView.findViewById(R.id.review_text);
+        editTextTitle = (EditText) rootView.findViewById(R.id.review_title);
+        ratingBarReview = (RatingBar) rootView.findViewById(R.id.rating_bar);
+
+
+
+
+        final TextView textViewError=(TextView) rootView.findViewById(R.id.write_review_error);
+
 
         TextView textViewRestaurant=(TextView) rootView.findViewById(R.id.title_write_review);
         textViewRestaurant.setText(restaurantName);
@@ -43,21 +56,37 @@ public class WriteReviewActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                EditText editTextReview=(EditText)rootView.findViewById(R.id.review_text);
-                String review= ""+editTextReview.getText();
-                EditText editTextTitle=(EditText)rootView.findViewById(R.id.review_title);
-                String title= ""+editTextTitle.getText();
+                if(editTextReview.getText().toString().equals("") && editTextTitle.getText().toString().equals("") && ratingBarReview.getRating()==0){
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Above fields cannot be blank");
+                }
+                else  if(editTextReview.getText().toString().equals("")){
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Description cannot be blank");
+                }
+                else  if(editTextTitle.getText().toString().equals("")){
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Title cannot be blank");
+                }
+                else  if(ratingBarReview.getRating()==0) {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Rating cannot be zero");
+                }
 
-                RatingBar ratingBarReview=(RatingBar)rootView.findViewById(R.id.rating_bar);
-                float rating=ratingBarReview.getRating();
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("reviews").child(restaurantID).child(userId);
+                else {
+                    String review = "" + editTextReview.getText();
+                    String title = "" + editTextTitle.getText();
 
-                long epoch= System.currentTimeMillis();
+                    float rating = ratingBarReview.getRating();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("reviews").child(restaurantID).child(userId);
 
-                myRef.setValue(new Review(title,review,rating,epoch));
+                    long epoch = System.currentTimeMillis();
 
-                getActivity().finish();
+                    myRef.setValue(new Review(title, review, rating, epoch));
+
+                    getActivity().finish();
+                }
 
             }
         });

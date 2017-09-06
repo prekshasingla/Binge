@@ -57,20 +57,23 @@ public class LoginFragment extends Fragment implements
     EditText user_email;
     EditText user_password;
     Button login;
+    TextView textViewError;
     private boolean passwordVerified=false;
     private boolean emailVerified=false;
     FirebaseDatabase mDatabase;
 
-
+    View rootView;
     public LoginFragment(){
 
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         ((LoginActivity) getActivity()).setActionBarTitle("Login");
+
+        textViewError=(TextView) rootView.findViewById(R.id.login_error);
 
         user_email=(EditText) rootView.findViewById(R.id.user_email);
         user_password=(EditText) rootView.findViewById(R.id.user_password);
@@ -80,6 +83,20 @@ public class LoginFragment extends Fragment implements
             public void onClick(View view) {
                 if(user_email.getText().toString().equals("") && user_password.getText().toString().equals(""))
                 {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Above fields cannot be blank");
+
+                }
+                else  if(user_email.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Name cannot be blank");
+
+                }
+                else  if(user_password.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Password cannot be blank");
 
                 }else{
                     userLoginFirebase(user_email.getText().toString(),user_password.getText().toString());
@@ -103,28 +120,28 @@ public class LoginFragment extends Fragment implements
         rootView.findViewById(R.id.google_sign_in_button).setOnClickListener(this);
 
         // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) rootView.findViewById(R.id.fb_sign_in_button);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("FB_Logn", "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("FB_Logn", "facebook:onCancel");
-                // ...
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("FB_Logn", "facebook:onError", error);
-                // ...
-            }
-        });
+//        mCallbackManager = CallbackManager.Factory.create();
+//        LoginButton loginButton = (LoginButton) rootView.findViewById(R.id.fb_sign_in_button);
+//        loginButton.setReadPermissions("email", "public_profile");
+//        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Log.d("FB_Logn", "facebook:onSuccess:" + loginResult);
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                Log.d("FB_Logn", "facebook:onCancel");
+//                // ...
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                Log.d("FB_Logn", "facebook:onError", error);
+//                // ...
+//            }
+//        });
 
         return rootView;
     }
@@ -190,8 +207,10 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 String email=account.getEmail();
+                String name=account.getDisplayName();
                 DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(email));
                 User user1 = new User();
+                user1.setName(name);
                 user1.setPassword("google_login");
                 ref1.setValue(user1);
                 SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();

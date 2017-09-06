@@ -52,7 +52,9 @@ public class SignUpFragment extends Fragment {
     TextView loginstatus;
     FirebaseAuth mAuth;
     CallbackManager mCallbackManager;
+    TextView textViewError;
     EditText user_email;
+    EditText user_name;
     EditText user_password;
     Button signup;
     FirebaseDatabase mDatabase;
@@ -60,7 +62,7 @@ public class SignUpFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView= inflater.inflate(R.layout.fragment_signup,container,false);
+        final View rootView= inflater.inflate(R.layout.fragment_signup,container,false);
         rootView.findViewById(R.id.login_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,17 +72,40 @@ public class SignUpFragment extends Fragment {
         });
 
         ((LoginActivity) getActivity()).setActionBarTitle("Sign Up");
+
+        textViewError=(TextView) rootView.findViewById(R.id.signup_error);
+        user_name=(EditText) rootView.findViewById(R.id.user_name);
         user_email=(EditText) rootView.findViewById(R.id.user_email);
         user_password=(EditText) rootView.findViewById(R.id.user_password);
         signup=(Button)rootView.findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user_email.getText().toString().equals("") && user_password.getText().toString().equals(""))
+                if(user_name.getText().toString().equals("") && user_email.getText().toString().equals("") && user_password.getText().toString().equals(""))
                 {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Above fields cannot be blank");
 
-                }else{
-                    userSignUpFirebase(user_email.getText().toString(),user_password.getText().toString());
+                }
+                else if(user_name.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Name cannot be blank");
+
+                }else if(user_email.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Email cannot be blank");
+
+                }
+                else if(user_password.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Password cannot be blank");
+                }
+                else
+                {
+                    userSignUpFirebase(user_name.getText().toString(),user_email.getText().toString(),user_password.getText().toString());
                 }
             }
         });
@@ -96,7 +121,7 @@ public class SignUpFragment extends Fragment {
     public FirebaseDatabase getDatabase(){
         return mDatabase;
     }
-    private void userSignUpFirebase(final String email, final String password) {
+    private void userSignUpFirebase(final String name,final String email, final String password) {
 
 
         DatabaseReference ref = mDatabase.getReference().child("users");
@@ -104,7 +129,7 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                checkExistingUser(dataSnapshot,email,password);
+                checkExistingUser(dataSnapshot,name,email,password);
             }
 
             @Override
@@ -116,7 +141,7 @@ public class SignUpFragment extends Fragment {
 
     }
 
-    public void checkExistingUser(DataSnapshot dataSnapshot,String email,String password){
+    public void checkExistingUser(DataSnapshot dataSnapshot,String name,String email,String password){
         boolean flag=true;
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             if (child.getKey().equals(encodeEmail(email))) {
@@ -127,18 +152,19 @@ public class SignUpFragment extends Fragment {
 
         }
         if(flag)
-            updateUser(email,password);
+            updateUser(name,email,password);
         else{
-            updateUser(null,null);
+            updateUser(null,null,null);
         }
 
     }
 
-    private void updateUser(String email, String password) {
+    private void updateUser(String name,String email, String password) {
 
-        if(email!=null && password!=null) {
+        if(name!=null && email!=null && password!=null) {
             DatabaseReference ref1 = mDatabase.getReference().child("users").child(encodeEmail(email));
             User user = new User();
+            user.setName(name);
             user.setPassword(password);
             ref1.setValue(user);
             SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();

@@ -6,9 +6,11 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.prakharagarwal.binge.MainScreen.MainActivity">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/main_activity_relative_layout">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -66,4 +68,7 @@
 
 
     </RelativeLayout>
+
+
+
 </android.support.design.widget.CoordinatorLayout>

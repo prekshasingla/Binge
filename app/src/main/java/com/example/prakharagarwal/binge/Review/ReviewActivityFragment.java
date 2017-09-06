@@ -261,10 +261,12 @@ public class ReviewActivityFragment extends Fragment {
                 for (DataSnapshot child2 : child1.getChildren()) {
                     for (DataSnapshot child3 : child2.getChildren()) {
                         if (child3.getKey().equals("youtube_id")) {
-                            Videos.add("" + child3.getValue());
+                            if(child3.getValue()!=" ")
+                             Videos.add("" + child3.getValue());
                         }
                     }
                 }
+                end = Videos.size();
 
             }
 

@@ -1,15 +1,21 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.prakharagarwal.binge.CheckNetwork;
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +31,10 @@ public class DineoutFragment extends Fragment {
     RecyclerView mRecyclerView;
     VideoAdapter mFeedsAdapter;
     List<Restaurant> restaurants;
+    private SwipeRefreshLayout swipeContainer;
+
+    TextView textViewEmpty;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +48,9 @@ public class DineoutFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dineout, container, false);
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
 
+        textViewEmpty=(TextView)rootView.findViewById(R.id.main_activity_empty);
+
+
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
         mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants,linearLayoutManager);
       try{
@@ -48,22 +61,21 @@ public class DineoutFragment extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         //Log.e("position",""+linearLayoutManager.findLastCompletelyVisibleItemPosition());
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
+        //update();
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-            getData(dataSnapshot);
-
-           }
-
+        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-                Log.e("error","error");
+            public void onRefresh() {
+                //Log.d("Refresh", "running");
+                update();
+                swipeContainer.setRefreshing(false);
             }
         });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         return rootView;
     }
@@ -137,7 +149,65 @@ public class DineoutFragment extends Fragment {
         mFeedsAdapter.notifyDataSetChanged();
     }
 
-//    public interface OnGetDataListener {
+
+    void update(){
+
+        if(CheckNetwork.isInternetAvailable(getActivity())) {
+
+            textViewEmpty.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference();
+
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getData(dataSnapshot);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                    Log.e("error","error");
+                }
+            });
+
+
+
+        }
+        else{
+
+            textViewEmpty.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("No Internet Connection")
+                    .setMessage("No Internet connection is available, Please check or try again.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            dialogInterface.dismiss();
+                            dialogInterface.cancel();
+                            //Prompt the user once explanation has been shown
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        update();
+    }
+
+    //    public interface OnGetDataListener {
 //        //make new interface for call back
 //        void onSuccess(DataSnapshot dataSnapshot);
 //        void onStart();
