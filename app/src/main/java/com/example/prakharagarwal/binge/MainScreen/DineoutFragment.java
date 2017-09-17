@@ -62,6 +62,7 @@ public class DineoutFragment extends Fragment {
         progress.setIndeterminate(true);
 
 
+
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
         mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants,linearLayoutManager);
       try{
@@ -148,6 +149,12 @@ public class DineoutFragment extends Fragment {
                         }
                         if (child2.getKey().equals("hid")){
                             restaurant.setId(""+child2.getValue());
+                        }
+                        if (child2.getKey().equals("h_cost_for_two")){
+                            restaurant.setCostForTwo(Integer.parseInt(""+child2.getValue()));
+                        }
+                        if (child2.getKey().equals("h_phone")){
+                            restaurant.setPhone(""+child2.getValue());
                         }
                     }
                     restaurants.add(restaurant);

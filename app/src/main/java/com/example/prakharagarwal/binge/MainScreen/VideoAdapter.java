@@ -2,11 +2,13 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,9 @@ import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.Review.ReviewActivity;
 import com.example.prakharagarwal.binge.StoriesMenu.StoriesActivity;
 
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +38,7 @@ import java.util.Locale;
  * Created by prekshasingla on 02/07/17.
  */
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
-    private  List<Restaurant> mRestaurants;
+    private List<Restaurant> mRestaurants;
     final private Context mContext;
     VideoAdapterViewHolder holder;
     LinearLayout container;
@@ -54,15 +59,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
 
     private void bindActivity() {
-       }
+    }
 
 
     public VideoAdapter(Context context, RecyclerView recyclerView, FragmentManager fragmentManager, List<Restaurant> restaurants, LinearLayoutManager linearLayoutManager) {
         mContext = context;
-        mRestaurants=restaurants;
+        mRestaurants = restaurants;
         this.recyclerView = recyclerView;
         this.fragmentManager = fragmentManager;
-        this.linearLayoutManager=linearLayoutManager;
+        this.linearLayoutManager = linearLayoutManager;
     }
 
 
@@ -70,7 +75,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     public VideoAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feeds_adapter_card_item, parent, false);
-        container=(LinearLayout)view.findViewById(R.id.container);
+        container = (LinearLayout) view.findViewById(R.id.container);
         holder = new VideoAdapterViewHolder(view);
 
         return holder;
@@ -83,14 +88,25 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         final String video = mRestaurants.get(position).video;
         final String name = mRestaurants.get(position).name;
-        final String id=mRestaurants.get(position).id;
-        final String typeOfRestaurant=mRestaurants.get(position).typeOfRestaurant;
+        final String id = mRestaurants.get(position).id;
+        final String typeOfRestaurant = mRestaurants.get(position).typeOfRestaurant;
 
+        compareStringOne = mRestaurants.get(position).openingTime;
+        compareStringTwo = mRestaurants.get(position).closingTime;
+
+
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/segoeui.ttf");
+//        resName.setTypeface(typeface);
+
+        if (mRestaurants.get(position).costForTwo != -1)
+            holder.textViewCostForTwo.setText("Cost for two: " + mRestaurants.get(position).getCostForTwo());
         holder.textViewName.setText(name);
-        holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
+        holder.textViewName.setTypeface(typeface);
+//        holder.textViewTypeOfRestaurant.setText(typeOfRestaurant);
         holder.textViewTypeOfCuisine.setText(mRestaurants.get(position).cuisineType);
-        final  String url= "  <body style=\"margin:0; padding:0\">\n" +
-                "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/"+video+"?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1&playlist="+video+"&loop=1\" frameborder=\"0\" allowfullscreen></iframe>"+
+        holder.address.setText(mRestaurants.get(position).address);
+        final String url = "  <body style=\"margin:0; padding:0\">\n" +
+                "<iframe name=\"video\" width=\"100%\" height=\"100%\" src=\"https://www.youtube-nocookie.com/embed/" + video + "?rel=0?ecver=1&modestbranding=1&showinfo=0&autohide=1&controls=0&autoplay=1&playlist=" + video + "&loop=1\" frameborder=\"0\" allowfullscreen></iframe>" +
                 "  </body>";
         holder.webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         holder.webView.getSettings().setJavaScriptEnabled(true);
@@ -107,14 +123,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
             holder.webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        }
-        else {
+        } else {
             holder.webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         }
 
-        holder.webView.loadDataWithBaseURL("",url, "text/html", "UTF-8", "");
+        holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
 
-        final int currentVisible=linearLayoutManager.findLastCompletelyVisibleItemPosition();
+        final int currentVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -122,9 +137,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-
             }
         });
+
+        compareDates();
+
 
 //        if(currentVisible==position){
 //            holder.webView.loadDataWithBaseURL("", url1, "text/html", "UTF-8", "");
@@ -147,13 +164,37 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 //
 //        }
 
+
+        holder.textViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Indulge in the experience of delicacies that allure you in at Restaurant- "+mRestaurants.get(position).getName()+" on Binge. http://play.google.com/store/apps/details?id=com.prakharagarwal.prakharagarwal.binge ";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Binge");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
+
+        holder.textViewCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = mRestaurants.get(position).getPhone();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" +number));
+                mContext.startActivity(intent);
+            }
+        });
+
+
         holder.buttonReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(mContext,ReviewActivity.class);
-                intent.putExtra("restaurantID",id);
-                intent.putExtra("restaurantName",mRestaurants.get(position).name);
+                Intent intent = new Intent(mContext, ReviewActivity.class);
+                intent.putExtra("restaurantID", id);
+                intent.putExtra("restaurantName", mRestaurants.get(position).name);
                 mContext.startActivity(intent);
 
 
@@ -163,9 +204,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(mContext,StoriesActivity.class);
-                intent.putExtra("restaurantID",id);
-                intent.putExtra("restaurantName",mRestaurants.get(position).name);
+                Intent intent = new Intent(mContext, StoriesActivity.class);
+                intent.putExtra("restaurantID", id);
+                intent.putExtra("restaurantName", mRestaurants.get(position).name);
                 mContext.startActivity(intent);
 
 
@@ -182,10 +223,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         });
 
 
-
     }
 
-    private void compareDates(){
+    private void compareDates() {
         Calendar now = Calendar.getInstance();
 
         int hour = now.get(Calendar.HOUR);
@@ -195,20 +235,31 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         dateCompareOne = parseDate(compareStringOne);
         dateCompareTwo = parseDate(compareStringTwo);
 
-        if ( dateCompareOne.before( date ) && dateCompareTwo.after(date)) {
+        if (dateCompareOne.compareTo(date)>-1 && dateCompareTwo.compareTo(date)<1) {
+
+
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#ff0018'><b>Closed</b></font> "+compareStringOne+"-"+compareStringTwo+"hrs"));
+
+        }
+        else{
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#099e44'><b>Open</b></font> "+compareStringOne+"-"+compareStringTwo+"hrs"));
 
         }
     }
 
     private Date parseDate(String date) {
 
+        Date startDate;
         try {
-            return inputParser.parse(date);
+
+            DateFormat df = new SimpleDateFormat("HH:mm");
+        startDate = df.parse(date);
+
+            return startDate;
         } catch (java.text.ParseException e) {
             return new Date(0);
         }
     }
-
 
 
     @Override
@@ -217,30 +268,37 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
 
-    public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public WebView webView;
         public TextView textViewName;
-        public TextView textViewTypeOfRestaurant;
+//        public TextView textViewTypeOfRestaurant;
         public TextView textViewTypeOfCuisine;
+        public TextView textViewTimings;
         public Button buttonReview;
         public Button buttonMenu;
-        public ImageView location;
-
-
+        public TextView textViewCostForTwo;
+        public TextView location;
+        public TextView textViewCall;
+        public TextView textViewShare;
+        TextView address;
 
 
         public VideoAdapterViewHolder(View view) {
             super(view);
 
             webView = (WebView) view.findViewById(R.id.item_webview);
-            textViewName=(TextView)view.findViewById(R.id.item_name);
-            textViewTypeOfRestaurant=(TextView)view.findViewById(R.id.item_type_of_restaurant);
-            textViewTypeOfCuisine=(TextView)view.findViewById(R.id.item_type_of_cuisine);
-            buttonReview=(Button)view.findViewById(R.id.button_review);
-            buttonMenu=(Button)view.findViewById(R.id.button_menu);
-            location=(ImageView)view.findViewById(R.id.feeds_adapter_item_location);
-
+            textViewName = (TextView) view.findViewById(R.id.item_name);
+//            textViewTypeOfRestaurant = (TextView) view.findViewById(R.id.item_type_of_restaurant);
+            textViewTypeOfCuisine = (TextView) view.findViewById(R.id.item_type_of_cuisine);
+            buttonReview = (Button) view.findViewById(R.id.button_review);
+            buttonMenu = (Button) view.findViewById(R.id.button_menu);
+            location = (TextView) view.findViewById(R.id.feeds_adapter_item_location);
+            textViewCostForTwo = (TextView) view.findViewById(R.id.item_cost_for_two);
+            address = (TextView) view.findViewById(R.id.feeds_item_address);
+            textViewTimings=(TextView) view.findViewById(R.id.feeds_item_timings);
+            textViewCall=(TextView)view.findViewById(R.id.call_button_textview);
+            textViewShare=(TextView)view.findViewById(R.id.share_button_textview);
             view.setOnClickListener(this);
 
         }
@@ -273,8 +331,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
     public void addAll(List<Restaurant> restaurants) {
-        mRestaurants=restaurants;
+        mRestaurants = restaurants;
     }
+
     public void removeAll() {
         mRestaurants.clear();
     }

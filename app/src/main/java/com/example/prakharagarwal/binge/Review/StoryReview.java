@@ -9,26 +9,26 @@ public class StoryReview {
 
      String uri;
      String userid;
-    long has_video;
+    Long has_video;
     String youtube_id;
 
-    long epoch;
+    Long epoch;
 
 
-    public long getEpoch() {
+    public Long getEpoch() {
         return epoch;
     }
 
-    public void setEpoch(long epoch) {
+    public void setEpoch(Long epoch) {
         this.epoch = epoch;
     }
 
 
-    public long getHas_video() {
+    public Long getHas_video() {
         return has_video;
     }
 
-    public void setHas_video(long has_video) {
+    public void setHas_video(Long has_video) {
         this.has_video = has_video;
     }
 

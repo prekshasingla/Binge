@@ -19,6 +19,27 @@ public class Restaurant {
     public int signatureEndTime;
     public int signatureStartTime;
     String id;
+    public int costForTwo;
+    String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Restaurant(){
+        costForTwo=-1;
+    }
+    public int getCostForTwo() {
+        return costForTwo;
+    }
+
+    public void setCostForTwo(int costForTwo) {
+        this.costForTwo = costForTwo;
+    }
 
     public String getId() {
         return id;
@@ -28,7 +49,6 @@ public class Restaurant {
         this.id = id;
     }
 
-    public Restaurant(){}
 
     public String getName() {
         return name;
@@ -132,27 +152,6 @@ public class Restaurant {
 
     public void setSignatureStartTime(int signatureStartTime) {
         this.signatureStartTime = signatureStartTime;
-    }
-
-
-    public Restaurant(String name, String video, String address, String lattitude,
-                      String longitude, String typeOfRestaurant, int ambienceEndTime,
-                      int ambienceStartTime, String closingTime, String openingTime,
-                      String cuisineType, int signatureEndTime, int signatureStartTime, String id ){
-        this.name=name;
-        this.video=video;
-        this.address=address;
-        this.lattitude=lattitude;
-        this.longitude=longitude;
-        this.typeOfRestaurant=typeOfRestaurant;
-        this.ambienceEndTime=ambienceEndTime;
-        this.ambienceStartTime=ambienceStartTime;
-        this.closingTime=closingTime;
-        this.openingTime=openingTime;
-        this.cuisineType=cuisineType;
-        this.signatureEndTime=signatureEndTime;
-        this.signatureStartTime=signatureStartTime;
-        this.id=id;
     }
 
 

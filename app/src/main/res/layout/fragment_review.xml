@@ -5,7 +5,9 @@
     android:background="#5c000000">
 
 
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,30 +27,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_marginTop="25sp"
+        android:layout_marginBottom="40sp"
         android:weightSum="2">
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent"
             android:id="@+id/click_left_review"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:src="@mipmap/ic_keyboard_arrow_left_white_24dp"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:id="@+id/center_review"
             android:layout_height="match_parent"
-            android:id="@+id/centre_review"
-            android:orientation="horizontal"></LinearLayout>
-
+            android:orientation="vertical" ></LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="match_parent"
+
             android:id="@+id/click_right_review"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_keyboard_arrow_right_white_24dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -73,6 +104,7 @@
         android:gravity="center"
         android:textColor="@color/white_opaque"
         />
+
 
 
 </FrameLayout>

@@ -2,6 +2,7 @@ package com.example.prakharagarwal.binge.StoriesMenu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,7 +76,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         desc=(TextView)findViewById(R.id.frag_stories_desc);
         dishName=(TextView)findViewById(R.id.frag_stories_dish);
         veg=(ImageView)findViewById(R.id.frag_stories_veg_image);
-//        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/segoeui.ttf");
+//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
 //        resName.setTypeface(typeface);
 
         ID = getIntent().getStringExtra("restaurantID");

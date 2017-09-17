@@ -174,14 +174,14 @@ public class ReviewActivityFragment extends Fragment {
             }
         });
 
-        LinearLayout linearLayoutCentre = (LinearLayout) rootView.findViewById(R.id.centre_review);
+        LinearLayout linearLayoutCentre = (LinearLayout) rootView.findViewById(R.id.center_review);
         linearLayoutCentre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
 
-        LinearLayout linearLayoutRight = (LinearLayout) rootView.findViewById(R.id.click_left_review);
+        LinearLayout linearLayoutRight = (LinearLayout) rootView.findViewById(R.id.click_right_review);
         linearLayoutRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,24 +256,47 @@ public class ReviewActivityFragment extends Fragment {
     }
 
     public void getVideoReviews(DataSnapshot dataSnapshot) {
+        ArrayList<StoryReview> storyReviews=new ArrayList<StoryReview>();
+        int size=0;
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
             if (child1.getKey().equals(id)) {
                 for (DataSnapshot child2 : child1.getChildren()) {
+                    StoryReview storyReview=new StoryReview();
+                    storyReview.setUserid(child2.getKey());
                     for (DataSnapshot child3 : child2.getChildren()) {
                         if (child3.getKey().equals("has_video")) {
-                            if (child3.getValue() == "1") {
-                                if (child3.getKey().equals("youtube_id")) {
-                                    Videos.add("" + child3.getValue());
-                                }
-                            }
+                            storyReview.setHas_video(Long.parseLong(""+child3.getValue()));
                         }
+                        if (child3.getKey().equals("uri")) {
+                            storyReview.setUri(""+child3.getValue());
+                        }
+                        if (child3.getKey().equals("youtube_id")) {
+                            storyReview.setYoutube_id(""+child3.getValue());
+                        }
+                        if (child3.getKey().equals("epoch")) {
+                            storyReview.setEpoch(Long.parseLong(""+child3.getValue()));
+                        }
+
+
                     }
-                    end = Videos.size();
+                    storyReviews.add(storyReview);
+
+
+//                    end = Videos.size();
 
                 }
 
+
             }
         }
+
+        size=storyReviews.size();
+        for(int i=0;i<size;i++){
+            if(storyReviews.get(i).getHas_video()==1)
+                Videos.add(storyReviews.get(i).getYoutube_id());
+        }
+
+        end=Videos.size();
         if (Videos.size() != 0) {
             webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");
             emptyView.setVisibility(View.INVISIBLE);
