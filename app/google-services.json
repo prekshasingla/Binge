@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "27751612303",
-    "firebase_url": "https://binge-fd17c.firebaseio.com",
-    "project_id": "binge-fd17c",
-    "storage_bucket": "binge-fd17c.appspot.com"
+    "project_number": "336605042946",
+    "firebase_url": "https://bingeandroidapp.firebaseio.com",
+    "project_id": "bingeandroidapp",
+    "storage_bucket": "bingeandroidapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:27751612303:android:83cb832dfcd586d0",
+        "mobilesdk_app_id": "1:336605042946:android:dd96f2c369957462",
         "android_client_info": {
-          "package_name": "com.example.prakharagarwal.binge"
+          "package_name": "com.prakharagarwal.prakharagarwal.binge"
         }
       },
       "oauth_client": [
         {
-          "client_id": "27751612303-388igfc4a8he50a3febgchd98kp950te.apps.googleusercontent.com",
+          "client_id": "336605042946-mnta61pi4irk79plb84k3f2d4nv7ie18.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
-            "certificate_hash": "c6c0863b9d96e02ced8b98407c78f14c0e859014"
+            "package_name": "com.prakharagarwal.prakharagarwal.binge",
+            "certificate_hash": "04e32bfb918bb4b9e8bc30e8a2c00dd214699b97"
           }
         },
         {
-          "client_id": "27751612303-aj6ivjthva9a9asqrehn4tgf1tb7mefs.apps.googleusercontent.com",
+          "client_id": "336605042946-308gd8bvcp0vk6pvmem331f973ce9ocr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDSccegNVuuDpvGxYmHsWGMX2sH-p5B-q4"
+          "current_key": "AIzaSyBofUWsBN0y87Ykb2SVO3E2qshUWgc0Lco"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "27751612303-aj6ivjthva9a9asqrehn4tgf1tb7mefs.apps.googleusercontent.com",
+              "client_id": "336605042946-308gd8bvcp0vk6pvmem331f973ce9ocr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
