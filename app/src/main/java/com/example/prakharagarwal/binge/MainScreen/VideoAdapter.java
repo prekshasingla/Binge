@@ -275,4 +275,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     public void addAll(List<Restaurant> restaurants) {
         mRestaurants=restaurants;
     }
+    public void removeAll() {
+        mRestaurants.clear();
+    }
 }

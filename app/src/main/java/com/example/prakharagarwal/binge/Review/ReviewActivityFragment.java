@@ -260,16 +260,19 @@ public class ReviewActivityFragment extends Fragment {
             if (child1.getKey().equals(id)) {
                 for (DataSnapshot child2 : child1.getChildren()) {
                     for (DataSnapshot child3 : child2.getChildren()) {
-                        if (child3.getKey().equals("youtube_id")) {
-                            if(child3.getValue()!=" ")
-                             Videos.add("" + child3.getValue());
+                        if (child3.getKey().equals("has_video")) {
+                            if (child3.getValue() == "1") {
+                                if (child3.getKey().equals("youtube_id")) {
+                                    Videos.add("" + child3.getValue());
+                                }
+                            }
                         }
                     }
+                    end = Videos.size();
+
                 }
-                end = Videos.size();
 
             }
-
         }
         if (Videos.size() != 0) {
             webView.loadDataWithBaseURL("", getYoutubeURL(Videos.get(0)), "text/html", "UTF-8", "");

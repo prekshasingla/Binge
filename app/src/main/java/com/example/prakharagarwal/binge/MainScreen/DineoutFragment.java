@@ -91,6 +91,8 @@ public class DineoutFragment extends Fragment {
 
 
     public void getData(DataSnapshot dataSnapshot) {
+        mFeedsAdapter.removeAll();
+
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             if (child.getKey().equals("table")) {
                 for (DataSnapshot child1 : child.getChildren()) {

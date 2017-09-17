@@ -144,7 +144,7 @@ public class UploadReviewStoryActivityFragment extends Fragment {
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("story_reviews").child(restaurantID).child(encodeEmail(userId));
 
-                                myRef.setValue(new StoryReview(downloadUrl.toString(),epoch," "));
+                                myRef.setValue(new StoryReview(downloadUrl.toString(),epoch,0,"todo"));
                                 progressDialog.dismiss();
                                 //Toast.makeText(getActivity(),"Story uploaded successfully",Toast.LENGTH_SHORT).show();
                                 new AlertDialog.Builder(getActivity())
