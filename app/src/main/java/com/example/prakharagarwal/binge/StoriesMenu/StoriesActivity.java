@@ -2,11 +2,13 @@ package com.example.prakharagarwal.binge.StoriesMenu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -58,6 +60,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     TextView desc;
     TextView dishName;
     ImageView veg;
+    ImageView share;
 
 
     @Override
@@ -70,6 +73,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         emptyView = (TextView)findViewById(R.id.menu_story_empty);
         emptyViewMenu = (TextView)findViewById(R.id.stories_text_menu_empty);
 
+
         relativeLayoutData=(RelativeLayout)findViewById(R.id.relative_layout_data);
 
         resName=(TextView) findViewById(R.id.restaurant_name_stories);
@@ -80,7 +84,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 //        resName.setTypeface(typeface);
 
         ID = getIntent().getStringExtra("restaurantID");
-        String res_Name=getIntent().getStringExtra("restaurantName");
+        final String res_Name=getIntent().getStringExtra("restaurantName");
         resName.setText(res_Name);
         resName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +202,20 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
                         veg.setImageResource(R.mipmap.nonveg);
                     }}
                 }
+            }
+        });
+
+        share=(ImageView) findViewById(R.id.share_button_stories);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Indulge in this exotic "+mVideos.get(curr).getName()+" at Restaurant- "+res_Name+" on Binge. http://play.google.com/store/apps/details?id=com.prakharagarwal.prakharagarwal.binge ";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Binge");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
             }
         });
 
@@ -405,11 +423,15 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
                 "      }\n" +
                 "\n" +
                 "      function onPlayerReady(event) {\n" +
+                "event.target.setPlaybackQuality('small');"+
                 "        event.target.playVideo();\n" +
                 "      }\n" +
                 "\n" +
                 "      var done = false;\n" +
                 "      function onPlayerStateChange(event) {\n" +
+                " if (event.data == YT.PlayerState.BUFFERING) {\n" +
+                "        event.target.setPlaybackQuality('small');\n" +
+                "    }"+
                 "      }\n" +
                 "      function stopVideo() {\n" +
                 "        player.stopVideo();\n" +
@@ -455,5 +477,20 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
             veg.setImageResource(R.mipmap.nonveg);
         }}
         curr=0;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            onBackPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //    finish();
+
     }
 }
