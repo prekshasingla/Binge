@@ -17,6 +17,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -128,6 +129,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         }
 
         holder.webView.loadDataWithBaseURL("", url, "text/html", "UTF-8", "");
+        holder.webView.setVisibility(View.VISIBLE);
+//        holder.webView.webView
 
         final int currentVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 

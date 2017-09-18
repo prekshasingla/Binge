@@ -37,7 +37,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1.2"
                         android:text="Binge"
-                        android:fontFamily="monospace"
+                        android:fontFamily="sans-serif"
                         android:textSize="25sp"
                          />
 

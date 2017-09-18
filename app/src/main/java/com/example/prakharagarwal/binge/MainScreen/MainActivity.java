@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -122,8 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         textViewLocation = (TextView) findViewById(R.id.user_location);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        TextView appname=(TextView)findViewById(R.id.main_app_logo);
+//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
+//            appname.setTypeface(typeface);
 
         // updateMenuTitles();
 

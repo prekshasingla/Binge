@@ -36,7 +36,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 
-public class StoriesActivity extends FragmentActivity implements MenuAdapter.Callback{
+public class StoriesActivity extends FragmentActivity implements MenuAdapter.Callback {
 
 
     RecyclerView mRecyclerView;
@@ -50,7 +50,6 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
     static TextView emptyView;
     static TextView emptyViewMenu;
-
 
 
     WebView webView;
@@ -70,21 +69,21 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         mVideos = new ArrayList<>();
         menus = new ArrayList<Menu>();
 
-        emptyView = (TextView)findViewById(R.id.menu_story_empty);
-        emptyViewMenu = (TextView)findViewById(R.id.stories_text_menu_empty);
+        emptyView = (TextView) findViewById(R.id.menu_story_empty);
+        emptyViewMenu = (TextView) findViewById(R.id.stories_text_menu_empty);
 
 
-        relativeLayoutData=(RelativeLayout)findViewById(R.id.relative_layout_data);
+        relativeLayoutData = (RelativeLayout) findViewById(R.id.relative_layout_data);
 
-        resName=(TextView) findViewById(R.id.restaurant_name_stories);
-        desc=(TextView)findViewById(R.id.frag_stories_desc);
-        dishName=(TextView)findViewById(R.id.frag_stories_dish);
-        veg=(ImageView)findViewById(R.id.frag_stories_veg_image);
+        resName = (TextView) findViewById(R.id.restaurant_name_stories);
+        desc = (TextView) findViewById(R.id.frag_stories_desc);
+        dishName = (TextView) findViewById(R.id.frag_stories_dish);
+        veg = (ImageView) findViewById(R.id.frag_stories_veg_image);
 //        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
 //        resName.setTypeface(typeface);
 
         ID = getIntent().getStringExtra("restaurantID");
-        final String res_Name=getIntent().getStringExtra("restaurantName");
+        final String res_Name = getIntent().getStringExtra("restaurantName");
         resName.setText(res_Name);
         resName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +123,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         curr = 0;
         end = mVideos.size();
 
-        LinearLayout linearLayoutCenter=(LinearLayout) findViewById(R.id.center);
+        LinearLayout linearLayoutCenter = (LinearLayout) findViewById(R.id.center);
         linearLayoutCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,52 +165,54 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         }
 
 
-        LinearLayout linearLayoutleft=(LinearLayout)findViewById(R.id.click_left);
+        LinearLayout linearLayoutleft = (LinearLayout) findViewById(R.id.click_left);
         linearLayoutleft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (curr != 0 && mVideos.size()>0) {
+                if (curr != 0 && mVideos.size() > 0) {
                     curr--;
                     webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr).getUrl()), "text/html", "UTF-8", "");
                     dishName.setText(mVideos.get(curr).getName());
                     desc.setText(mVideos.get(curr).getDesc());
-                    if(mVideos.get(curr).getVeg()!=null)
-                    {if(mVideos.get(curr).getVeg()==0 ){
-                        veg.setImageResource(R.mipmap.veg);
-                    }else{
-                        veg.setImageResource(R.mipmap.nonveg);
-                    }}
+                    if (mVideos.get(curr).getVeg() != null) {
+                        if (mVideos.get(curr).getVeg() == 0) {
+                            veg.setImageResource(R.mipmap.veg);
+                        } else {
+                            veg.setImageResource(R.mipmap.nonveg);
+                        }
+                    }
                 }
             }
         });
 
-        LinearLayout linearLayoutright=(LinearLayout)findViewById(R.id.click_right);
+        LinearLayout linearLayoutright = (LinearLayout) findViewById(R.id.click_right);
         linearLayoutright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (curr !=end-1 && mVideos.size()>0) {
+                if (curr != end - 1 && mVideos.size() > 0) {
 
                     curr++;
                     webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr).getUrl()), "text/html", "UTF-8", "");
                     dishName.setText(mVideos.get(curr).getName());
                     desc.setText(mVideos.get(curr).getDesc());
-                    if(mVideos.get(curr).getVeg()!=null)
-                    {if(mVideos.get(curr).getVeg()==0 ){
-                        veg.setImageResource(R.mipmap.veg);
-                    }else{
-                        veg.setImageResource(R.mipmap.nonveg);
-                    }}
+                    if (mVideos.get(curr).getVeg() != null) {
+                        if (mVideos.get(curr).getVeg() == 0) {
+                            veg.setImageResource(R.mipmap.veg);
+                        } else {
+                            veg.setImageResource(R.mipmap.nonveg);
+                        }
+                    }
                 }
             }
         });
 
-        share=(ImageView) findViewById(R.id.share_button_stories);
+        share = (ImageView) findViewById(R.id.share_button_stories);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Indulge in this exotic "+mVideos.get(curr).getName()+" at Restaurant- "+res_Name+" on Binge. http://play.google.com/store/apps/details?id=com.prakharagarwal.prakharagarwal.binge ";
+                String shareBody = "Indulge in this exotic " + mVideos.get(curr).getName() + " at Restaurant- " + res_Name + " on Binge. http://play.google.com/store/apps/details?id=com.prakharagarwal.prakharagarwal.binge ";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Binge");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
@@ -274,7 +275,6 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 //                });
 
 
-
 //        rootView.findViewById(R.id.relative_layout_stories).setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -320,6 +320,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
 
     }
+
     public void getData(DataSnapshot dataSnapshot) {
 
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
@@ -344,9 +345,10 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         playStories();
         addAllMenus(menus);
     }
+
     private void getVideoStoryURL(Menu menu) {
         if (menu.getHas_video() == 0) {
-            MenuVideoPojo pojo=new MenuVideoPojo();
+            MenuVideoPojo pojo = new MenuVideoPojo();
             pojo.setUrl(menu.getVideo_url());
             pojo.setName(menu.getName());
             pojo.setDesc(menu.getDesc());
@@ -423,7 +425,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
                 "      }\n" +
                 "\n" +
                 "      function onPlayerReady(event) {\n" +
-                "event.target.setPlaybackQuality('small');"+
+                "event.target.setPlaybackQuality('small');" +
                 "        event.target.playVideo();\n" +
                 "      }\n" +
                 "\n" +
@@ -431,7 +433,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
                 "      function onPlayerStateChange(event) {\n" +
                 " if (event.data == YT.PlayerState.BUFFERING) {\n" +
                 "        event.target.setPlaybackQuality('small');\n" +
-                "    }"+
+                "    }" +
                 "      }\n" +
                 "      function stopVideo() {\n" +
                 "        player.stopVideo();\n" +
@@ -450,6 +452,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
 
     }
+
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
         webView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -459,6 +462,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
     public void changeSlidingUpPanelLayoutState() {
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
@@ -470,13 +474,14 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         webView.loadDataWithBaseURL("", getYoutubeURL(menu.getVideo_url()), "text/html", "UTF-8", "");
         dishName.setText(menu.getName());
         desc.setText(menu.getDesc());
-        if(menu.getVeg()!=null)
-        {if(menu.getVeg()==0 ){
-            veg.setImageResource(R.mipmap.veg);
-        }else{
-            veg.setImageResource(R.mipmap.nonveg);
-        }}
-        curr=0;
+        if (menu.getVeg() != null) {
+            if (menu.getVeg() == 0) {
+                veg.setImageResource(R.mipmap.veg);
+            } else {
+                veg.setImageResource(R.mipmap.nonveg);
+            }
+        }
+        curr = 0;
     }
 
     @Override
@@ -489,8 +494,9 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
     @Override
     public void onBackPressed() {
+        webView.destroy();
         super.onBackPressed();
-        //    finish();
+
 
     }
 }

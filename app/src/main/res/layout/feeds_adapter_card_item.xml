@@ -18,16 +18,19 @@
 
         android:paddingBottom="10dp">
 
+                 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/item_webview"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:background="#808080"
+                android:clickable="false"
+                android:focusable="false"
+                android:visibility="gone"
+                android:focusableInTouchMode="false" />
+            <!-- tools:ignore="WebViewLayout"
+             />-->
 
-        <WebView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/item_webview"
-            android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
-        <!-- tools:ignore="WebViewLayout"
-         />-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_weight="0.1"
-                android:text="Rating"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="Rating" />
         </LinearLayout>
 
         <LinearLayout
@@ -134,47 +137,51 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white_opaque" />
         </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:weightSum="1">
-        <TextView
-            android:padding="5dp"
-            android:layout_width="0dp"
-            android:layout_weight=".4"
-            android:layout_height="wrap_content"
-            android:id="@+id/share_button_textview"
-            android:drawableLeft="@drawable/ic_share_black_24dp"
-            android:text="Share"
 
-            android:drawablePadding="10dp"
-            android:gravity="left|center"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight=".2"
-        android:padding="5dp"
-        android:id="@+id/call_button_textview"
-        android:text="Call"
-        android:drawablePadding="5dp"
-        android:gravity="center|left"
-        android:textColor="#099e44"
-        android:drawableLeft="@drawable/ic_call_black_24dp"
-        android:layout_height="match_parent"
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_weight=".16"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/feeds_adapter_item_location"
-        android:layout_width="0dp"
-        android:layout_weight=".3"
-        android:drawablePadding="5dp"
-        android:layout_height="match_parent"
-        android:text="Locate"
-        android:gravity="center|left"
-        android:drawableLeft="@drawable/ic_room_black_24dp"/>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/share_button_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:drawableLeft="@drawable/ic_share_black_24dp"
+                android:drawablePadding="10dp"
+                android:gravity="left|center"
+
+                android:padding="5dp"
+                android:text="Share" />
+
+            <TextView
+                android:id="@+id/call_button_textview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:drawableLeft="@drawable/ic_call_black_24dp"
+                android:drawablePadding="5dp"
+                android:gravity="center|left"
+                android:padding="5dp"
+                android:text="Call"
+                android:textColor="#099e44" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".16" />
+
+            <TextView
+                android:id="@+id/feeds_adapter_item_location"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".3"
+                android:drawableLeft="@drawable/ic_room_black_24dp"
+                android:drawablePadding="5dp"
+                android:gravity="center|left"
+                android:text="Locate" />
+        </LinearLayout>
 
     </LinearLayout>
 
