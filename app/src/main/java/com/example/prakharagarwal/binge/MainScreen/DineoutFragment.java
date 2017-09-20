@@ -221,11 +221,18 @@ public class DineoutFragment extends Fragment {
 
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         update();
     }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mFeedsAdapter.removeAll();
+//    }
 
     //    public interface OnGetDataListener {
 //        //make new interface for call back

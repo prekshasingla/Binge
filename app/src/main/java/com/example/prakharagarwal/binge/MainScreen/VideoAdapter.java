@@ -29,6 +29,7 @@ import com.example.prakharagarwal.binge.StoriesMenu.StoriesActivity;
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -229,39 +230,51 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
     private void compareDates() {
-        Calendar now = Calendar.getInstance();
 
-        int hour = now.get(Calendar.HOUR);
-        int minute = now.get(Calendar.MINUTE);
+        try {
+            Calendar now = Calendar.getInstance();
+           // now.add(Calendar.DATE,1);
 
-        date = parseDate(hour + ":" + minute);
-        dateCompareOne = parseDate(compareStringOne);
-        dateCompareTwo = parseDate(compareStringTwo);
+            int hour = now.get(Calendar.HOUR_OF_DAY);
+            int minute = now.get(Calendar.MINUTE);
 
-        if (dateCompareOne.compareTo(date)>-1 && dateCompareTwo.compareTo(date)<1) {
+           // date=now.getTime();
+            date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
 
 
-            holder.textViewTimings.setText(Html.fromHtml("<font color='#ff0018'><b>Closed</b></font> "+compareStringOne+"-"+compareStringTwo+"hrs"));
+            dateCompareOne = new SimpleDateFormat("HH:mm").parse(compareStringOne);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(dateCompareOne);
+            //calendar1.add(Calendar.DATE, 1);
 
-        }
-        else{
-            holder.textViewTimings.setText(Html.fromHtml("<font color='#099e44'><b>Open</b></font> "+compareStringOne+"-"+compareStringTwo+"hrs"));
+            dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(dateCompareTwo);
+          //  calendar2.add(Calendar.DATE, 1);
+
+//            if (dateCompareTwo.compareTo(dateCompareOne) < 0) {
+//                calendar2.add(Calendar.DATE, 1);
+//                now.add(Calendar.DATE, 1);
+//            }
+
+            //java.util.Date actualTime = now.getTime();
+            //if ((actualTime.after(calendar1.getTime()) || actualTime.compareTo(calendar1.getTime()) == 0)
+              //      && actualTime.before(calendar2.getTime())) {
+
+
+
+//            Date x = now.getTime();
+            //if (date.after(calendar1.getTime()) && date.before(calendar2.getTime())) {
+            if (dateCompareOne.compareTo(date) > -1 && dateCompareTwo.compareTo(date) < 1) {
+
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#ff0018'><b>Closed</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
+
+        } else{
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#099e44'><b>Open</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
 
         }
     }
-
-    private Date parseDate(String date) {
-
-        Date startDate;
-        try {
-
-            DateFormat df = new SimpleDateFormat("HH:mm");
-        startDate = df.parse(date);
-
-            return startDate;
-        } catch (java.text.ParseException e) {
-            return new Date(0);
-        }
+        catch (java.text.ParseException e){}
     }
 
 
