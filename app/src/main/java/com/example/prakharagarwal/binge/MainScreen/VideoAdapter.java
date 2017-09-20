@@ -144,7 +144,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             }
         });
 
-        compareDates();
+        if(compareDates()){
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#099e44'><b>Open</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
+
+        }else{
+            holder.textViewTimings.setText(Html.fromHtml("<font color='#ff0018'><b>Closed</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
+
+        }
 
 
 //        if(currentVisible==position){
@@ -229,7 +235,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     }
 
-    private void compareDates() {
+    private boolean compareDates() {
 
         try {
             Calendar now = Calendar.getInstance();
@@ -240,7 +246,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
            // date=now.getTime();
             date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
-
+            Calendar calendar0=Calendar.getInstance();
+            calendar0.setTime(date);
 
             dateCompareOne = new SimpleDateFormat("HH:mm").parse(compareStringOne);
             Calendar calendar1 = Calendar.getInstance();
@@ -250,31 +257,24 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(dateCompareTwo);
-          //  calendar2.add(Calendar.DATE, 1);
+            if(date.compareTo(dateCompareOne)<0){
+                return false;
+            }
+            if(date.compareTo(dateCompareTwo)>0){
+                return false;
+            }
+           long l= date.getHours();
+            if(calendar0.HOUR>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
+                return true;
+            }
+            if(calendar0.HOUR_OF_DAY<calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY<calendar2.HOUR_OF_DAY){
+                return true;
+            }
 
-//            if (dateCompareTwo.compareTo(dateCompareOne) < 0) {
-//                calendar2.add(Calendar.DATE, 1);
-//                now.add(Calendar.DATE, 1);
-//            }
 
-            //java.util.Date actualTime = now.getTime();
-            //if ((actualTime.after(calendar1.getTime()) || actualTime.compareTo(calendar1.getTime()) == 0)
-              //      && actualTime.before(calendar2.getTime())) {
-
-
-
-//            Date x = now.getTime();
-            //if (date.after(calendar1.getTime()) && date.before(calendar2.getTime())) {
-            if (dateCompareOne.compareTo(date) > -1 && dateCompareTwo.compareTo(date) < 1) {
-
-            holder.textViewTimings.setText(Html.fromHtml("<font color='#ff0018'><b>Closed</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
-
-        } else{
-            holder.textViewTimings.setText(Html.fromHtml("<font color='#099e44'><b>Open</b></font> " + compareStringOne + "-" + compareStringTwo + "hrs"));
-
-        }
     }
         catch (java.text.ParseException e){}
+        return true;
     }
 
 
