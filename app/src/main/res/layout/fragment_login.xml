@@ -90,7 +90,8 @@
         android:layout_marginRight="3dp"
         android:elevation="5dp"
         android:background="@drawable/primary_btn"
-        android:text="Log In"/>
+        android:text="Log In"
+        android:textColor="@color/white_opaque"/>
 
     <LinearLayout
         android:id="@+id/fsu_or_layout"

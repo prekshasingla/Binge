@@ -119,7 +119,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         holder.webView.setVerticalScrollBarEnabled(false);
         holder.webView.setHorizontalScrollBarEnabled(false);
-
+        holder.webView.setBackgroundColor(808080);
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
