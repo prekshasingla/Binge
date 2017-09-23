@@ -32,8 +32,9 @@ public class WriteReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_review);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_write_review);
 
-
+toolbar.setTitleTextColor(getResources().getColor(R.color.theme_primary));
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

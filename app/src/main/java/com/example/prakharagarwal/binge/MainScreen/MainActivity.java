@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textViewLocation = (TextView) findViewById(R.id.user_location);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        TextView appname=(TextView)findViewById(R.id.main_app_logo);
 //        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
 //            appname.setTypeface(typeface);
 

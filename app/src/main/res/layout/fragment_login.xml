@@ -91,7 +91,7 @@
         android:elevation="5dp"
         android:background="@drawable/primary_btn"
         android:text="Log In"
-        android:textColor="@color/white_opaque"/>
+        android:textColor="#ff5500"/>
 
     <LinearLayout
         android:id="@+id/fsu_or_layout"

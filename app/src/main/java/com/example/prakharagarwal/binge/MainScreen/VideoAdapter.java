@@ -244,6 +244,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             int hour = now.get(Calendar.HOUR_OF_DAY);
             int minute = now.get(Calendar.MINUTE);
 
+
+
            // date=now.getTime();
             date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
             Calendar calendar0=Calendar.getInstance();
@@ -257,20 +259,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(dateCompareTwo);
-            if(date.compareTo(dateCompareOne)<0){
-                return false;
-            }
-            if(date.compareTo(dateCompareTwo)>0){
-                return false;
-            }
-           long l= date.getHours();
-            if(calendar0.HOUR>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
+//            if(calendar2.HOUR_OF_DAY<12){
+//                calendar2.add(Calendar.DATE, 1);
+//            }
+//            if(calendar0.before(calendar2) && calendar0.after(calendar1)){
+//                return true;
+//            }else{
+//                return false;
+//            }
+//            if(date.compareTo(dateCompareOne)<0){
+//                return false;
+//            }
+//            if(date.compareTo(dateCompareTwo)>0){
+//                return false;
+//            }
+            if(calendar0.HOUR_OF_DAY>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
+               //calendar0.M
                 return true;
             }
             if(calendar0.HOUR_OF_DAY<calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY<calendar2.HOUR_OF_DAY){
                 return true;
             }
 
+            return false;
 
     }
         catch (java.text.ParseException e){}

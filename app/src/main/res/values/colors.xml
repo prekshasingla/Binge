@@ -7,7 +7,7 @@
     <color name="text_color">#FF000000</color>
     <color name="button_ambience_color">#304FFE</color>
     <color name="button_signature_dishes_color">#F44336</color>
-
+<color name="theme_primary">#ff5500</color>
 
     <color name="black85">#D8000000</color>
 

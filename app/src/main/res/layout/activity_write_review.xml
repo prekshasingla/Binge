@@ -22,7 +22,9 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_write_review"
                 android:layout_width="match_parent"
+                android:background="#ff5500"
                 android:layout_height="match_parent"
+                android:titleTextColor="@color/white_opaque"
                 app:title="Write a review">
 
 
