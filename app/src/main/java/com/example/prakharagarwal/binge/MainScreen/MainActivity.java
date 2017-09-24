@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             menuItemUser.setTitle("");
             menuItemLogin.setTitle("Login");
+            //Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         }
 
         this.menu=menu;
@@ -82,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.menu_login_status) {
             if(item.getTitle().equals("Logout")){
-            SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
-            String uID = prefs.getString("username", null);
-            if(uID!=null)
-            {
-                SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
-                editor.remove("username").commit();
-                updateMenuTitles();
+                SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+                String uID = prefs.getString("username", null);
+                if(uID!=null)
+                {
+                    SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
+                    editor.remove("username").commit();
+                    updateMenuTitles();
+                }
             }
-            }else{
+            else{
                 Intent intent=new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }

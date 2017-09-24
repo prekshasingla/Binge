@@ -90,13 +90,17 @@
         android:text=""
         android:textColor="#F44336"
         android:textSize="16sp"/>
-
     <Button
         android:id="@+id/button_submit_review"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_centerHorizontal="true"
-        android:gravity="center"
         android:layout_below="@+id/write_review_error"
-        android:text="Submit" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:elevation="5dp"
+        android:background="@drawable/primary_btn"
+        android:text="Submit"
+        android:textColor="#ff5500"/>
+
 </RelativeLayout>

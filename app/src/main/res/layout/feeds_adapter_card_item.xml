@@ -109,7 +109,7 @@
                 android:layout_weight="1"
                 android:textSize="14sp"
                 android:gravity="right"
-                android:text="Open 12pm-10pm"
+                android:text="12pm-10pm"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
