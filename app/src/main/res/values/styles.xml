@@ -9,6 +9,7 @@
     </style>
     <style name="AppTheme.NoActionBar" parent="Base.Theme.AppCompat.Light">
         <item name="colorPrimary">@color/white_opaque</item>
+        <item name="colorPrimaryDark">@color/theme_primary</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
         <!--<item name="android:statusBarColor">#FF000000</item>-->
@@ -21,8 +22,8 @@
 
     <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:textColor">@color/text_color</item>
-        <item name="android:textColorSecondary">@color/text_color</item>
+        <item name="android:textColor">@color/white_opaque</item>
+        <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

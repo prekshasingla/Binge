@@ -89,7 +89,7 @@
         android:background="@color/black85"
         android:textColor="@color/white_opaque"
         android:gravity="center"
-        android:text="No Stories Yet"
+        android:text="Be the first one to upload a review"
         />
 
     <TextView

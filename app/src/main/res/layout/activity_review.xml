@@ -99,7 +99,7 @@
             android:visibility="visible"
             android:textColor="@color/white_opaque"
             android:gravity="center"
-            android:text="No Reviews Yet"
+            android:text="Be the first one to write a review"
             />
 
         </RelativeLayout>

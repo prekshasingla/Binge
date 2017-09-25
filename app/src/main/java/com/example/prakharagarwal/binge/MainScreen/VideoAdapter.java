@@ -180,7 +180,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Indulge in the experience of delicacies that allure you in at Restaurant- "+mRestaurants.get(position).getName()+" on Binge. http://play.google.com/store/apps/details?id=com.prakharagarwal.prakharagarwal.binge ";
+                String shareBody = "Indulge in the experience of delicacies that allure you in at Restaurant- "+mRestaurants.get(position).getName()+" on Binge. https://play.google.com/store/apps/details?id=in.binge.android ";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Binge");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
