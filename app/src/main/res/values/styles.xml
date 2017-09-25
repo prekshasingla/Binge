@@ -22,6 +22,7 @@
 
     <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/theme_primary</item>
         <item name="android:textColor">@color/white_opaque</item>
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
