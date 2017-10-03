@@ -180,9 +180,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!addresses.isEmpty()) {
                     Address add = addresses.get(0);
                     String country = add.getCountryName();
-                    String city = (add.getAddressLine(2)).split(",")[0];
+                    String city = add.getAddressLine(2);
                     if (city != null && country != null)
-                        textViewLocation.setText(city + ", " + country);
+                        textViewLocation.setText(city);
                     else if (country != null)
                         textViewLocation.setText(country);
                     else if (city != null)
@@ -230,11 +230,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public boolean checkLocationPermission() {
-        //int statusintfine = getPackageManager().checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION,getPackageName());
-        //int statusintcoarse = getPackageManager().checkPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION,getPackageName());
-
-        //if (statusintfine != PackageManager.PERMISSION_GRANTED && statusintcoarse != PackageManager.PERMISSION_GRANTED) {
-            //flag = false;
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission. ACCESS_FINE_LOCATION)
@@ -313,9 +308,9 @@ public class MainActivity extends AppCompatActivity {
                                 if (!addresses.isEmpty()) {
                                     Address add = addresses.get(0);
                                     String country = add.getCountryName();
-                                    String city = (add.getAddressLine(2)).split(",")[0];
+                                    String city = add.getAddressLine(2);
                                     if (city != null && country != null)
-                                        textViewLocation.setText(city + ", " + country);
+                                        textViewLocation.setText(city);
                                     else if (country != null)
                                         textViewLocation.setText(country);
                                     else if (city != null)
