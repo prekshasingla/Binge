@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,10 +146,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         });
 
         if(compareDates()){
-            holder.textViewTimings.setText(Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            holder.textViewTimings.setText("Open"+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
 
         }else{
-            holder.textViewTimings.setText(Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            holder.textViewTimings.setText("Closed"+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
 
         }
 
@@ -238,65 +239,116 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     private boolean compareDates() {
 
         try {
-            Calendar now = Calendar.getInstance();
-           // now.add(Calendar.DATE,1);
+            Date time1 = new SimpleDateFormat("HH:mm").parse(compareStringOne);
+            Log.i("TAG",compareStringOne);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(time1);
+            calendar1.add(Calendar.DATE, 1);
 
+            Date time2 = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(time2);
+            Log.i("TAG",compareStringTwo);
+            calendar2.add(Calendar.DATE, 1);
+
+            Calendar now = Calendar.getInstance();
             int hour = now.get(Calendar.HOUR_OF_DAY);
             int minute = now.get(Calendar.MINUTE);
+            String a =hour+":"+minute;
+            Date d = new SimpleDateFormat("HH:mm").parse(a);
+            now.setTime(d);
+            now.add(Calendar.DATE, 1);
+            Date x = now.getTime();
+            Log.i("TAG",x.toString());
 
+            if(calendar1.get(Calendar.HOUR_OF_DAY)>calendar2.get(Calendar.HOUR_OF_DAY)){
 
-
-           // date=now.getTime();
-            date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
-            Calendar calendar0=Calendar.getInstance();
-
-            dateCompareOne = new SimpleDateFormat("HH:mm").parse(compareStringOne);
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTime(dateCompareOne);
-            //calendar1.add(Calendar.DATE, 1);
-
-            dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(dateCompareTwo);
-            int hourOpen=calendar1.HOUR_OF_DAY;
-            int minOpen=calendar1.MINUTE;
-
-            int hourClose=calendar2.HOUR_OF_DAY;
-            int minClose=calendar2.MINUTE;
-
-            int hourCurr=calendar0.HOUR_OF_DAY;
-            int minCurr=calendar0.MINUTE;
-
-            if(hourOpen>hourClose){
-                hourClose+=24;
+                if(now.get(Calendar.HOUR_OF_DAY)<calendar1.get(Calendar.HOUR_OF_DAY)){
+                    int hr1 =now.get(Calendar.HOUR_OF_DAY)+24;
+                    int min1 = now.get(Calendar.MINUTE);
+                    String c = hr1+":"+min1;
+                    Date d2 = new SimpleDateFormat("HH:mm").parse(c);
+                    now.setTime(d2);
+                    now.add(Calendar.DATE, 1);
+                }
+                int hr =calendar2.get(Calendar.HOUR_OF_DAY)+24;
+                int min = calendar2.get(Calendar.MINUTE);
+                String b = hr+":"+min;
+                Date d1 = new SimpleDateFormat("HH:mm").parse(b);
+                calendar2.setTime(d1);
+                calendar2.add(Calendar.DATE, 1);
             }
-            if(hourCurr<hourOpen){
-                return false;
-            }
-            if(hourCurr<hourClose && hourOpen<hourClose &&
-                    hourCurr>hourOpen){
+            if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
                 return true;
             }
-            if(hourCurr>hourClose && hourOpen<hourClose
-                    && hourCurr>hourOpen){
-                return false;
-            }
-
-            if(calendar0.HOUR_OF_DAY>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
-               //calendar0.M
-                return true;
-            }
-            if(calendar0.HOUR_OF_DAY<calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY<calendar2.HOUR_OF_DAY){
-                return true;
-            }
-
             return false;
 
-    }
-        catch (java.text.ParseException e){}
-        return true;
-    }
+        } catch (ParseException e){
+            e.printStackTrace();
 
+        }
+        return true;}
+
+//        try {
+//            Calendar now = Calendar.getInstance();
+//           // now.add(Calendar.DATE,1);
+//
+//            int hour = now.get(Calendar.HOUR_OF_DAY);
+//            int minute = now.get(Calendar.MINUTE);
+//
+//
+//
+//           // date=now.getTime();
+//            date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
+//            Calendar calendar0=Calendar.getInstance();
+//
+//            dateCompareOne = new SimpleDateFormat("HH:mm").parse(compareStringOne);
+//            Calendar calendar1 = Calendar.getInstance();
+//            calendar1.setTime(dateCompareOne);
+//            //calendar1.add(Calendar.DATE, 1);
+//
+//            dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
+//            Calendar calendar2 = Calendar.getInstance();
+//            calendar2.setTime(dateCompareTwo);
+//            int hourOpen=calendar1.HOUR_OF_DAY;
+//            int minOpen=calendar1.MINUTE;
+//
+//            int hourClose=calendar2.HOUR_OF_DAY;
+//            int minClose=calendar2.MINUTE;
+//
+//            int hourCurr=calendar0.HOUR_OF_DAY;
+//            int minCurr=calendar0.MINUTE;
+//
+//            if(hourOpen>hourClose){
+//                hourClose+=24;
+//            }
+//            if(hourCurr<hourOpen){
+//                return false;
+//            }
+//            if(hourCurr<hourClose && hourOpen<hourClose &&
+//                    hourCurr>hourOpen){
+//                return true;
+//            }
+//            if(hourCurr>hourClose && hourOpen<hourClose
+//                    && hourCurr>hourOpen){
+//                return false;
+//            }
+//
+//            if(calendar0.HOUR_OF_DAY>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
+//               //calendar0.M
+//                return true;
+//            }
+//            if(calendar0.HOUR_OF_DAY<calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY<calendar2.HOUR_OF_DAY){
+//                return true;
+//            }
+//
+//            return false;
+//
+//    }
+//        catch (java.text.ParseException e){}
+//        return true;
+//    }
+//
 
     @Override
     public int getItemCount() {
