@@ -146,10 +146,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         });
 
         if(compareDates()){
-            holder.textViewTimings.setText("Open"+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            holder.textViewTimings.setText("Open "+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
 
         }else{
-            holder.textViewTimings.setText("Closed"+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            holder.textViewTimings.setText("Closed "+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
 
         }
 
@@ -258,18 +258,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             Date d = new SimpleDateFormat("HH:mm").parse(a);
             now.setTime(d);
             now.add(Calendar.DATE, 1);
+
             Date x = now.getTime();
             Log.i("TAG",x.toString());
 
             if(calendar1.get(Calendar.HOUR_OF_DAY)>calendar2.get(Calendar.HOUR_OF_DAY)){
 
-                if(now.get(Calendar.HOUR_OF_DAY)<calendar1.get(Calendar.HOUR_OF_DAY)){
-                    int hr1 =now.get(Calendar.HOUR_OF_DAY)+24;
-                    int min1 = now.get(Calendar.MINUTE);
-                    String c = hr1+":"+min1;
-                    Date d2 = new SimpleDateFormat("HH:mm").parse(c);
-                    now.setTime(d2);
-                    now.add(Calendar.DATE, 1);
+                if(now.get(Calendar.HOUR_OF_DAY)<calendar2.get(Calendar.HOUR_OF_DAY)){
+                    return true;
+//                    int hr1 =now.get(Calendar.HOUR_OF_DAY)+24;
+//                    int min1 = now.get(Calendar.MINUTE);
+//                    String c = hr1+":"+min1;
+//                    Date d2 = new SimpleDateFormat("HH:mm").parse(c);
+//                    now.setTime(d2);
+//                    now.add(Calendar.DATE, 1);
                 }
                 int hr =calendar2.get(Calendar.HOUR_OF_DAY)+24;
                 int min = calendar2.get(Calendar.MINUTE);
