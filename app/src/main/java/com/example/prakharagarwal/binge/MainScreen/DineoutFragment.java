@@ -39,11 +39,20 @@ public class DineoutFragment extends Fragment {
 
     TextView textViewEmpty;
     private ProgressBar progress;
-
-
+    Recommend c = new Recommend();
+    Recommend d = new Recommend();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        c.setDishName("Hello");
+        c.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+        c.setRestaurantName("Hello123");
+
+        d.setDishName("Hello");
+        d.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+        d.setRestaurantName("Hello123");
+
         restaurants=new ArrayList<Restaurant>();
         recommends = new ArrayList<Recommend>();
     }
@@ -171,6 +180,8 @@ public class DineoutFragment extends Fragment {
         mFeedsAdapter.addAll(restaurants);
         mFeedsAdapter.notifyDataSetChanged();
         progress.setVisibility(View.GONE);
+        recommends.add(c);
+        recommends.add(d);
     }
 
 

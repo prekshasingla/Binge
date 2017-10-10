@@ -63,11 +63,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 //            }
 
 
-       holder.restaurantName.setText("Hello");
-       holder.dishName.setText("Hello");
+       holder.restaurantName.setText(restaurant);
+       holder.dishName.setText(dish);
 
        Picasso.with(mContext)
-                .load("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg")
+                .load(image_url)
                 .into(holder.imageview);
     }
 
