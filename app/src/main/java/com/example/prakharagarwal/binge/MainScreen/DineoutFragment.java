@@ -29,6 +29,9 @@ import java.util.List;
 
 
 public class DineoutFragment extends Fragment {
+    RecyclerView nRecyclerView;
+    RecommendAdapter mRecommendAdapter;
+    List<Recommend> recommends;
     RecyclerView mRecyclerView;
     VideoAdapter mFeedsAdapter;
     List<Restaurant> restaurants;
@@ -36,12 +39,22 @@ public class DineoutFragment extends Fragment {
 
     TextView textViewEmpty;
     private ProgressBar progress;
-
-
+    Recommend c = new Recommend();
+    Recommend d = new Recommend();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        c.setDishName("Hello");
+        c.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+        c.setRestaurantName("Hello123");
+
+        d.setDishName("Hello");
+        d.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+        d.setRestaurantName("Hello123");
+
         restaurants=new ArrayList<Restaurant>();
+        recommends = new ArrayList<Recommend>();
     }
 
     @Nullable
@@ -49,6 +62,8 @@ public class DineoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dineout, container, false);
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
         textViewEmpty=(TextView)rootView.findViewById(R.id.main_activity_empty);
         textViewEmpty.setOnClickListener(new View.OnClickListener() {
@@ -60,17 +75,17 @@ public class DineoutFragment extends Fragment {
         progress=(ProgressBar)rootView.findViewById(R.id.main_activity_progress);
         progress.setVisibility(View.VISIBLE);
         progress.setIndeterminate(true);
-
-
-
+        Log.i("TAG", "Before NRecycler");
+        nRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_recommended);
+        Log.i("TAG", "After NRecycler");
+        mRecommendAdapter = new RecommendAdapter(recommends,getContext(),nRecyclerView,getChildFragmentManager(),layoutManager);
         mRecyclerView=(RecyclerView)rootView.findViewById(R.id.dineout_fragment_recycler_view);
         mFeedsAdapter= new VideoAdapter(getContext(),mRecyclerView,getChildFragmentManager(),restaurants,linearLayoutManager);
-      try{
-          mRecyclerView.setAdapter(mFeedsAdapter);
-      }catch (NoClassDefFoundError e){
-
-      }
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        nRecyclerView.setHasFixedSize(true);
+       nRecyclerView.setAdapter(mRecommendAdapter);
+       mRecyclerView.setAdapter(mFeedsAdapter);
+       nRecyclerView.setLayoutManager(layoutManager);
+       mRecyclerView.setLayoutManager(linearLayoutManager);
 
         //update();
 
@@ -165,6 +180,8 @@ public class DineoutFragment extends Fragment {
         mFeedsAdapter.addAll(restaurants);
         mFeedsAdapter.notifyDataSetChanged();
         progress.setVisibility(View.GONE);
+        recommends.add(c);
+        recommends.add(d);
     }
 
 
@@ -176,7 +193,7 @@ public class DineoutFragment extends Fragment {
             progress.setVisibility(View.VISIBLE);
             progress.setIndeterminate(true);
             mRecyclerView.setVisibility(View.VISIBLE);
-
+            nRecyclerView.setVisibility(View.VISIBLE);
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference ref = database.getReference();
 
@@ -201,7 +218,7 @@ public class DineoutFragment extends Fragment {
             textViewEmpty.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.INVISIBLE);
-
+            nRecyclerView.setVisibility(View.INVISIBLE);
             new AlertDialog.Builder(getActivity())
                     .setTitle("No Internet Connection")
                     .setMessage("No Internet connection is available, Please check or try again.")

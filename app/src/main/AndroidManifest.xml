@@ -11,8 +11,12 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
-    <supports-screens android:anyDensity="true" />
+    <supports-screens
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true"
+        android:resizeable="true"/>
 
     <application
         android:allowBackup="true"

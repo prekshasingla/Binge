@@ -40,6 +40,7 @@ import java.util.Locale;
 /**
  * Created by prekshasingla on 02/07/17.
  */
+
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
     private List<Restaurant> mRestaurants;
     final private Context mContext;
@@ -290,67 +291,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         }
         return true;}
-
-//        try {
-//            Calendar now = Calendar.getInstance();
-//           // now.add(Calendar.DATE,1);
-//
-//            int hour = now.get(Calendar.HOUR_OF_DAY);
-//            int minute = now.get(Calendar.MINUTE);
-//
-//
-//
-//           // date=now.getTime();
-//            date=new SimpleDateFormat("HH:mm").parse(hour+":"+minute);
-//            Calendar calendar0=Calendar.getInstance();
-//
-//            dateCompareOne = new SimpleDateFormat("HH:mm").parse(compareStringOne);
-//            Calendar calendar1 = Calendar.getInstance();
-//            calendar1.setTime(dateCompareOne);
-//            //calendar1.add(Calendar.DATE, 1);
-//
-//            dateCompareTwo = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
-//            Calendar calendar2 = Calendar.getInstance();
-//            calendar2.setTime(dateCompareTwo);
-//            int hourOpen=calendar1.HOUR_OF_DAY;
-//            int minOpen=calendar1.MINUTE;
-//
-//            int hourClose=calendar2.HOUR_OF_DAY;
-//            int minClose=calendar2.MINUTE;
-//
-//            int hourCurr=calendar0.HOUR_OF_DAY;
-//            int minCurr=calendar0.MINUTE;
-//
-//            if(hourOpen>hourClose){
-//                hourClose+=24;
-//            }
-//            if(hourCurr<hourOpen){
-//                return false;
-//            }
-//            if(hourCurr<hourClose && hourOpen<hourClose &&
-//                    hourCurr>hourOpen){
-//                return true;
-//            }
-//            if(hourCurr>hourClose && hourOpen<hourClose
-//                    && hourCurr>hourOpen){
-//                return false;
-//            }
-//
-//            if(calendar0.HOUR_OF_DAY>calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY>calendar2.HOUR_OF_DAY){
-//               //calendar0.M
-//                return true;
-//            }
-//            if(calendar0.HOUR_OF_DAY<calendar2.HOUR_OF_DAY && calendar1.HOUR_OF_DAY<calendar2.HOUR_OF_DAY){
-//                return true;
-//            }
-//
-//            return false;
-//
-//    }
-//        catch (java.text.ParseException e){}
-//        return true;
-//    }
-//
 
     @Override
     public int getItemCount() {

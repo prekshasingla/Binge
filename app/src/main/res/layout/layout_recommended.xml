@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="150dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/imageview_recommended"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+
+                    </ImageView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:id="@+id/frag_stories_lin_lay1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/photo_background_protection_top"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/restaurant_name_recommended"
+                                android:layout_width="0dp"
+                                android:paddingLeft="10dp"
+                                android:drawableLeft="@drawable/ic_keyboard_backspace_white_24dp"
+                                android:drawablePadding="10dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:padding="10dp"
+                                android:text="Name"
+                                android:textColor="@color/abc_primary_text_disable_only_material_dark"
+                                android:textSize="20sp" />
+
+                                 </LinearLayout>
+
+                   </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                      android:layout_alignParentBottom="true"
+                       >
+
+                        <TextView
+                            android:id="@+id/name_dish_recommended"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@string/abc_font_family_body_1_material"
+                            android:text="Dish"
+                            android:textStyle="bold"
+                            android:textColor="@color/abc_primary_text_disable_only_material_dark"
+                            android:textSize="20sp" />
+                        <ImageView
+                            android:id="@+id/veg_image_recommended"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/veg"/>
+
+
+                    </LinearLayout>
+
+                   </RelativeLayout>
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+   </LinearLayout>

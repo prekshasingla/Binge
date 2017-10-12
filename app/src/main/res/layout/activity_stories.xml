@@ -31,12 +31,14 @@
             android:layout_height="match_parent">
             <WebView
                 android:id="@+id/webview_stories"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="1000dp"
+                android:layout_height="1000dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:scaleType="fitXY"></WebView>
+              >
+
+            </WebView>
             <!-- <FrameLayout
                 android:id="@+id/blank_fragment_stories"
                 android:layout_width="match_parent"
