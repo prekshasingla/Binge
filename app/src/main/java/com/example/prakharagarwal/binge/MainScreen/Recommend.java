@@ -9,6 +9,7 @@ public class Recommend {
     String restaurantName;
     int veg;
     String image;
+    String category;
 
     public String getDishName() {
         return dishName;

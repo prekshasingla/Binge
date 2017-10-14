@@ -44,8 +44,8 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     SlidingUpPanelLayout slidingUpPanelLayout;
     ArrayList<String> Videos;
     String ID;
-    List<Menu> menus;
 
+    List<Menu> menus;
     RelativeLayout relativeLayoutData;
 
     static TextView emptyView;
@@ -66,6 +66,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stories);
+
         mVideos = new ArrayList<>();
         menus = new ArrayList<Menu>();
 

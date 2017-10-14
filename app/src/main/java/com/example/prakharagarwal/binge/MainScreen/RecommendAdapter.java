@@ -1,6 +1,7 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.StoriesMenu.StoriesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,11 +28,15 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     private List<Recommend> mRecommend;
 
     final private Context mContext;
+    String dish;
+    String restaurant;
+    String image_url;
     RecommendAdapterViewHolder holder;
     LinearLayout container;
     FragmentManager fragmentManager;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
+    private int pos;
 
     public RecommendAdapter(List<Recommend> mRecommend, Context mContext, RecyclerView recyclerView, FragmentManager fragmentManager, LinearLayoutManager linearLayoutManager) {
         this.mRecommend = mRecommend;
@@ -51,10 +57,10 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     @Override
     public void onBindViewHolder(RecommendAdapterViewHolder holder, int position) {
         Log.i("TAG", "In Recommend On bind View Holder");
-        String dish = mRecommend.get(position).getDishName();
-        String restaurant = mRecommend.get(position).getRestaurantName();
-        String image_url  = mRecommend.get(position).getImage();
-
+         dish = mRecommend.get(position).getDishName();
+         restaurant = mRecommend.get(position).getRestaurantName();
+         image_url  = mRecommend.get(position).getImage();
+        pos=position;
 //
 //            if (mRecommend.get(position).getVeg() == 0) {
 //                holder.imageViewVeg.setImageResource(R.mipmap.veg);
@@ -95,7 +101,21 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
         @Override
         public void onClick(View view) {
-             // Can play the video of the food.
+
+            Intent intent = new Intent(mContext, StoriesActivity.class);
+//            intent.putExtra("restaurantID", restaurant);
+//            intent.putExtra("restaurantName", mRecommend.get(pos).name);
+            mContext.startActivity(intent);
+            // Can play the video of the food.
         }
     }
+
+    public void removeAll() {
+        mRecommend.clear();
+    }
+
+    public void addAll(List<Recommend> recommends) {
+        mRecommend = recommends;
+    }
+
 }

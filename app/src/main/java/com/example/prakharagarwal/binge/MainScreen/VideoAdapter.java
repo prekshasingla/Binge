@@ -298,6 +298,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
 
+
     public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public WebView webView;

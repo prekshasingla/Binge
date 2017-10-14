@@ -39,22 +39,24 @@ public class DineoutFragment extends Fragment {
 
     TextView textViewEmpty;
     private ProgressBar progress;
-    Recommend c = new Recommend();
-    Recommend d = new Recommend();
+
+//    Recommend c = new Recommend();
+//    Recommend d = new Recommend();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        c.setDishName("Hello");
-        c.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
-        c.setRestaurantName("Hello123");
-
-        d.setDishName("Hello");
-        d.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
-        d.setRestaurantName("Hello123");
+//
+//        c.setDishName("Hello");
+//        c.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+//        c.setRestaurantName("Hello123");
+//
+//        d.setDishName("Hello");
+//        d.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
+//        d.setRestaurantName("Hello123");
 
         restaurants=new ArrayList<Restaurant>();
         recommends = new ArrayList<Recommend>();
+
     }
 
     @Nullable
@@ -108,9 +110,11 @@ public class DineoutFragment extends Fragment {
 
     public void getData(DataSnapshot dataSnapshot) {
         mFeedsAdapter.removeAll();
-
+        mRecommendAdapter.removeAll();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
+
             if (child.getKey().equals("table")) {
+
                 for (DataSnapshot child1 : child.getChildren()) {
                     Restaurant restaurant=new Restaurant();
 
@@ -144,17 +148,17 @@ public class DineoutFragment extends Fragment {
                         if (child2.getKey().equals("hambience_etime")){
                             restaurant.setAmbienceEndTime(Integer.parseInt(""+child2.getValue()));
                         }
-                        if (child2.getKey().equals("hambience_stime")){
-                            restaurant.setAmbienceStartTime(Integer.parseInt(""+child2.getValue()));
-                        }
-                        if (child2.getKey().equals("hclosing_time")){
-                            restaurant.setClosingTime(""+child2.getValue());
-                        }
-                        if (child2.getKey().equals("hopening_time")){
-                            restaurant.setOpeningTime(""+child2.getValue());
-                        }
-                        if (child2.getKey().equals("hcuisine_type")){
-                            restaurant.setCuisineType(""+child2.getValue());
+                            if (child2.getKey().equals("hambience_stime")){
+                                restaurant.setAmbienceStartTime(Integer.parseInt(""+child2.getValue()));
+                            }
+                            if (child2.getKey().equals("hclosing_time")){
+                                restaurant.setClosingTime(""+child2.getValue());
+                            }
+                            if (child2.getKey().equals("hopening_time")){
+                                restaurant.setOpeningTime(""+child2.getValue());
+                            }
+                            if (child2.getKey().equals("hcuisine_type")){
+                                restaurant.setCuisineType(""+child2.getValue());
                         }
                         if (child2.getKey().equals("hsignature_etime")){
                             restaurant.setSignatureEndTime(Integer.parseInt(""+child2.getValue()));
@@ -176,12 +180,37 @@ public class DineoutFragment extends Fragment {
 
                 }
             }
+        if (child.getKey().equals("recommendations")) {
+
+            for (DataSnapshot c2 : child.getChildren()) {
+                Recommend recommend = new Recommend();
+                for (DataSnapshot c3 : c2.getChildren()) {
+
+                    if (c3.getKey().equals("poster_url")) {
+                        recommend.setImage(c3.getValue().toString());
+                    }
+                    if (c3.getKey().equals("dish_name")) {
+                        recommend.setDishName(c3.getValue().toString());
+                    }
+                    if (c3.getKey().equals("restaurant_id")) {
+                        recommend.setRestaurantName(c3.getValue().toString());
+                    }
+                    if (c3.getKey().equals("veg")) {
+                        recommend.setVeg(Integer.parseInt(c3.getValue().toString()));
+                    }
+                }
+                recommends.add(recommend);
+            }
         }
+        }
+
+//        recommends.add(c);
+//        recommends.add(d);
+        mRecommendAdapter.addAll(recommends);
         mFeedsAdapter.addAll(restaurants);
         mFeedsAdapter.notifyDataSetChanged();
         progress.setVisibility(View.GONE);
-        recommends.add(c);
-        recommends.add(d);
+
     }
 
 
