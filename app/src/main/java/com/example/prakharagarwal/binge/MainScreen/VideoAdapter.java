@@ -303,7 +303,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         public WebView webView;
         public TextView textViewName;
-//        public TextView textViewTypeOfRestaurant;
+//      public TextView textViewTypeOfRestaurant;
         public TextView textViewTypeOfCuisine;
         public TextView textViewTimings;
         public Button buttonReview;
@@ -320,7 +320,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
             webView = (WebView) view.findViewById(R.id.item_webview);
             textViewName = (TextView) view.findViewById(R.id.item_name);
-//            textViewTypeOfRestaurant = (TextView) view.findViewById(R.id.item_type_of_restaurant);
+//          textViewTypeOfRestaurant = (TextView) view.findViewById(R.id.item_type_of_restaurant);
             textViewTypeOfCuisine = (TextView) view.findViewById(R.id.item_type_of_cuisine);
             buttonReview = (Button) view.findViewById(R.id.button_review);
             buttonMenu = (Button) view.findViewById(R.id.button_menu);

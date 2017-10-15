@@ -1,9 +1,6 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -90,6 +90,8 @@ public class DineoutFragment extends Fragment {
        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         //update();
+        mRecyclerView.setNestedScrollingEnabled(false);
+        nRecyclerView.setNestedScrollingEnabled(false);
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -110,7 +112,7 @@ public class DineoutFragment extends Fragment {
 
     public void getData(DataSnapshot dataSnapshot) {
         mFeedsAdapter.removeAll();
-        mRecommendAdapter.removeAll();
+       mRecommendAdapter.removeAll();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
 
             if (child.getKey().equals("table")) {
@@ -204,8 +206,7 @@ public class DineoutFragment extends Fragment {
         }
         }
 
-//        recommends.add(c);
-//        recommends.add(d);
+
         mRecommendAdapter.addAll(recommends);
         mFeedsAdapter.addAll(restaurants);
         mFeedsAdapter.notifyDataSetChanged();

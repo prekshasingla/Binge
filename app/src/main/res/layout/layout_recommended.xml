@@ -69,7 +69,8 @@
                             android:text="Dish"
                             android:textStyle="bold"
                             android:textColor="@color/abc_primary_text_disable_only_material_dark"
-                            android:textSize="20sp" />
+                            android:textSize="14sp"
+                            android:background="@color/cardview_dark_background"/>
                         <ImageView
                             android:id="@+id/veg_image_recommended"
                             android:layout_width="15dp"
