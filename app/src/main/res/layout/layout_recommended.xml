@@ -58,6 +58,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                       android:layout_alignParentBottom="true"
+                        android:background="@color/colorPrimaryDark"
                        >
 
                         <TextView
@@ -70,7 +71,7 @@
                             android:textStyle="bold"
                             android:textColor="@color/abc_primary_text_disable_only_material_dark"
                             android:textSize="14sp"
-                            android:background="@color/cardview_dark_background"/>
+                            />
                         <ImageView
                             android:id="@+id/veg_image_recommended"
                             android:layout_width="15dp"
