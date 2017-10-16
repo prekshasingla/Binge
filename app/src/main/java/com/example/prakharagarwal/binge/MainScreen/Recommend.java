@@ -6,10 +6,19 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 public class Recommend {
     String dishName;
+    String restaurantID;
     String restaurantName;
     int veg;
     String image;
     String category;
+
+    public String getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(String restaurantID) {
+        this.restaurantID = restaurantID;
+    }
 
     public String getDishName() {
         return dishName;

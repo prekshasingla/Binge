@@ -195,12 +195,16 @@ public class DineoutFragment extends Fragment {
                         recommend.setDishName(c3.getValue().toString());
                     }
                     if (c3.getKey().equals("restaurant_id")) {
-                        recommend.setRestaurantName(c3.getValue().toString());
+                        recommend.setRestaurantID(c3.getValue().toString());
                     }
                     if (c3.getKey().equals("veg")) {
                         recommend.setVeg(Integer.parseInt(c3.getValue().toString()));
                     }
+                    if (c3.getKey().equals("restaurant_name")) {
+                        recommend.setRestaurantName(c3.getValue().toString());
+                    }
                 }
+
                 recommends.add(recommend);
             }
         }

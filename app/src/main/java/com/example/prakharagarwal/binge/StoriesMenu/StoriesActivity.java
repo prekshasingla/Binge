@@ -60,6 +60,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     TextView dishName;
     ImageView veg;
     ImageView share;
+    String dish_Name;
 
 
     @Override
@@ -85,6 +86,8 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
         ID = getIntent().getStringExtra("restaurantID");
         final String res_Name = getIntent().getStringExtra("restaurantName");
+        dish_Name=getIntent().getStringExtra("dishName");
+
         resName.setText(res_Name);
         resName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +126,14 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         //  mVideos.addAll(((StoriesActivity) getActivity()).getVideos());
         curr = 0;
         end = mVideos.size();
+
+        if(dish_Name!=null){
+            for(int i=0;i<end;i++){
+                if(dish_Name==mVideos.get(i).getName()){
+                    curr=i;
+                }
+            }
+        }
 
         LinearLayout linearLayoutCenter = (LinearLayout) findViewById(R.id.center);
         linearLayoutCenter.setOnClickListener(new View.OnClickListener() {
@@ -357,6 +368,13 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
             mVideos.add(pojo);
         }
         end = mVideos.size();
+        if(dish_Name!=null){
+            for(int i=0;i<end;i++){
+                if(dish_Name==mVideos.get(i).getName()){
+                    curr=i;
+                }
+            }
+        }
     }
 
     public void playStories() {

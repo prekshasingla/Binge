@@ -103,8 +103,9 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         public void onClick(View view) {
 
             Intent intent = new Intent(mContext, StoriesActivity.class);
-//            intent.putExtra("restaurantID", restaurant);
-//            intent.putExtra("restaurantName", mRecommend.get(pos).name);
+            intent.putExtra("restaurantID", mRecommend.get(getAdapterPosition()).getRestaurantID());
+            intent.putExtra("restaurantName", mRecommend.get(getAdapterPosition()).getRestaurantName());
+            intent.putExtra("dishName",mRecommend.get(getAdapterPosition()).getDishName());
             mContext.startActivity(intent);
             // Can play the video of the food.
         }
