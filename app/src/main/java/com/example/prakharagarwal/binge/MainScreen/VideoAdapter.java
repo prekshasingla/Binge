@@ -241,7 +241,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         try {
             Date time1 = new SimpleDateFormat("HH:mm").parse(compareStringOne);
-            Log.i("TAG",compareStringOne);
+
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(time1);
             calendar1.add(Calendar.DATE, 1);
@@ -249,7 +249,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             Date time2 = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(time2);
-            Log.i("TAG",compareStringTwo);
+
             calendar2.add(Calendar.DATE, 1);
 
             Calendar now = Calendar.getInstance();
@@ -261,7 +261,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             now.add(Calendar.DATE, 1);
 
             Date x = now.getTime();
-            Log.i("TAG",x.toString());
+
 
             if(calendar1.get(Calendar.HOUR_OF_DAY)>calendar2.get(Calendar.HOUR_OF_DAY)){
 

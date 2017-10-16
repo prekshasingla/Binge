@@ -60,7 +60,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
          dish = mRecommend.get(position).getDishName();
          restaurant = mRecommend.get(position).getRestaurantName();
          image_url  = mRecommend.get(position).getImage();
-        pos=position;
+         pos=position;
+
 //
 //            if (mRecommend.get(position).getVeg() == 0) {
 //                holder.imageViewVeg.setImageResource(R.mipmap.veg);
@@ -102,10 +103,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Override
         public void onClick(View view) {
 
+
             Intent intent = new Intent(mContext, StoriesActivity.class);
             intent.putExtra("restaurantID", mRecommend.get(getAdapterPosition()).getRestaurantID());
             intent.putExtra("restaurantName", mRecommend.get(getAdapterPosition()).getRestaurantName());
             intent.putExtra("dishName",mRecommend.get(getAdapterPosition()).getDishName());
+            intent.putExtra("posi",getAdapterPosition());
             mContext.startActivity(intent);
             // Can play the video of the food.
         }

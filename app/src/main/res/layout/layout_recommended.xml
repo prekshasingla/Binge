@@ -5,7 +5,13 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="220dp"
-        android:layout_height="220dp">
+        android:layout_height="220dp"
+        android:padding="4dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="5dp"
+        android:elevation="5dp"
+
+        >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -58,7 +64,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                       android:layout_alignParentBottom="true"
-                        android:background="@color/colorPrimaryDark"
+                        android:background="@drawable/photo_background_protection_bottom"
                        >
 
                         <TextView
@@ -70,7 +76,7 @@
                             android:text="Dish"
                             android:textStyle="bold"
                             android:textColor="@color/abc_primary_text_disable_only_material_dark"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             />
                         <ImageView
                             android:id="@+id/veg_image_recommended"
