@@ -61,7 +61,7 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     TextView dishName;
     ImageView veg;
     ImageView share;
-    String dish_Name;
+    String dish_Name="";
     int posit;
 
     @Override
@@ -88,9 +88,11 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
         ID = getIntent().getStringExtra("restaurantID");
         final String res_Name = getIntent().getStringExtra("restaurantName");
         dish_Name=getIntent().getStringExtra("dishName");
+        Log.i("TAG", dish_Name);
         posit = getIntent().getIntExtra("posi", 0);
 
         resName.setText(res_Name);
+
         resName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +134,8 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
         if(dish_Name!=null){
             for(int i=0;i<end;i++){
-                if(dish_Name==mVideos.get(i).getName()){
+                if(dish_Name.equals(mVideos.get(i).getName())){
+
                     curr=i;
                 }
             }
@@ -358,13 +361,6 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
 
 
         }
-        if(dish_Name!=null){
-            for(int i=0;i<end;i++){
-                if(dish_Name==mVideos.get(i).getName()){
-                    curr=i;
-                }
-            }
-        }
         playStories();
         addAllMenus(menus);
     }
@@ -374,6 +370,13 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
             MenuVideoPojo pojo = new MenuVideoPojo();
             pojo.setUrl(menu.getVideo_url());
             pojo.setName(menu.getName());
+            if(dish_Name!=null){
+                for(int i=0;i<end;i++){
+                    if(dish_Name.equals(mVideos.get(i).getName())){
+                        curr=i;
+                    }
+                }
+            }
             pojo.setDesc(menu.getDesc());
             pojo.setVeg(menu.getVeg());
             mVideos.add(pojo);
@@ -383,15 +386,22 @@ public class StoriesActivity extends FragmentActivity implements MenuAdapter.Cal
     }
 
     public void playStories() {
-        if (mVideos.size() > 0) {
 
+        if (mVideos.size() > 0) {
             emptyView.setVisibility(View.INVISIBLE);
             relativeLayoutData.setVisibility(View.VISIBLE);
-            webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(posit).getUrl()), "text/html", "UTF-8", "");
-            dishName.setText(mVideos.get(posit).getName());
-            desc.setText(mVideos.get(posit).getDesc());
-            if (mVideos.get(posit).getVeg() != null) {
-                if (mVideos.get(posit).getVeg() == 0) {
+            if(posit==1){
+                for(int i=0;i<end;i++){
+                    if(dish_Name.equals(mVideos.get(i).getName())){
+                        curr=i;
+                    }
+                }
+            }
+            webView.loadDataWithBaseURL("", getYoutubeURL(mVideos.get(curr).getUrl()), "text/html", "UTF-8", "");
+            dishName.setText(mVideos.get(curr).getName());
+            desc.setText(mVideos.get(curr).getDesc());
+            if (mVideos.get(curr).getVeg() != null) {
+                if (mVideos.get(curr).getVeg() == 0) {
                     veg.setImageResource(R.mipmap.veg);
                 } else {
                     veg.setImageResource(R.mipmap.nonveg);

@@ -108,7 +108,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             intent.putExtra("restaurantID", mRecommend.get(getAdapterPosition()).getRestaurantID());
             intent.putExtra("restaurantName", mRecommend.get(getAdapterPosition()).getRestaurantName());
             intent.putExtra("dishName",mRecommend.get(getAdapterPosition()).getDishName());
-            intent.putExtra("posi",getAdapterPosition());
+            Log.i("TAG", mRecommend.get(getAdapterPosition()).getDishName());
+            intent.putExtra("posi",1);
             mContext.startActivity(intent);
             // Can play the video of the food.
         }
