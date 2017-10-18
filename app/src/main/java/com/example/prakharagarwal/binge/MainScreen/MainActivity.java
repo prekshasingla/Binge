@@ -6,51 +6,44 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.prakharagarwal.binge.CheckNetwork;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
 
-    ViewPagerAdapter mviewPagerAdapter;
-    ViewPager mviewPager;
+    private TabLayout tabLayout;
+
+    //This is our viewPager
+    private ViewPager viewPager;
+
     TextView textViewLocation;
 
     String latitude=null;
     String longitude=null;
     private Menu menu;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
-
 
     SharedPreferences sharedpreferences;
     @Override
@@ -125,7 +118,49 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         textViewLocation = (TextView) findViewById(R.id.user_location);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Initializing the tablayout
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        //Adding the tabs using addTab() method
+        tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
+        tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
+        tabLayout.addTab(tabLayout.newTab().setText("Drinks & Nighlife"));
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        //Initializing viewPager
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        //Creating our pager adapter
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        //Adding adapter to pager
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                //actionBar.setSelectedNavigationItem(postion);
+                tabLayout.setScrollPosition(position,0,true);
+                tabLayout.setSelected(true);
+
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
+
+        //Adding onTabSelectedListener to swipe views
+        tabLayout.setOnTabSelectedListener(this);
+
+      //  setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 //        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
 //            appname.setTypeface(typeface);
 
@@ -148,12 +183,12 @@ public class MainActivity extends AppCompatActivity {
 //        prefs.edit().clear();
 //        String uID = prefs.getString("userid","Null");
 
-
-        mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
-        mviewPager = (ViewPager) findViewById(R.id.viewpager);
-
-        mviewPager.setAdapter(mviewPagerAdapter);
+//
+//        mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
+//        mviewPager = (ViewPager) findViewById(R.id.viewpager);
+//
+//        mviewPager.setAdapter(mviewPagerAdapter);
 
 
         checkLocationPermission();
@@ -343,5 +378,21 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //update();
         updateMenuTitles();
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }
