@@ -10,7 +10,7 @@
 <color name="theme_primary">#ff5500</color>
 
     <color name="black85">#D8000000</color>
-
+<color name="orange10">#FF5733</color>
     <color name="photo_placeholder">#ccc</color>
 
     <color name="colorAccent">#FF4081</color>

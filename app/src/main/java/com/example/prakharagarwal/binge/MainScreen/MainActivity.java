@@ -18,9 +18,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Menu menu;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    CardView cv;
     SharedPreferences sharedpreferences;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,17 +125,39 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        cv = (CardView)findViewById(R.id.tab_cardView);
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
 
         //Adding the tabs using addTab() method
         tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
         tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
         tabLayout.addTab(tabLayout.newTab().setText("Drinks & Nighlife"));
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        int tabCount = tabLayout.getTabCount();
+      //  createTabIcons();
 
+       // tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+        for (int i = 0; i < tabCount; i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            View tabView = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+            tabView.requestLayout();
+            if(i==0){
+            View view = LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
+            tab.setCustomView(view);}
+            else if (i==1){
+                View view = LayoutInflater.from(this).inflate(R.layout.custom_tab2, null);
+                tab.setCustomView(view);
+            }
+            else{
+                View view = LayoutInflater.from(this).inflate(R.layout.custom_tab3, null);
+                tab.setCustomView(view);
+            }
+            //tab.setText(i + "");
+        }
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -140,11 +167,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         //Adding adapter to pager
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+
             @Override
             public void onPageSelected(int position) {
                 //actionBar.setSelectedNavigationItem(postion);
                 tabLayout.setScrollPosition(position,0,true);
                 tabLayout.setSelected(true);
+                //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
 
             }
 
@@ -154,41 +184,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
             @Override
             public void onPageScrollStateChanged(int arg0) {
+
+
             }
         });
 
         //Adding onTabSelectedListener to swipe views
-        tabLayout.setOnTabSelectedListener(this);
-
-      //  setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/segoeui.ttf");
-//            appname.setTypeface(typeface);
-
-        // updateMenuTitles();
-
-        // getSupportActionBar().setDisplayShowTitleEnabled(true);
-
-//        sharedpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedpreferences.edit();
-//
-//        editor.putString("userid","123");
-//        editor.commit();
-
-//        SharedPreferences mySPrefs = this.getSharedPreferences("User", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = mySPrefs.edit();
-//        editor.remove("userid");
-//        editor.apply();
-
-//        SharedPreferences prefs = this.getSharedPreferences("User", Context.MODE_PRIVATE);
-//        prefs.edit().clear();
-//        String uID = prefs.getString("userid","Null");
-
-//
-//        mviewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        mviewPagerAdapter.addFragment(new DineoutFragment(), "Dineout");
-//        mviewPager = (ViewPager) findViewById(R.id.viewpager);
-//
-//        mviewPager.setAdapter(mviewPagerAdapter);
 
 
         checkLocationPermission();
@@ -245,7 +246,26 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Uri appLinkData = appLinkIntent.getData();
     }
 
-
+//
+//    private void createTabIcons() {
+//
+//        CardView tabOne = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
+//        //tabOne.setText("Fine Dining");
+//        // tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_dash26, 0, 0);
+//        tabLayout.getTabAt(0).setCustomView(tabOne);
+//        cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
+//
+//        CardView tabTwo = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
+//       // tabTwo.setText("Cafes and More");
+//        //  tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_category, 0, 0);
+//        tabLayout.getTabAt(1).setCustomView(tabTwo);
+//
+//        CardView tabThree = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
+//        //tabThree.setText("Drinks and Nightlife");
+//        // tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_order, 0, 0);
+//        tabLayout.getTabAt(2).setCustomView(tabThree);
+//
+//    }
 
     public boolean checkUserPermission()
     {
@@ -383,16 +403,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
-
+        //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
+       // cv.setCardBackgroundColor(getResources().getColor(R.color.white_opaque));
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
+       // cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
     }
 }
