@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override
             public void onPageSelected(int position) {
                 //actionBar.setSelectedNavigationItem(postion);
-                tabLayout.setScrollPosition(position,0,true);
+                tabLayout.setScrollPosition(position, 0, true);
                 tabLayout.setSelected(true);
                 //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
 
