@@ -4,11 +4,11 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_width="220dp"
-        android:layout_height="220dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:padding="4dp"
         android:layout_marginBottom="3dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="7dp"
         android:elevation="5dp"
 
         >
@@ -74,7 +74,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@string/abc_font_family_body_1_material"
                             android:text="Dish"
-                            android:textStyle="bold"
+
                             android:textColor="@color/abc_primary_text_disable_only_material_dark"
                             android:textSize="20sp"
                             />
