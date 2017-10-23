@@ -14,7 +14,6 @@ import com.example.prakharagarwal.binge.R;
 
 public class Tab1 extends Fragment {
 
-    //Overriden method onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

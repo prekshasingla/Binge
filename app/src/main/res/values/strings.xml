@@ -27,4 +27,8 @@
     <string name="encode_dollar">%24</string>
     <string name="encode_left_square_bracket">%5B</string>
     <string name="encode_right_square_bracket">%5D</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
