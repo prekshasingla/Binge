@@ -29,6 +29,7 @@ import java.util.List;
 
 
 public class DineoutFragment extends Fragment {
+
     RecyclerView nRecyclerView;
     RecommendAdapter mRecommendAdapter;
     List<Recommend> recommends;
@@ -42,9 +43,9 @@ public class DineoutFragment extends Fragment {
 
 //    Recommend c = new Recommend();
 //    Recommend d = new Recommend();
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+@Override
+public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 //
 //        c.setDishName("Hello");
 //        c.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
@@ -54,10 +55,10 @@ public class DineoutFragment extends Fragment {
 //        d.setImage("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL_400x400.jpg");
 //        d.setRestaurantName("Hello123");
 
-        restaurants=new ArrayList<Restaurant>();
-        recommends = new ArrayList<Recommend>();
+    restaurants=new ArrayList<Restaurant>();
+    recommends = new ArrayList<Recommend>();
 
-    }
+}
 
     @Nullable
     @Override

@@ -72,7 +72,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
        holder.restaurantName.setText(restaurant);
        holder.dishName.setText(dish);
-
        Picasso.with(mContext)
                 .load(image_url)
                 .into(holder.imageview);
