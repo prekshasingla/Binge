@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.prakharagarwal.binge.MainScreen.MainActivityFragment">
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/menu_fragment_recycler_view"
+        android:id="@+id/fragment_main_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:padding="10dp"
         android:paddingTop="48dp" />
 

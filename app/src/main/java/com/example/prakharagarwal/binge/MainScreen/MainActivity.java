@@ -131,65 +131,21 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
         //Adding the tabs using addTab() method
-        tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
-        tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
-        tabLayout.addTab(tabLayout.newTab().setText("Drinks & Nighlife"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Drinks & Nighlife"));
 
-        int tabCount = tabLayout.getTabCount();
-      //  createTabIcons();
-
-       // tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        //tabLayout.setBackground(R.drawable.primary_btn);
 
 
-        for (int i = 0; i < tabCount; i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            View tabView = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
-            tabView.requestLayout();
-            if(i==0){
-            View view = LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
-            tab.setCustomView(view);}
-            else if (i==1){
-                View view = LayoutInflater.from(this).inflate(R.layout.custom_tab2, null);
-                tab.setCustomView(view);
-            }
-            else{
-                View view = LayoutInflater.from(this).inflate(R.layout.custom_tab3, null);
-                tab.setCustomView(view);
-            }
-            //tab.setText(i + "");
-        }
-        //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        //Creating our pager adapter
-        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(new MainActivityFragment(),"Fine Dining");
+        viewPagerAdapter.addFragment(new MainActivityFragment(),"Cafes & more");
+        viewPager.setAdapter(viewPagerAdapter);
 
-        //Adding adapter to pager
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-
-            @Override
-            public void onPageSelected(int position) {
-                //actionBar.setSelectedNavigationItem(postion);
-                tabLayout.setScrollPosition(position, 0, true);
-                tabLayout.setSelected(true);
-                //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
-
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-
-
-            }
-        });
-
-        //Adding onTabSelectedListener to swipe views
+        tabLayout.setupWithViewPager(viewPager);
 
 
         checkLocationPermission();
