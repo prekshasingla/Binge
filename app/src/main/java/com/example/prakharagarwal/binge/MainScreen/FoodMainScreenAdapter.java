@@ -61,7 +61,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
         Picasso.with(mContext)
                 .load(poster_url)
-                .into(holder.imageview);
+                .into(holder.imageView);
 
 
 
@@ -76,16 +76,16 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
         TextView restaurantName;
         TextView dishName;
-        ImageView imageview;
-        ImageView imageViewRating;
+        TextView textViewRating;
+        ImageView imageView;
 
         public FoodMainScreenAdapterViewHolder(View itemView) {
             super(itemView);
 
             restaurantName = (TextView) itemView.findViewById(R.id.name_rest_mainScreen);
             dishName = (TextView) itemView.findViewById(R.id.dish_name_mainscreen);
-            imageViewRating = (ImageView) itemView.findViewById(R.id.rating_mainScreen);
-            imageview = (ImageView) itemView.findViewById(R.id.imageview_food_mainScreen);
+            textViewRating = (TextView) itemView.findViewById(R.id.rating_mainScreen);
+            imageView = (ImageView) itemView.findViewById(R.id.imageview_food_mainScreen);
             itemView.setOnClickListener(this);
         }
 

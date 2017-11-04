@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        cv = (CardView)findViewById(R.id.tab_cardView);
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
