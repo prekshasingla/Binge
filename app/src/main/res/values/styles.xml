@@ -9,7 +9,7 @@
     </style>
     <style name="AppTheme.NoActionBar" parent="Base.Theme.AppCompat.Light">
         <item name="colorPrimary">@color/white_opaque</item>
-        <item name="colorPrimaryDark">@color/white_opaque</item>
+        <item name="colorPrimaryDark">#d3d3d3</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
         <item name="colorAccent">#ff6100</item>
