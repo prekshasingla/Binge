@@ -36,88 +36,47 @@ public class MainActivityFragment extends Fragment {
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
     List<Food_MainScreen> mFood;
-    //    GridLayoutManager mLayoutManager;
-    Food_MainScreen a  = new Food_MainScreen();
-    Food_MainScreen b = new Food_MainScreen();
-    Food_MainScreen c = new Food_MainScreen();
-    Food_MainScreen a1  = new Food_MainScreen();
-    Food_MainScreen b1 = new Food_MainScreen();
-    Food_MainScreen c1 = new Food_MainScreen();
+
+    public static MainActivityFragment newInstance(String id) {
+        Bundle args = new Bundle();
+        args.putString("id", id);
+        MainActivityFragment fragment = new MainActivityFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        mFood = new ArrayList<Food_MainScreen>();
-
-        a.setDish_id("Hello");
-        a.setPoster_url("https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/asd.jpg?alt=media&token=75761a78-25cf-4467-a42c-d469e1baf324");
-        a.setRest_id("hi");
-        a.setRest_name("yo yo ");
-        b.setDish_id("Hello");
-        b.setPoster_url("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL.jpg");
-        b.setRest_id("hi");
-        b.setRest_name("yo yo ");
-        c.setDish_id("Hello");
-        c.setPoster_url("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL.jpg");
-        c.setRest_id("hi");
-        c.setRest_name("yo yo ");
-        a1.setDish_id("Hello");
-        a1.setPoster_url("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL.jpg");
-        a1.setRest_id("hi");
-        a1.setRest_name("yo yo ");
-        b1.setDish_id("Hello");
-        b1.setPoster_url("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL.jpg");
-        b1.setRest_id("hi");
-        b1.setRest_name("yo yo ");
-        c1.setDish_id("Hello");
-        c1.setPoster_url("https://pbs.twimg.com/profile_images/852028772878503937/JH5x4wUL.jpg");
-        c1.setRest_id("hi");
-        c1.setRest_name("yo yo ");
-
-
-
+        mFood = new ArrayList<>();
 
     }
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.activity_main_fragment, container, false);
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.fragment_main_recycler_view);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main_recycler_view);
 
-        mFood.add(a);
-        mFood.add(b);
-        mFood.add(c);
-        mFood.add(a1);
-        mFood.add(b1);
-        mFood.add(c1);
-
-//        mFoodAdapter.addAll(mFood);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("mainscreen");
-        ref.orderByChild("category").equalTo("fine dining").addChildEventListener(new ChildEventListener() {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                Log.d("data",dataSnapshot+"");
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getData(dataSnapshot);
+
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
             }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
         });
-
 
 
 //        update();
@@ -127,40 +86,28 @@ public class MainActivityFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mFoodAdapter);
 
-        return  rootView;
+        return rootView;
     }
 
 
     public void getData(DataSnapshot dataSnapshot) {
-        // mFeedsAdapter.removeAll();
-        //mRecommendAdapter.removeAll();
+
         for (DataSnapshot child : dataSnapshot.getChildren()) {
 
-            Log.d("data",child+"");
 
-//            if (child.getKey().equals("mainscreen")) {
-//
-//                for (DataSnapshot child1 : child.getChildren()) {
-//                    Restaurant restaurant = new Restaurant();
-//
-//                    for (DataSnapshot child2 : child1.getChildren()) {
-//
-//
-//                    }
-//                    //restaurants.add(restaurant);
-//
-//                }
-//            }
-
-
-            //mFeedsAdapter.addAll(restaurants);
-            //mFeedsAdapter.notifyDataSetChanged();
-
+            if (child.getKey().equals(getArguments().getString("id"))) {
+                mFood.clear();
+                for (DataSnapshot child1 : child.getChildren()) {
+                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
+                    mFood.add(food);
+                }
+            }
         }
+        mFoodAdapter.notifyDataSetChanged();
     }
 
 
-    void update(){
+    void update() {
 
 //        if(CheckNetwork.isInternetAvailable(getActivity())) {
 
@@ -183,7 +130,6 @@ public class MainActivityFragment extends Fragment {
 //
 //                }
 //            });
-
 
 
 //        }
@@ -211,9 +157,6 @@ public class MainActivityFragment extends Fragment {
 
 
     }
-
-
-
 
 
 }

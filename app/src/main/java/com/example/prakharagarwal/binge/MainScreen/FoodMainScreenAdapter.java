@@ -52,8 +52,8 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
     @Override
     public void onBindViewHolder(FoodMainScreenAdapterViewHolder holder, int position) {
         dish_id = mFood.get(position).getDish_id();
-        rest_id = mFood.get(position).getRest_id();
-        rest_name = mFood.get(position).getRest_name();
+        rest_id = mFood.get(position).getRestaurant_id();
+        rest_name = mFood.get(position).getRestaurant_name();
         poster_url = mFood.get(position).getPoster_url();
 
         holder.dishName.setText(dish_id);
@@ -76,7 +76,6 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
         TextView restaurantName;
         TextView dishName;
-        TextView textViewRating;
         ImageView imageView;
 
         public FoodMainScreenAdapterViewHolder(View itemView) {
@@ -84,7 +83,6 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
             restaurantName = (TextView) itemView.findViewById(R.id.name_rest_mainScreen);
             dishName = (TextView) itemView.findViewById(R.id.dish_name_mainscreen);
-            textViewRating = (TextView) itemView.findViewById(R.id.rating_mainScreen);
             imageView = (ImageView) itemView.findViewById(R.id.imageview_food_mainScreen);
             itemView.setOnClickListener(this);
         }

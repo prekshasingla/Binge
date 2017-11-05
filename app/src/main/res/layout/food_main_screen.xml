@@ -72,33 +72,33 @@
             </LinearLayout>
 
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:paddingBottom="15dp"
-                app:layout_anchor="@id/relative_layout_data"
-                app:layout_anchorGravity="bottom|center_horizontal">
+            <!--<FrameLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom|center_horizontal"-->
+                <!--android:paddingBottom="15dp"-->
+                <!--app:layout_anchor="@id/relative_layout_data"-->
+                <!--app:layout_anchorGravity="bottom|center_horizontal">-->
 
-                <ImageView
-                    android:id="@+id/fab_presetfragment"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:elevation="6dp"
-                    android:src="#ff6100" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/fab_presetfragment"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:elevation="6dp"-->
+                    <!--android:src="#ff6100" />-->
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:elevation="16dp"
-                    android:id="@+id/rating_mainScreen"
-                    android:layout_marginBottom="3dp"
-                    android:text="4"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white" />
-            </FrameLayout>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:elevation="16dp"-->
+                    <!--android:id="@+id/rating_mainScreen"-->
+                    <!--android:layout_marginBottom="3dp"-->
+                    <!--android:text="4"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                    <!--android:textColor="@android:color/white" />-->
+            <!--</FrameLayout>-->
 
 
         </android.support.design.widget.CoordinatorLayout>

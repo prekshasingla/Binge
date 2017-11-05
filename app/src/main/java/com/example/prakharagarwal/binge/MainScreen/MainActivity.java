@@ -140,8 +140,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new MainActivityFragment(),"Fine Dining");
-        viewPagerAdapter.addFragment(new MainActivityFragment(),"Cafes & more");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"),"Fine Dining");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cafes & more"),"Cafes & More");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Drinks & nightlife"),"Drinks & Nightlife");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cakes & Bakes"),"Cakes & Bakes");
+
         viewPager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);

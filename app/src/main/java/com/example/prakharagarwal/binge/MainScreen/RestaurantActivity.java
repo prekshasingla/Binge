@@ -52,47 +52,10 @@ public class RestaurantActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_restaurant);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        Menu menu = navigation.getMenu();
-        for(int i=MENU_ITEM_ID_FIRST;i<MENU_ITEM_ID_LAST;i++) {
-            menu.add(Menu.NONE, i, Menu.NONE, "menu")
-                    .setIcon(R.drawable.ic_home_black_24dp);
-        }
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (prevMenuItem != null) {
-                    prevMenuItem.setChecked(false);
-                }
-                else
-                {
-                    navigation.getMenu().getItem(0).setChecked(false);
-                }
-                Log.d("page", "onPageSelected: "+position);
-                navigation.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = navigation.getMenu().getItem(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        setupViewPager(viewPager);
 
     }
 

@@ -8,8 +8,8 @@ public class Food_MainScreen {
 
     String dish_id;
     String poster_url;
-    String rest_id;
-    String rest_name;
+    String restaurant_id;
+    String restaurant_name;
 
     public String getDish_id() {
         return dish_id;
@@ -27,19 +27,19 @@ public class Food_MainScreen {
         this.poster_url = poster_url;
     }
 
-    public String getRest_id() {
-        return rest_id;
+    public String getRestaurant_id() {
+        return restaurant_id;
     }
 
-    public void setRest_id(String rest_id) {
-        this.rest_id = rest_id;
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
     }
 
-    public String getRest_name() {
-        return rest_name;
+    public String getRestaurant_name() {
+        return restaurant_name;
     }
 
-    public void setRest_name(String rest_name) {
-        this.rest_name = rest_name;
+    public void setRestaurant_name(String restaurant_name) {
+        this.restaurant_name = restaurant_name;
     }
 }
