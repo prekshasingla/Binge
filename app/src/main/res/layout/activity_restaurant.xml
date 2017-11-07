@@ -44,7 +44,7 @@
                             android:weightSum="1">
 
                             <TextView
-                                android:id="@+id/user_location"
+                                android:id="@+id/restaurant_name"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -57,7 +57,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
-
+                                android:id="@+id/share_button_stories"
                                 android:layout_gravity="center"
                                 android:background="@drawable/ic_share_black_24dp" />
                         </LinearLayout>
@@ -146,18 +146,70 @@
                 android:layout_height="1dp"
                 android:background="@color/grey" />
 
-            <ImageView
-                android:id="@+id/imageView"
+            <com.google.android.youtube.player.YouTubePlayerView
+                android:id="@+id/youtube_view"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@color/grey" />
+                android:background="@color/grey"/>
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:id="@+id/lin1"
+                android:layout_below="@id/youtube_view">
+
+                <TextView
+                    android:id="@+id/dish_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@string/abc_font_family_body_1_material"
+                    android:text="Dish"
+                    android:textStyle="bold"
+                    android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/veg_image"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/veg"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:layout_below="@+id/lin1"
+                android:id="@+id/lin2"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="description of the dish will be very long."
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:background="@color/black85"
+                android:layout_below="@+id/lin2"
+                android:paddingBottom="5dp"
+                android:id="@+id/separatorline"></View>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/menu_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/restaurant_bottom_recycler"
-                android:layout_below="@+id/imageView">
+                android:layout_below="@+id/separatorline">
 
             </android.support.v7.widget.RecyclerView>
 

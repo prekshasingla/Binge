@@ -107,56 +107,6 @@ public class MainActivityFragment extends Fragment {
     }
 
 
-    void update() {
-
-//        if(CheckNetwork.isInternetAvailable(getActivity())) {
-
-//            textViewEmpty.setVisibility(View.GONE);
-//            progress.setVisibility(View.VISIBLE);
-//            progress.setIndeterminate(true);
-//            mRecyclerView.setVisibility(View.VISIBLE);
-//            nRecyclerView.setVisibility(View.VISIBLE);
-
-
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    getData(dataSnapshot);
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-
-
-//        }
-//        else{
-
-//            textViewEmpty.setVisibility(View.VISIBLE);
-//            progress.setVisibility(View.GONE);
-//            mRecyclerView.setVisibility(View.INVISIBLE);
-//            nRecyclerView.setVisibility(View.INVISIBLE);
-//            new AlertDialog.Builder(getActivity())
-//                    .setTitle("No Internet Connection")
-//                    .setMessage("No Internet connection is available, Please check or try again.")
-//                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                            dialogInterface.dismiss();
-//                            dialogInterface.cancel();
-//                            //Prompt the user once explanation has been shown
-//                        }
-//                    })
-//                    .create()
-//                    .show();
-//        }
-
-
-    }
 
 
 }

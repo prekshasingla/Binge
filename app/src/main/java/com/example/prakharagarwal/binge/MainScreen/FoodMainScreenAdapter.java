@@ -1,15 +1,13 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
@@ -22,10 +20,10 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
     private List<Food_MainScreen> mFood;
     final private Context mContext;
-    String dish_id;
-    String rest_id;
-    String poster_url;
-    String rest_name;
+    String dishName;
+    String restaurantID;
+    String posterUrl;
+    String restaurantName;
 
 //    GridLayoutManager container;
     FoodMainScreenAdapterViewHolder holder;
@@ -48,16 +46,16 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
     @Override
     public void onBindViewHolder(FoodMainScreenAdapterViewHolder holder, int position) {
-        dish_id = mFood.get(position).getDish_id();
-        rest_id = mFood.get(position).getRestaurant_id();
-        rest_name = mFood.get(position).getRestaurant_name();
-        poster_url = mFood.get(position).getPoster_url();
+        dishName = mFood.get(position).getDishName();
+        restaurantID = mFood.get(position).getRestaurantID();
+        restaurantName = mFood.get(position).getRestaurantName();
+        posterUrl = mFood.get(position).getPosterUrl();
 
-        holder.dishName.setText(dish_id);
-        holder.restaurantName.setText(rest_name);
+        holder.dishName.setText(dishName);
+        holder.restaurantName.setText(restaurantName);
 
         Picasso.with(mContext)
-                .load(poster_url)
+                .load(posterUrl)
                 .into(holder.imageView);
 
 
@@ -87,6 +85,13 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
         @Override
         public void onClick(View v) {
 
+            Intent intent = new Intent(mContext, RestaurantActivity.class);
+            intent.putExtra("restaurantID", mFood.get(getAdapterPosition()).getRestaurantID());
+            intent.putExtra("restaurantName", mFood.get(getAdapterPosition()).getRestaurantName());
+            intent.putExtra("dishName",mFood.get(getAdapterPosition()).getDishName());
+           // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+            intent.putExtra("posi",1);
+            mContext.startActivity(intent);
         }
     }
 
