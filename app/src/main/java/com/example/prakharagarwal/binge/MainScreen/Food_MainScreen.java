@@ -6,40 +6,40 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 public class Food_MainScreen {
 
-    String dishName;
-    String posterUrl;
-    String restaurantID;
-    String restaurantName;
+    String dish_id;
+    String poster_url;
+    String restaurant_id;
+    String restaurant_name;
 
-    public String getDishName() {
-        return dishName;
+    public String getDish_id() {
+        return dish_id;
     }
 
-    public void setDishName(String dishName) {
-        this.dishName = dishName;
+    public void setDish_id(String dish_id) {
+        this.dish_id = dish_id;
     }
 
-    public String getPosterUrl() {
-        return posterUrl;
+    public String getPoster_url() {
+        return poster_url;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
+    public void setPoster_url(String poster_url) {
+        this.poster_url = poster_url;
     }
 
-    public String getRestaurantID() {
-        return restaurantID;
+    public String getRestaurant_id() {
+        return restaurant_id;
     }
 
-    public void setRestaurantID(String restaurantID) {
-        this.restaurantID = restaurantID;
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getRestaurant_name() {
+        return restaurant_name;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setRestaurant_name(String restaurant_name) {
+        this.restaurant_name = restaurant_name;
     }
 }

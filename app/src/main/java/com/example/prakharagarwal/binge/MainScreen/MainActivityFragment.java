@@ -91,18 +91,17 @@ public class MainActivityFragment extends Fragment {
 
 
     public void getData(DataSnapshot dataSnapshot) {
+        mFood.clear();
 
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-
             if (child.getKey().equals(getArguments().getString("id"))) {
-                mFood.clear();
                 for (DataSnapshot child1 : child.getChildren()) {
                     Food_MainScreen food = child1.getValue(Food_MainScreen.class);
                     mFood.add(food);
                 }
             }
         }
+        mFoodAdapter.addAll(mFood);
         mFoodAdapter.notifyDataSetChanged();
     }
 

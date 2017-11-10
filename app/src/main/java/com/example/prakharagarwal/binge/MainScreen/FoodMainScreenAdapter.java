@@ -46,10 +46,10 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
     @Override
     public void onBindViewHolder(FoodMainScreenAdapterViewHolder holder, int position) {
-        dishName = mFood.get(position).getDishName();
-        restaurantID = mFood.get(position).getRestaurantID();
-        restaurantName = mFood.get(position).getRestaurantName();
-        posterUrl = mFood.get(position).getPosterUrl();
+        dishName = mFood.get(position).getDish_id();
+        restaurantID = mFood.get(position).getRestaurant_id();
+        restaurantName = mFood.get(position).getRestaurant_name();
+        posterUrl = mFood.get(position).getPoster_url();
 
         holder.dishName.setText(dishName);
         holder.restaurantName.setText(restaurantName);
@@ -86,9 +86,9 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
         public void onClick(View v) {
 
             Intent intent = new Intent(mContext, RestaurantActivity.class);
-            intent.putExtra("restaurantID", mFood.get(getAdapterPosition()).getRestaurantID());
-            intent.putExtra("restaurantName", mFood.get(getAdapterPosition()).getRestaurantName());
-            intent.putExtra("dishName",mFood.get(getAdapterPosition()).getDishName());
+            intent.putExtra("restaurantID", mFood.get(getAdapterPosition()).getRestaurant_id());
+            intent.putExtra("restaurantName", mFood.get(getAdapterPosition()).getRestaurant_name());
+            intent.putExtra("dishName",mFood.get(getAdapterPosition()).getDish_id());
            // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
             intent.putExtra("posi",1);
             mContext.startActivity(intent);

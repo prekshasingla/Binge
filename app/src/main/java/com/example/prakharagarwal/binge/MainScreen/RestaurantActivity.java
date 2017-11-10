@@ -29,12 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantActivity extends YouTubeBaseActivity implements
-        YouTubePlayer.OnInitializedListener, MenuAdapter.Callback {
+        YouTubePlayer.OnInitializedListener, MenuAdapter.Callback, RestaurantBottomAdapter.CallCategory {
 
     private RecyclerView bottomRecycler;
-    List<com.example.prakharagarwal.binge.StoriesMenu.Menu> menus;
+    List<Menu> menus;
+    List<String> categories;
+    List<Category> categoryList;
     private RecyclerView menuRecyler;
     private MenuAdapter menuAdapter;
+    RestaurantBottomAdapter restaurantBottomAdapter;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     Menu selectedItem;
@@ -42,12 +45,11 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     private YouTubePlayerView youTubeView;
     YouTubePlayer youTubePlayer;
 
-
-
     String ID;
     TextView resName;
     TextView desc;
     TextView dishName;
+    TextView price;
     ImageView veg;
     ImageView share;
     String dish_Name="";
@@ -59,44 +61,40 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-
-        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
-
-
         bottomRecycler=(RecyclerView)findViewById(R.id.restaurant_bottom_recycler);
-        RestaurantBottomAdapter restaurantBottomAdapter= new RestaurantBottomAdapter(null,this);
+        restaurantBottomAdapter= new RestaurantBottomAdapter(categories,this);
         bottomRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         bottomRecycler.setAdapter(restaurantBottomAdapter);
 
-        menus = new ArrayList<>();
+        menus = new ArrayList<Menu>();
+        categories=new ArrayList<String>();
+        categoryList=new ArrayList<Category>();
         selectedItem=new Menu();
 
-
         resName = (TextView) findViewById(R.id.restaurant_name);
-        //desc = (TextView) findViewById(R.id.frag_stories_desc);
-        //dishName = (TextView) findViewById(R.id.frag_stories_dish);
-        //veg = (ImageView) findViewById(R.id.frag_stories_veg_image);
-
+        desc = (TextView) findViewById(R.id.desc_selected);
+        dishName = (TextView) findViewById(R.id.dish_name_selected);
+        price = (TextView) findViewById(R.id.price_selected);
+        veg = (ImageView) findViewById(R.id.veg_image_selected);
 
         ID = getIntent().getStringExtra("restaurantID");
 
-        String res_Name = getIntent().getStringExtra("restaurantName");
-       // selectedItem.setName(getIntent().getStringExtra("dishName"));
-//        Log.i("TAG", dish_Name);
-       // posit = getIntent().getIntExtra("posi", 0);
+        final String res_Name = getIntent().getStringExtra("restaurantName");
+        // posit = getIntent().getIntExtra("posi", 0);
 
-        res_Name="Too Indian";
-        selectedItem.setName("Chit Chat");
+        //final String res_Name="Too Indian";
+
+        selectedItem.setName(getIntent().getStringExtra("dishName"));
 
         resName.setText(res_Name);
-
         resName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
+        dishName.setText(selectedItem.getName());
 
 
         menuRecyler = (RecyclerView) findViewById(R.id.menu_recycler);
@@ -120,25 +118,43 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+//                Log.e("cancelled","cancel");
             }
         });
 
+
         if(selectedItem.getName()!=null){
-            for(int i=0;i<menus.size();i++){
-                if(dish_Name.equals(menus.get(i).getName())){
+            for(int i=0;i<categoryList.size();i++){
+                for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
+                    if (dish_Name.equals(categoryList.get(i).getCategoryMenu().get(j))) {
 
-                    selectedItem.setDesc(menus.get(i).getDesc());
-                    selectedItem.setHas_video(menus.get(i).getHas_video());
-                    selectedItem.setPrice(menus.get(i).getPrice());
-                    selectedItem.setVeg(menus.get(i).getVeg());
-                    selectedItem.setVideo_url(menus.get(i).getVideo_url());
-//                    youTubePlayer.cueVideo(selectedItem.getVideo_url());
-//                    youTubePlayer.play();
+                        selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
+                        selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
+                        selectedItem.setPrice(categoryList.get(i).getCategoryMenu().get(j).getPrice());
+                        selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
+                        selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
+                        youTubePlayer.cueVideo(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
+                        youTubePlayer.play();
 
-                    //curr=i;
+                        dishName.setText(selectedItem.getName());
+                        desc.setText(selectedItem.getDesc());
+                        price.setText(selectedItem.getPrice());
+                        if (selectedItem.getVeg() != null) {
+                            if (selectedItem.getVeg() == 0) {
+                                veg.setImageResource(R.mipmap.veg);
+                            } else {
+                                veg.setImageResource(R.mipmap.nonveg);
+                            }
+                        }
+
+
+                    }
                 }
             }
         }
+
+        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
 
         share = (ImageView) findViewById(R.id.share_button_stories);
         share.setOnClickListener(new View.OnClickListener() {
@@ -146,11 +162,10 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                //String shareBody = "Indulge in this exotic " + menus.get(curr).getName() + " at Restaurant- " + res_Name + " on Binge. https://play.google.com/store/apps/details?id=in.binge.android ";
+                String shareBody = "Indulge in this exotic " + selectedItem.getName() + " at Restaurant- " + res_Name + " on Binge. https://play.google.com/store/apps/details?id=in.binge.android ";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Binge");
-                //sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
             }
         });
 
@@ -158,19 +173,70 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
     public void getData(DataSnapshot dataSnapshot) {
 
+       // Log.e("data",dataSnapshot+"");
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-            if (child1.getKey().equals("too_indian_delhi"))
+            if (child1.getKey().equals(ID))
                 for (DataSnapshot child2 : child1.getChildren()) {
                     if (child2.getKey() != null) {
+                        Category category=new Category();
+                        category.setCategory(child2.getKey());
+                        categories.add(child2.getKey());
                         for (DataSnapshot child3 : child2.getChildren()) {
-                            com.example.prakharagarwal.binge.StoriesMenu.Menu menu = child3.getValue(com.example.prakharagarwal.binge.StoriesMenu.Menu.class);
-                            menus.add(menu);
+                            Menu menu = child3.getValue(Menu.class);
+                            category.addCategoryMenu(menu);
+                            //menus.add(menu);
+//                            Log.e("me",menu.getName());
                         }
+                        //category.setCategoryMenu(menus);
+                        categoryList.add(category);
+//                        addAllMenus(category.getCategoryMenu());
                     }
                 }
         }
-        addAllMenus(menus);
+        //addAllMenus(menus);
+        if(categoryList.size()>0)
+         addAllMenus(categoryList.get(0).getCategoryMenu());
+        addAllCategories(categories);
+
+        if(selectedItem.getName()!=null){
+            for(int i=0;i<categoryList.size();i++){
+                for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
+                    if (dish_Name.equals(categoryList.get(i).getCategoryMenu().get(j))) {
+
+                        selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
+                        selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
+                        selectedItem.setPrice(categoryList.get(i).getCategoryMenu().get(j).getPrice());
+                        selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
+                        selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
+                        youTubePlayer.cueVideo(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
+                        youTubePlayer.play();
+
+                        dishName.setText(selectedItem.getName());
+                        desc.setText(selectedItem.getDesc());
+                        price.setText(selectedItem.getPrice());
+                        if (selectedItem.getVeg() != null) {
+                            if (selectedItem.getVeg() == 0) {
+                                veg.setImageResource(R.mipmap.veg);
+                            } else {
+                                veg.setImageResource(R.mipmap.nonveg);
+                            }
+                        }
+
+
+                    }
+                }
+            }
+        }
+
     }
+
+    public void addAllCategories(List<String> categories) {
+        restaurantBottomAdapter.addAll(categories);
+        restaurantBottomAdapter.notifyDataSetChanged();
+//        checkIfEmpty();
+
+    }
+
     public void addAllMenus(List<com.example.prakharagarwal.binge.StoriesMenu.Menu> menus) {
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
@@ -178,6 +244,20 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
 
     }
+
+    @Override
+    public void selectCategory(String categoryName) {
+        for(int i=0;i<categoryList.size();i++) {
+            if(categoryList.get(i).getCategory().equals(categoryName)) {
+                menuAdapter.addAll(categoryList.get(i).getCategoryMenu());
+                menuAdapter.notifyDataSetChanged();
+            }
+        }
+//        checkIfEmpty();
+
+
+    }
+
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider,
@@ -194,12 +274,8 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                         YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-
-            //youTubePlayer=player;
             if(selectedItem.getVideo_url()!=null)
              player.loadVideo(selectedItem.getVideo_url());
-            else
-                player.loadVideo("ruHMqQJ6PNE");
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             youTubePlayer=player;
 
@@ -219,9 +295,9 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
     @Override
     public void showStory(Context context, Menu menu) {
-       // slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        //webView.loadDataWithBaseURL("", getYoutubeURL(menu.getVideo_url()), "text/html", "UTF-8", "");
-       // youTubePlayer.cueVideo(selectedItem.getVideo_url());
+
+        youTubePlayer.cueVideo(selectedItem.getVideo_url());
+        youTubePlayer.play();
 
         selectedItem.setName(menu.getName());
         selectedItem.setDesc(menu.getDesc());
@@ -230,15 +306,14 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         selectedItem.setVeg(menu.getVeg());
         selectedItem.setVideo_url(menu.getVideo_url());
 
-        youTubePlayer.cueVideo(selectedItem.getVideo_url());
-        youTubePlayer.play();
-//        dishName.setText(menu.getName());
-//        desc.setText(menu.getDesc());
-        if (menu.getVeg() != null) {
-            if (menu.getVeg() == 0) {
- //               veg.setImageResource(R.mipmap.veg);
+        dishName.setText(selectedItem.getName());
+        desc.setText(selectedItem.getDesc());
+        price.setText(selectedItem.getPrice());
+        if (selectedItem.getVeg() != null) {
+            if (selectedItem.getVeg() == 0) {
+                veg.setImageResource(R.mipmap.veg);
             } else {
-  //              veg.setImageResource(R.mipmap.nonveg);
+                veg.setImageResource(R.mipmap.nonveg);
             }
         }
         //curr = 0;

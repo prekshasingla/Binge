@@ -49,9 +49,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight=".95"
-                                android:gravity="left|center"
+                                android:gravity="left|center_vertical"
                                 android:text="Restaurant Name"
-                                android:textColor="@color/cardview_dark_background"
+                                android:textColor="#0d0d0d"
                                 android:textSize="18dp" />
 
                             <ImageView
@@ -81,7 +81,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Rajouri Garden, Delhi" />
+                            android:text="Rajouri Garden, Delhi"
+                            android:textColor="#454545" />
 
                         <TextView
                             android:id="@+id/costForTwo"
@@ -89,7 +90,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Cost For Two : 2500" />
+                            android:text="Cost For Two : 2500"
+                            android:textColor="#454545" />
 
                     </LinearLayout>
 
@@ -110,6 +112,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="#454545"
                             android:text="Europian, Modern Indian, Salad" />
 
                         <TextView
@@ -118,8 +121,56 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Open now\n 11:00hrs - 01:00hrs" />
+                            android:text="Open now\n 11:00hrs - 01:00hrs"
+                            android:textColor="#454545" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:weightSum="1"
+                        >
+
+                        <TextView
+                            android:id="@+id/call_item_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".2"
+                            android:drawableLeft="@drawable/ic_call_black_24dp"
+                            android:gravity="center|left"
+                            android:padding="5dp"
+                            android:text="Call"
+                            android:textColor="#279028" />
+
+                        <TextView
+                            android:id="@+id/locate_item_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:drawableLeft="@drawable/ic_room_black_24dp"
+                            android:gravity="left|center"
+                            android:padding="5dp"
+                            android:text="Locate"
+                            android:textColor="#095488"/>
+
+
+
+                        <!--<View-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_weight=".16" />-->
+
+                        <TextView
+                            android:id="@+id/item_reviews_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".4"
+                            android:paddingRight="1dp"
+                            android:gravity="center|right"
+                            android:text="Reviews coming soon"
+                            android:textColor="#454545"/>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -162,21 +213,33 @@
                 android:id="@+id/lin1"
                 android:layout_below="@id/youtube_view">
 
+                <ImageView
+                    android:id="@+id/veg_image_selected"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/veg"/>
+
                 <TextView
-                    android:id="@+id/dish_name"
+                    android:id="@+id/dish_name_selected"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@string/abc_font_family_body_1_material"
                     android:text="Dish"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-                <ImageView
-                    android:id="@+id/veg_image"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/veg"/>
+                    android:textColor="#7d7d7d"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/price_selected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@string/abc_font_family_body_1_material"
+                    android:text="Price"
+                    android:gravity="right"
+                    android:textColor="#7d7d7d"
+                    android:textSize="15sp" />
 
 
             </LinearLayout>
@@ -189,9 +252,10 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/desc"
+                    android:id="@+id/desc_selected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#7d7d7d"
                     android:text="description of the dish will be very long."
                     />
             </LinearLayout>
@@ -199,7 +263,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1sp"
-                android:background="@color/black85"
+                android:background="#7d7d7d"
                 android:layout_below="@+id/lin2"
                 android:paddingBottom="5dp"
                 android:id="@+id/separatorline"></View>
@@ -208,6 +272,7 @@
                 android:id="@+id/menu_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:layout_above="@+id/restaurant_bottom_recycler"
                 android:layout_below="@+id/separatorline">
 
