@@ -2,9 +2,12 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class RestaurantActivity extends YouTubeBaseActivity implements
@@ -37,6 +44,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     List<Category> categoryList;
     private RecyclerView menuRecyler;
     private MenuAdapter menuAdapter;
+    Restaurant restaurant;
     RestaurantBottomAdapter restaurantBottomAdapter;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
@@ -52,8 +60,20 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     TextView price;
     ImageView veg;
     ImageView share;
-    String dish_Name="";
-    int posit;
+    TextView location;
+    TextView call;
+
+    TextView heading;
+    TextView reviews;
+
+    TextView restaurantCategory;
+    TextView restaurantLocation;
+    TextView restaurantCostForTwo;
+    TextView restaurantOpenClosed;
+
+    private String compareStringOne = "9:45";
+    private String compareStringTwo = "1:45";
+
 
 
     @Override
@@ -70,6 +90,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         categories=new ArrayList<String>();
         categoryList=new ArrayList<Category>();
         selectedItem=new Menu();
+        restaurant = new Restaurant();
 
         resName = (TextView) findViewById(R.id.restaurant_name);
         desc = (TextView) findViewById(R.id.desc_selected);
@@ -77,13 +98,40 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         price = (TextView) findViewById(R.id.price_selected);
         veg = (ImageView) findViewById(R.id.veg_image_selected);
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Nunito-SemiBold.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/Nunito-Light.ttf");
+        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Nunito-Regular.ttf");
+
+        resName.setTypeface(typeface);
+        desc.setTypeface(typeface);
+        dishName.setTypeface(typeface);
+        price.setTypeface(typeface);
+
+        heading = (TextView)findViewById(R.id.heading);
+        String htmlString="<u>MENU</u>";
+        heading.setText(Html.fromHtml(htmlString));
+        heading.setTypeface(typeface);
+        reviews = (TextView)findViewById(R.id.item_reviews_textview);
+        reviews.setTypeface(typeface2);
+
+
+
+        call=(TextView)findViewById(R.id.call_item_textview);
+        location=(TextView)findViewById(R.id.locate_item_textview);
+        restaurantCategory=(TextView)findViewById(R.id.category);
+        restaurantLocation=(TextView)findViewById(R.id.address);
+        restaurantCostForTwo=(TextView)findViewById(R.id.resCostForTwo);
+        restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
+
+        call.setTypeface(typeface);
+        location.setTypeface(typeface);
+        restaurantCategory.setTypeface(typeface1);
+        restaurantLocation.setTypeface(typeface1);
+        restaurantCostForTwo.setTypeface(typeface1);
+        restaurantOpenClosed.setTypeface(typeface1);
+
         ID = getIntent().getStringExtra("restaurantID");
-
         final String res_Name = getIntent().getStringExtra("restaurantName");
-        // posit = getIntent().getIntExtra("posi", 0);
-
-        //final String res_Name="Too Indian";
-
         selectedItem.setName(getIntent().getStringExtra("dishName"));
 
         resName.setText(res_Name);
@@ -96,9 +144,8 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
         dishName.setText(selectedItem.getName());
 
-
         menuRecyler = (RecyclerView) findViewById(R.id.menu_recycler);
-        menuAdapter = new MenuAdapter(this, menus);
+        menuAdapter = new MenuAdapter(this,menus);
         menuRecyler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         try {
             menuRecyler.setAdapter(menuAdapter);
@@ -106,7 +153,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
         }
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("menu");
+        DatabaseReference ref = database.getReference();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -117,41 +164,8 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
-//                Log.e("cancelled","cancel");
             }
         });
-
-
-        if(selectedItem.getName()!=null){
-            for(int i=0;i<categoryList.size();i++){
-                for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
-                    if (dish_Name.equals(categoryList.get(i).getCategoryMenu().get(j))) {
-
-                        selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
-                        selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
-                        selectedItem.setPrice(categoryList.get(i).getCategoryMenu().get(j).getPrice());
-                        selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
-                        selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
-                        youTubePlayer.cueVideo(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
-                        youTubePlayer.play();
-
-                        dishName.setText(selectedItem.getName());
-                        desc.setText(selectedItem.getDesc());
-                        price.setText(selectedItem.getPrice());
-                        if (selectedItem.getVeg() != null) {
-                            if (selectedItem.getVeg() == 0) {
-                                veg.setImageResource(R.mipmap.veg);
-                            } else {
-                                veg.setImageResource(R.mipmap.nonveg);
-                            }
-                        }
-
-
-                    }
-                }
-            }
-        }
 
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
@@ -172,28 +186,85 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     }
 
     public void getData(DataSnapshot dataSnapshot) {
-
-       // Log.e("data",dataSnapshot+"");
-        for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-            if (child1.getKey().equals(ID))
-                for (DataSnapshot child2 : child1.getChildren()) {
-                    if (child2.getKey() != null) {
-                        Category category=new Category();
-                        category.setCategory(child2.getKey());
-                        categories.add(child2.getKey());
-                        for (DataSnapshot child3 : child2.getChildren()) {
-                            Menu menu = child3.getValue(Menu.class);
-                            category.addCategoryMenu(menu);
-                            //menus.add(menu);
-//                            Log.e("me",menu.getName());
+        for(DataSnapshot child0 : dataSnapshot.getChildren()) {
+            if (child0.getKey().equals("menu")) {
+                for (DataSnapshot child1 : child0.getChildren()) {
+                    if (child1.getKey().equals(ID))
+                        for (DataSnapshot child2 : child1.getChildren()) {
+                            if (child2.getKey() != null) {
+                                Category category = new Category();
+                                category.setCategory(child2.getKey());
+                                categories.add(child2.getKey());
+                                for (DataSnapshot child3 : child2.getChildren()) {
+                                    Menu menu = child3.getValue(Menu.class);
+                                    category.addCategoryMenu(menu);
+                                }
+                                categoryList.add(category);
+                            }
                         }
-                        //category.setCategoryMenu(menus);
-                        categoryList.add(category);
-//                        addAllMenus(category.getCategoryMenu());
+                }
+            }
+            if (child0.getKey().equals("table")) {
+                for (DataSnapshot child1 : child0.getChildren()) {
+                    if (child1.getKey().equals(ID)) {
+                        for (DataSnapshot child2 : child1.getChildren()) {
+                            if (child2.getKey().equals("hname")) {
+                                restaurant.setName("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("hvideo")) {
+                                restaurant.setVideo(("" + child2.getValue()).split("=")[1]);
+                            }
+                            if (child2.getKey().equals("h_address")) {
+                                restaurant.setAddress("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("h_lat")) {
+                                restaurant.setLattitude("" + child2.getValue());
+                            }
+
+                            if (child2.getKey().equals("h_lng")) {
+                                restaurant.setLongitude("" + child2.getValue());
+                            }
+
+                            if (child2.getKey().equals("h_type_of_restaurant")) {
+                                restaurant.setTypeOfRestaurant("" + child2.getValue());
+                            }
+
+                            if (child2.getKey().equals("hambience_etime")) {
+                                restaurant.setAmbienceEndTime(Integer.parseInt("" + child2.getValue()));
+                            }
+                            if (child2.getKey().equals("hambience_stime")) {
+                                restaurant.setAmbienceStartTime(Integer.parseInt("" + child2.getValue()));
+                            }
+                            if (child2.getKey().equals("hclosing_time")) {
+                                restaurant.setClosingTime("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("hopening_time")) {
+                                restaurant.setOpeningTime("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("hcuisine_type")) {
+                                restaurant.setCuisineType("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("hsignature_etime")) {
+                                restaurant.setSignatureEndTime(Integer.parseInt("" + child2.getValue()));
+                            }
+                            if (child2.getKey().equals("hsignature_stime")) {
+                                restaurant.setSignatureStartTime(Integer.parseInt("" + child2.getValue()));
+                            }
+                            if (child2.getKey().equals("hid")) {
+                                restaurant.setId("" + child2.getValue());
+                            }
+                            if (child2.getKey().equals("h_cost_for_two")) {
+                                restaurant.setCostForTwo(Integer.parseInt("" + child2.getValue()));
+                            }
+                            if (child2.getKey().equals("h_phone")) {
+                                restaurant.setPhone("" + child2.getValue());
+                            }
+                        }
                     }
                 }
+            }
         }
-        //addAllMenus(menus);
+
         if(categoryList.size()>0)
          addAllMenus(categoryList.get(0).getCategoryMenu());
         addAllCategories(categories);
@@ -201,15 +272,16 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         if(selectedItem.getName()!=null){
             for(int i=0;i<categoryList.size();i++){
                 for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
-                    if (dish_Name.equals(categoryList.get(i).getCategoryMenu().get(j))) {
+                    if (selectedItem.getName().equalsIgnoreCase(categoryList.get(i).getCategoryMenu().get(j).getName())) {
 
                         selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
                         selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
                         selectedItem.setPrice(categoryList.get(i).getCategoryMenu().get(j).getPrice());
                         selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
                         selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
-                        youTubePlayer.cueVideo(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
-                        youTubePlayer.play();
+
+                        youTubePlayer.loadVideo(selectedItem.getVideo_url());
+                       // youTubePlayer.play();
 
                         dishName.setText(selectedItem.getName());
                         desc.setText(selectedItem.getDesc());
@@ -217,18 +289,51 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
                         if (selectedItem.getVeg() != null) {
                             if (selectedItem.getVeg() == 0) {
                                 veg.setImageResource(R.mipmap.veg);
+                                dishName.setTextColor(getResources().getColor(R.color.veg_active));
                             } else {
                                 veg.setImageResource(R.mipmap.nonveg);
+                                dishName.setTextColor(getResources().getColor(R.color.nonveg_active));
                             }
                         }
-
-
+                       // youTubePlayer.play();
                     }
                 }
             }
         }
 
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "http://maps.google.com/maps?daddr=" + restaurant.getLattitude() + "," + restaurant.getLongitude();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
+            }
+        });
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = restaurant.getPhone();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" +number));
+                startActivity(intent);
+            }
+        });
+
+        restaurantCategory.setText(restaurant.getTypeOfRestaurant());
+        restaurantLocation.setText(restaurant.getAddress());
+        restaurantCostForTwo.setText("Cost for two: "+restaurant.getCostForTwo());
+
+
+        if(compareDates()){
+            restaurantOpenClosed.setText("Open "+ Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+        }else{
+            restaurantOpenClosed.setText("Closed "+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+        }
+        restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
     }
+
 
     public void addAllCategories(List<String> categories) {
         restaurantBottomAdapter.addAll(categories);
@@ -237,6 +342,53 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
     }
 
+    private boolean compareDates() {
+
+        try {
+            Date time1 = new SimpleDateFormat("HH:mm").parse(compareStringOne);
+
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(time1);
+            calendar1.add(Calendar.DATE, 1);
+
+            Date time2 = new SimpleDateFormat("HH:mm").parse(compareStringTwo);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(time2);
+
+            calendar2.add(Calendar.DATE, 1);
+
+            Calendar now = Calendar.getInstance();
+            int hour = now.get(Calendar.HOUR_OF_DAY);
+            int minute = now.get(Calendar.MINUTE);
+            String a =hour+":"+minute;
+            Date d = new SimpleDateFormat("HH:mm").parse(a);
+            now.setTime(d);
+            now.add(Calendar.DATE, 1);
+
+            Date x = now.getTime();
+
+            if(calendar1.get(Calendar.HOUR_OF_DAY)>calendar2.get(Calendar.HOUR_OF_DAY)){
+                if(now.get(Calendar.HOUR_OF_DAY)<calendar2.get(Calendar.HOUR_OF_DAY)){
+                    return true;
+                }
+                int hr =calendar2.get(Calendar.HOUR_OF_DAY)+24;
+                int min = calendar2.get(Calendar.MINUTE);
+                String b = hr+":"+min;
+                Date d1 = new SimpleDateFormat("HH:mm").parse(b);
+                calendar2.setTime(d1);
+                calendar2.add(Calendar.DATE, 1);
+            }
+            if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
+                return true;
+            }
+            return false;
+
+        } catch (ParseException e){
+            e.printStackTrace();
+
+        }
+        return true;
+    }
     public void addAllMenus(List<com.example.prakharagarwal.binge.StoriesMenu.Menu> menus) {
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
@@ -254,8 +406,6 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
             }
         }
 //        checkIfEmpty();
-
-
     }
 
 
@@ -295,16 +445,16 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
     @Override
     public void showStory(Context context, Menu menu) {
-
-        youTubePlayer.cueVideo(selectedItem.getVideo_url());
-        youTubePlayer.play();
-
         selectedItem.setName(menu.getName());
         selectedItem.setDesc(menu.getDesc());
         selectedItem.setHas_video(menu.getHas_video());
         selectedItem.setPrice(menu.getPrice());
         selectedItem.setVeg(menu.getVeg());
         selectedItem.setVideo_url(menu.getVideo_url());
+
+        youTubePlayer.loadVideo(selectedItem.getVideo_url());
+//        youTubePlayer.cueVideo(selectedItem.getVideo_url());
+//        youTubePlayer.play();
 
         dishName.setText(selectedItem.getName());
         desc.setText(selectedItem.getDesc());
@@ -316,7 +466,6 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
                 veg.setImageResource(R.mipmap.nonveg);
             }
         }
-        //curr = 0;
     }
 
 }

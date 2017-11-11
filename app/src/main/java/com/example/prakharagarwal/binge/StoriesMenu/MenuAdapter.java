@@ -1,6 +1,7 @@
 package com.example.prakharagarwal.binge.StoriesMenu;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,6 +57,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         final String name = menus.get(position).name;
         final String price = menus.get(position).price;
 
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Nunito-SemiBold.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Nunito-Light.ttf");
+        Typeface typeface2 = Typeface.createFromAsset(mContext.getAssets(), "fonts/Nunito-Regular.ttf");
+
+
         if (menus.get(position).getHas_video() == 0) {
             holder.play.setVisibility(View.VISIBLE);
         }else{
@@ -70,8 +76,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
             }
         }
         holder.textViewName.setText(name);
+        holder.textViewName.setTypeface(typeface);
         holder.textViewPrice.setText(price);
+        holder.textViewPrice.setTypeface(typeface);
         holder.textViewDescription.setText(description);
+        holder.textViewDescription.setTypeface(typeface);
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

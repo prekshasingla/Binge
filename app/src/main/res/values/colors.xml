@@ -14,8 +14,11 @@
     <color name="photo_placeholder">#ccc</color>
     <color name="grey">#d3d3d3</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white_opaque">#FFFFFFFF</color>6j
+    <color name="white_opaque">#FFFFFFFF</color>
     <color name="pitch_black">#FF000000</color>
+
+    <color name="veg_active">#279028</color>
+    <color name="nonveg_active">#ff111c</color>
 
     <color name="theme_accent">#04561A</color>
 
