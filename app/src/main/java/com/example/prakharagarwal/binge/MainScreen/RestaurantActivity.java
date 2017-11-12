@@ -2,15 +2,19 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +85,17 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
+        SlidingUpPanelLayout panel=(SlidingUpPanelLayout)findViewById(R.id.stories_sliding_up);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, r.getDisplayMetrics());
+
+        panel.setPanelHeight(height-(int)px);
+
         bottomRecycler=(RecyclerView)findViewById(R.id.restaurant_bottom_recycler);
         restaurantBottomAdapter= new RestaurantBottomAdapter(categories,this);
         bottomRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
@@ -144,6 +159,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
         dishName.setText(selectedItem.getName());
 
+
         menuRecyler = (RecyclerView) findViewById(R.id.menu_recycler);
         menuAdapter = new MenuAdapter(this,menus);
         menuRecyler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
@@ -152,6 +168,8 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         } catch (NoClassDefFoundError e) {
 
         }
+        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -167,8 +185,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
             }
         });
 
-        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
+
 
         share = (ImageView) findViewById(R.id.share_button_stories);
         share.setOnClickListener(new View.OnClickListener() {
@@ -211,9 +228,7 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
                             if (child2.getKey().equals("hname")) {
                                 restaurant.setName("" + child2.getValue());
                             }
-                            if (child2.getKey().equals("hvideo")) {
-                                restaurant.setVideo(("" + child2.getValue()).split("=")[1]);
-                            }
+
                             if (child2.getKey().equals("h_address")) {
                                 restaurant.setAddress("" + child2.getValue());
                             }
@@ -327,9 +342,9 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
 
 
         if(compareDates()){
-            restaurantOpenClosed.setText("Open "+ Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            restaurantOpenClosed.setText(""+ Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
         }else{
-            restaurantOpenClosed.setText("Closed "+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            restaurantOpenClosed.setText(""+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
         }
         restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
     }
@@ -462,8 +477,10 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         if (selectedItem.getVeg() != null) {
             if (selectedItem.getVeg() == 0) {
                 veg.setImageResource(R.mipmap.veg);
+                dishName.setTextColor(getResources().getColor(R.color.veg_active));
             } else {
                 veg.setImageResource(R.mipmap.nonveg);
+                dishName.setTextColor(getResources().getColor(R.color.nonveg_active));
             }
         }
     }

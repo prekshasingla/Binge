@@ -6,18 +6,19 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:gravity="bottom"
+    sothree:umanoAnchorPoint=".70"
     sothree:umanoDragView="@+id/dragmenu"
     sothree:umanoFadeColor="#10000000"
     sothree:umanoOverlay="true"
     sothree:umanoPanelHeight="450dp"
-    sothree:umanoAnchorPoint=".65"
     sothree:umanoScrollableView="@+id/linear2">
 
     <LinearLayout
+        android:id="@+id/linear1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/linear1">
+        android:background="@color/white_opaque"
+        android:layout_height="150dp"
+        android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -28,13 +29,13 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:background="#ffffff"
                 android:elevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="35dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -70,7 +71,7 @@
             android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/address"
@@ -97,10 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearlayout1"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/category"
@@ -120,19 +121,18 @@
                 android:textColor="#454545" />
 
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
 
-            android:background="#b0b0b0"></View>
+
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/call_item_textview"
@@ -148,7 +148,7 @@
                 android:id="@+id/locate_item_textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".4"
+                android:layout_weight=".3"
                 android:drawableLeft="@drawable/ic_room_black_24dp"
                 android:gravity="left|center"
                 android:text="Locate"
@@ -158,26 +158,23 @@
                 android:id="@+id/item_reviews_textview"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".4"
+                android:layout_weight=".5"
                 android:gravity="center|right"
                 android:paddingRight="1dp"
                 android:text="Reviews coming soon"
-                android:textColor="#929191"
-               />
+                android:textColor="#929191" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#b0b0b0"></View>
+
+
 
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/linear2">
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
@@ -193,131 +190,122 @@
             android:background="@color/white_opaque">
 
             <RelativeLayout
+                android:id="@+id/dragmenu"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/dragmenu">
+                android:layout_height="wrap_content">
 
-            <com.google.android.youtube.player.YouTubePlayerView
-                android:id="@+id/youtube_view"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/grey" />
-
-
-            <LinearLayout
-
-                android:id="@+id/lin1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/youtube_view"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginTop="5dp">
-
-                <ImageView
-                    android:id="@+id/veg_image_selected"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/veg" />
-
-                <TextView
-                    android:id="@+id/dish_name_selected"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Dish"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/price_selected"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:text="Price"
-                    android:textColor="#7d7d7d"
-                    android:textSize="15sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/lin1"
-                android:paddingLeft="10dp"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:id="@+id/desc_selected"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="description of the dish will be very long."
-                    android:textColor="#7d7d7d"
-                    android:textSize="12dp"/>
-            </LinearLayout>
-
-                <View
-                    android:id="@+id/separatorline"
+                <com.google.android.youtube.player.YouTubePlayerView
+                    android:id="@+id/youtube_view"
                     android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_below="@+id/lin2"
-                    android:background="#7d7d7d"
-
-                    android:paddingBottom="5dp"></View>
+                    android:layout_height="200dp"
+                    android:background="@color/grey" />
 
 
                 <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_below="@+id/separatorline"
-                android:id="@+id/heading_linlay">
 
-
-                <TextView
-                    android:id="@+id/heading"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/lin1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="sans-serif"
-                    android:gravity="left"
-                    android:foregroundGravity="center"
-                    android:text="MENU"
-                    android:drawableRight="@drawable/ic_expand_less_black_24dp"
-                    android:textColor="#454545"
-                    android:textSize="15sp" />
+                    android:layout_below="@id/youtube_view"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/veg_image_selected"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/veg" />
+
+                    <TextView
+                        android:id="@+id/dish_name_selected"
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dish"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/price_selected"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".3"
+                        android:gravity="right"
+                        android:text="Price"
+                        android:textColor="#7d7d7d"
+                        android:textSize="15sp" />
 
 
-            </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lin1"
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/desc_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="description of the dish will be very long."
+                        android:textColor="#7d7d7d"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/heading_linlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lin2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/menu_text_background"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:drawableRight="@drawable/ic_expand_less_black_24dp"
+                        android:fontFamily="sans-serif"
+                        android:foregroundGravity="center"
+                        android:gravity="left"
+                        android:text="MENU"
+                        android:textColor="#454545"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
             </RelativeLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/dragmenu"
-                android:orientation="vertical">
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/menu_recycler"
                     android:layout_width="match_parent"
+                    android:layout_above="@+id/restaurant_bottom_recycler"
                     android:layout_height="match_parent"
-                   >
+                    android:layout_below="@+id/dragmenu">
 
                 </android.support.v7.widget.RecyclerView>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/restaurant_bottom_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp">
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="40dp"></android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
     </LinearLayout>

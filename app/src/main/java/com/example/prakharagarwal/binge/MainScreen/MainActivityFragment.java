@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.CheckNetwork;
 import com.example.prakharagarwal.binge.R;
@@ -22,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,8 @@ public class MainActivityFragment extends Fragment {
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
     List<Food_MainScreen> mFood;
+    TextView emptyView;
+    ProgressBar progressBar;
 
     public static MainActivityFragment newInstance(String id) {
         Bundle args = new Bundle();
@@ -60,14 +66,17 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.activity_main_fragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main_recycler_view);
-
-
+        emptyView = (TextView) rootView.findViewById(R.id.text_menu_empty);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("mainscreen");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 getData(dataSnapshot);
 
             }
@@ -92,7 +101,7 @@ public class MainActivityFragment extends Fragment {
 
     public void getData(DataSnapshot dataSnapshot) {
         mFood.clear();
-
+        progressBar.setVisibility(View.GONE);
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             if (child.getKey().equals(getArguments().getString("id"))) {
                 for (DataSnapshot child1 : child.getChildren()) {
@@ -101,11 +110,14 @@ public class MainActivityFragment extends Fragment {
                 }
             }
         }
+        if (mFood.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
         mFoodAdapter.addAll(mFood);
         mFoodAdapter.notifyDataSetChanged();
     }
-
-
 
 
 }

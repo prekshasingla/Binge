@@ -6,6 +6,6 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 public class Config {
 
-    public static final String YOUTUBE_API_KEY = "AIzaSyAxWmD50beu0If37tRuoOFhZ8ULRENEqXM";
+    public static final String YOUTUBE_API_KEY = "AIzaSyDGzgze5f7z_Nruuti3E9dBerkdf9Id-1o";
 }
 

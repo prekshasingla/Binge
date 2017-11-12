@@ -198,10 +198,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
 
-        // ATTENTION: This was auto-generated to handle app links.
-        Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
+
     }
 
 //
