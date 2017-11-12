@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -79,11 +80,11 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
     private String compareStringTwo = "1:45";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
+
 
         SlidingUpPanelLayout panel=(SlidingUpPanelLayout)findViewById(R.id.stories_sliding_up);
 
@@ -97,8 +98,8 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         panel.setPanelHeight(height-(int)px);
 
         bottomRecycler=(RecyclerView)findViewById(R.id.restaurant_bottom_recycler);
-        restaurantBottomAdapter= new RestaurantBottomAdapter(categories,this);
         bottomRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        restaurantBottomAdapter= new RestaurantBottomAdapter(categories,this,bottomRecycler.getLayoutManager());
         bottomRecycler.setAdapter(restaurantBottomAdapter);
 
         menus = new ArrayList<Menu>();
@@ -108,6 +109,12 @@ public class RestaurantActivity extends YouTubeBaseActivity implements
         restaurant = new Restaurant();
 
         resName = (TextView) findViewById(R.id.restaurant_name);
+        resName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         desc = (TextView) findViewById(R.id.desc_selected);
         dishName = (TextView) findViewById(R.id.dish_name_selected);
         price = (TextView) findViewById(R.id.price_selected);
