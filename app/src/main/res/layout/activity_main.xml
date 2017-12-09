@@ -61,11 +61,11 @@
                     <ImageView
                         android:src="@drawable/search_black"
                         android:layout_marginLeft="110dp"
-                        android:id="@+id/main_app_logo"
+                        android:id="@+id/search_icon"
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
                         android:layout_height="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_gravity="center_vertical|right"
 
                         />

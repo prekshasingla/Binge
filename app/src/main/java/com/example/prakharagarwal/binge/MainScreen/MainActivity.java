@@ -10,21 +10,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     CardView cv;
     SharedPreferences sharedpreferences;
+    private ImageView searchIcon;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
@@ -128,7 +128,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-
+        searchIcon = (ImageView) findViewById(R.id.search_icon);
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
         //Adding the tabs using addTab() method
 //        tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
 //        tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
