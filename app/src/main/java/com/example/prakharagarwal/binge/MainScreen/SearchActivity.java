@@ -1,5 +1,6 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,7 +28,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-  private List<String> mFood;
+  private List<Food_MainScreen> mFood;
   private List<String> mRestaurants;
   private ListView cuisineListView;
   private SearchResultAdapter cuisineResultAdapter;
@@ -67,6 +69,8 @@ public class SearchActivity extends AppCompatActivity {
       @Override
       public void afterTextChanged(Editable s) {
         String searchTerm = searchField.getText().toString();
+        cuisineList.clear();
+        restaurantList.clear();
         setCuisineList(searchTerm);
         setRestaurantList(searchTerm);
       }
@@ -94,26 +98,39 @@ public class SearchActivity extends AppCompatActivity {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         getRestaurantData(dataSnapshot);
-        setRestaurantList("");
+        setRestaurantList(null);
       }
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
       }
     });
+
+    cuisineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(SearchActivity.this, RestaurantActivity.class);
+        intent.putExtra("restaurantID", mFood.get(position).getRestaurant_id());
+        intent.putExtra("restaurantName", mFood.get(position).getRestaurant_name());
+        intent.putExtra("dishName",mFood.get(position).getDish_id());
+        // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+        intent.putExtra("posi",1);
+        startActivity(intent);
+      }
+    });
   }
 
   private void setCuisineList(String searchTerm) {
     int i = 0;
-    int j = 9;
+    int j = 0;
     while (j < 10) {
       if(searchTerm==null)
       {
-        cuisineList.add(mFood.get(i));
+        cuisineList.add(mFood.get(i).getDish_id());
         j++;
       }else
-      if (mFood.get(i).toLowerCase().contains(searchTerm.toLowerCase())) {
-        cuisineList.add(mFood.get(i));
+      if (mFood.get(i).getDish_id().toLowerCase().contains(searchTerm.toLowerCase())) {
+        cuisineList.add(mFood.get(i).getDish_id());
         j++;
       }
       i++;
@@ -126,8 +143,21 @@ public class SearchActivity extends AppCompatActivity {
   }
 
   private void setRestaurantList(String searchTerm) {
-    for (int i = 0; i < 10; i++) {
-      restaurantList.add(mRestaurants.get(i));
+    int i = 0;
+    int j = 0;
+    while (j < 10) {
+      if(searchTerm==null)
+      {
+        restaurantList.add(mRestaurants.get(i));
+        j++;
+      }else
+      if (mRestaurants.get(i).toLowerCase().contains(searchTerm.toLowerCase())) {
+        restaurantList.add(mRestaurants.get(i));
+        j++;
+      }
+      i++;
+      if(i==mRestaurants.size())
+        return;
     }
     restaurantResultAdapter.notifyDataSetChanged();
     restaurantListView.setAdapter(restaurantResultAdapter);
@@ -177,13 +207,9 @@ public class SearchActivity extends AppCompatActivity {
     for (DataSnapshot child : dataSnapshot.getChildren()) {
 //      if (child.getKey().equals(getArguments().getString("id"))) {
       for (DataSnapshot child1 : child.getChildren()) {
-        for (DataSnapshot child2 : child1.getChildren()) {
-          String cuisine = null;
-          if (child2.getKey().equals("dish_id")) {
-            cuisine = (String) child2.getValue();
-            mFood.add(cuisine);
-          }
-        }
+        Food_MainScreen food = child1.getValue(Food_MainScreen.class);
+        mFood.add(food);
+
       }
 //      }
     }
