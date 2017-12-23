@@ -85,7 +85,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
         @Override
         public void onClick(View v) {
 
-            Intent intent = new Intent(mContext, RestaurantActivity.class);
+            Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
             intent.putExtra("restaurantID", mFood.get(getAdapterPosition()).getRestaurant_id());
             intent.putExtra("restaurantName", mFood.get(getAdapterPosition()).getRestaurant_name());
             intent.putExtra("dishName",mFood.get(getAdapterPosition()).getDish_id());

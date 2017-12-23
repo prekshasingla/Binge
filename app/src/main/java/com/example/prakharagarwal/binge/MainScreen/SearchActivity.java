@@ -7,14 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +27,8 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity {
 
   private List<Food_MainScreen> mFood;
-  private List<String> mRestaurants;
+  private List<Restaurant> mRestaurants;
+
   private ListView cuisineListView;
   private SearchResultAdapter cuisineResultAdapter;
   private ListView restaurantListView;
@@ -109,7 +108,7 @@ public class SearchActivity extends AppCompatActivity {
     cuisineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(SearchActivity.this, RestaurantActivity.class);
+        Intent intent = new Intent(SearchActivity.this, RestaurantDetailsActivity.class);
         intent.putExtra("restaurantID", mFood.get(position).getRestaurant_id());
         intent.putExtra("restaurantName", mFood.get(position).getRestaurant_name());
         intent.putExtra("dishName",mFood.get(position).getDish_id());
@@ -118,6 +117,20 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
       }
     });
+
+    restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(SearchActivity.this, RestaurantActivity.class);
+        intent.putExtra("restaurantID", mRestaurants.get(position).getRestaurantID());
+        intent.putExtra("restaurantName", mRestaurants.get(position).getRestaurantName());
+        //intent.putExtra("dishName",mFood.get(position).getDish_id());
+        // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+        intent.putExtra("posi",1);
+        startActivity(intent);
+      }
+    });
+
   }
 
   private void setCuisineList(String searchTerm) {
@@ -148,11 +161,11 @@ public class SearchActivity extends AppCompatActivity {
     while (j < 10) {
       if(searchTerm==null)
       {
-        restaurantList.add(mRestaurants.get(i));
+        restaurantList.add(mRestaurants.get(i).getRestaurantName());
         j++;
       }else
-      if (mRestaurants.get(i).toLowerCase().contains(searchTerm.toLowerCase())) {
-        restaurantList.add(mRestaurants.get(i));
+      if ((mRestaurants.get(i).getRestaurantName()).toLowerCase().contains(searchTerm.toLowerCase())) {
+        restaurantList.add(mRestaurants.get(i).getRestaurantName());
         j++;
       }
       i++;
@@ -192,13 +205,23 @@ public class SearchActivity extends AppCompatActivity {
 
   private void getRestaurantData(DataSnapshot dataSnapshot) {
     for (DataSnapshot child : dataSnapshot.getChildren()) {
+      Restaurant restaurant=new Restaurant();
+
       for (DataSnapshot child1 : child.getChildren()) {
-        String restaurant = null;
-        if (child1.getKey().equals("hname")) {
-          restaurant = (String) child1.getValue();
-          mRestaurants.add(restaurant);
+
+        String id=null;
+        String name=null;
+        if (child1.getKey().equals("hid")) {
+          restaurant.setRestaurantID("" + child1.getValue());
         }
+        if (child1.getKey().equals("hname")) {
+          restaurant.setRestaurantName("" + child1.getValue());
+
+        }
+
       }
+      mRestaurants.add(restaurant);
+
     }
   }
 
@@ -212,6 +235,29 @@ public class SearchActivity extends AppCompatActivity {
 
       }
 //      }
+    }
+  }
+
+  class Restaurant{
+    String restaurantID;
+    String restaurantName;
+
+
+
+    public String getRestaurantID() {
+      return restaurantID;
+    }
+
+    public void setRestaurantID(String restaurantID) {
+      this.restaurantID = restaurantID;
+    }
+
+    public String getRestaurantName() {
+      return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+      this.restaurantName = restaurantName;
     }
   }
 }
