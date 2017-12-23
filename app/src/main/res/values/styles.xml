@@ -23,7 +23,9 @@
         <item name="colorAccent">@color/white_opaque</item>
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
-
+    <style name="AppTheme_onBoarding">
+        <item name="colorPrimaryDark">#272</item>
+    </style>
 
     <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>

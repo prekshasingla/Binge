@@ -93,6 +93,9 @@
         <activity
             android:name=".MainScreen.RestaurantActivity"
             android:label="@string/title_activity_restaurant" />
+        <activity
+            android:name=".OnBoardingActivity"
+            android:label="@string/title_activity_on_boarding"></activity>
     </application>
 
 </manifest>
