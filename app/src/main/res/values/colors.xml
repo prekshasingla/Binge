@@ -23,5 +23,10 @@
     <color name="theme_accent">#04561A</color>
     <color name="tab_text_color">#f1bb3a</color>
     <color name="tab_text_color_grey">#ccc</color>
+    <!-- circular page indicator-->
+    <color name="fpi_default_indicator_inactive_color">#FFFFFFFF</color>
+    <color name="fpi_default_indicator_active_color">#ff5500</color>
+    <color name="transparent">#00000000</color>
+
 
 </resources>

@@ -22,10 +22,12 @@ public class OnBoardingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_on_boarding);
         mViewPager=(ViewPager) findViewById(R.id.onboarding_viewpager);
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(OnBoardingFragment1.newInstance("",""));
-        viewPagerAdapter.addFragment(OnBoardingFragment1.newInstance("",""));
+        viewPagerAdapter.addFragment(OnBoardingFragment1.newInstance("screen1"));
+        viewPagerAdapter.addFragment(OnBoardingFragment1.newInstance("screen2"));
 
         mViewPager.setAdapter(viewPagerAdapter);
+        CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        indicator.initViewPager(mViewPager);
     }
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

@@ -28,7 +28,6 @@
                         android:id="@+id/imageview_food_mainScreen"
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
-                        android:src="@drawable/image1"
                         android:scaleType="fitXY"/>
 
                     <LinearLayout

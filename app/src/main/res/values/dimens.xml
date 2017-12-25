@@ -19,6 +19,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
-
+    <!-- circle page indicator-->
+    <dimen name="fvp_default_circle_radius">4dp</dimen>
+    <dimen name="fvp_default_circle_padding">12dp</dimen>
 </resources>

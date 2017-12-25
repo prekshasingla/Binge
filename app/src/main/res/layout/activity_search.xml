@@ -41,10 +41,12 @@
                         android:id="@+id/search_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textColor="@color/white_opaque"
                         android:layout_gravity="center_vertical|right"
                         android:hint="Search for Cuisines and Restaurants"
                         android:textColorHint="@color/white_opaque"
                         android:visibility="visible"
+                        android:background="@color/transparent"
 
                         />
                 </LinearLayout>

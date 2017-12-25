@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +37,18 @@ public class SearchActivity extends AppCompatActivity {
   private ArrayList<String> cuisineList;
   private ArrayList<String> restaurantList;
   private EditText searchField;
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }  }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +83,9 @@ public class SearchActivity extends AppCompatActivity {
         String searchTerm = searchField.getText().toString();
         cuisineList.clear();
         restaurantList.clear();
+        if(mFood.size()>0)
         setCuisineList(searchTerm);
+        if(mRestaurants.size()>0)
         setRestaurantList(searchTerm);
       }
     });
@@ -115,6 +130,7 @@ public class SearchActivity extends AppCompatActivity {
         // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
         intent.putExtra("posi",1);
         startActivity(intent);
+        finish();
       }
     });
 
@@ -128,6 +144,7 @@ public class SearchActivity extends AppCompatActivity {
         // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
         intent.putExtra("posi",1);
         startActivity(intent);
+        finish();
       }
     });
 

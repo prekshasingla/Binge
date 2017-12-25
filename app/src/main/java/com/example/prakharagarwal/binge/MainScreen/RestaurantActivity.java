@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +24,8 @@ public class RestaurantActivity extends AppCompatActivity {
 
     TextView textViewLocation;
 
-    String latitude=null;
-    String longitude=null;
+    String latitude = null;
+    String longitude = null;
     private Menu menu;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -32,19 +33,30 @@ public class RestaurantActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     private ImageView searchIcon;
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
-
-        String restaurantID=getIntent().getStringExtra("restaurantID");
-        String restaurantName=getIntent().getStringExtra("restaurantName");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String restaurantID = getIntent().getStringExtra("restaurantID");
+        String restaurantName = getIntent().getStringExtra("restaurantName");
         textViewLocation = (TextView) findViewById(R.id.user_location);
         textViewLocation.setText(restaurantName);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         //Initializing the tablayout
         //tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
@@ -66,7 +78,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(RestaurantActivityFragment.newInstance(restaurantID));
         viewPager.setAdapter(viewPagerAdapter);
 

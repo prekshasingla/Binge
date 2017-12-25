@@ -23,11 +23,13 @@
         <item name="colorAccent">@color/white_opaque</item>
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
-    <style name="AppTheme_onBoarding">
-        <item name="colorPrimaryDark">#272</item>
+    <style name="AppTheme_onBoarding" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">#272727</item>
     </style>
-
-    <style name="WriteReview" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme_splash" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">#fafafa</item>
+    </style>
+    <style name="WriteReview" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/theme_primary</item>
         <item name="android:textColor">@color/white_opaque</item>

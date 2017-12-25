@@ -9,8 +9,8 @@ android {
         applicationId "in.binge.android"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 4
-        versionName "2.0"
+        versionCode 5
+        versionName "2.1"
     }
     buildTypes {
         release {

@@ -299,6 +299,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
                         selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
                         selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
 
+                        if(youTubePlayer!=null)
                         youTubePlayer.loadVideo(selectedItem.getVideo_url());
                        // youTubePlayer.play();
 
