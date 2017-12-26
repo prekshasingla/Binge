@@ -19,7 +19,8 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:background="#ff5500"
+                android:theme="@style/LoginToolbar"
+                android:background="#f1bb3a"
                 android:layout_width="match_parent"
                 app:title="Login"
                 android:titleTextColor="@color/white_opaque"

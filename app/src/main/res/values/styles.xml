@@ -35,7 +35,13 @@
         <item name="android:textColor">@color/white_opaque</item>
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
-
+    <style name="Login" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">#f1bb3a</item>
+    </style>
+    <style name="LoginToolbar" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">#f1bb3a</item>
+        <item name="android:textColorSecondary">@color/white_opaque</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
