@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
@@ -37,8 +38,8 @@ public class SearchActivity extends AppCompatActivity {
     private SearchResultAdapter cuisineResultAdapter;
     private ListView restaurantListView;
     private SearchResultAdapter restaurantResultAdapter;
-    private ArrayList<String> cuisineList;
-    private ArrayList<String> restaurantList;
+    private List<RestCuisineListItem> cuisineList;
+    private List<RestCuisineListItem> restaurantList;
     private EditText searchField;
 
     private TextView cuisinesHeader;
@@ -65,9 +66,9 @@ public class SearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        cuisineList = new ArrayList<>();
-        restaurantList = new ArrayList<>();
 
+        cuisineList=new ArrayList<>();
+        restaurantList=new ArrayList<>();
         cuisinesHeader = (TextView) findViewById(R.id.cuisinesHeader);
         restrHeader = (TextView) findViewById(R.id.restaurantsHeader);
         cuisineListView = (ListView) findViewById(R.id.cuisinesList);
@@ -131,9 +132,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, RestaurantDetailsActivity.class);
-                intent.putExtra("restaurantID", mFood.get(position).getRestaurant_id());
-                intent.putExtra("restaurantName", mFood.get(position).getRestaurant_name());
-                intent.putExtra("dishName", mFood.get(position).getDish_id());
+                intent.putExtra("restaurantID", cuisineList.get(position).getRestaurantID());
+                intent.putExtra("restaurantName", cuisineList.get(position).getRestaurantName());
+                intent.putExtra("dishName", cuisineList.get(position).getDisplayName());
                 // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
                 intent.putExtra("posi", 1);
                 startActivity(intent);
@@ -145,10 +146,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, RestaurantActivity.class);
-                intent.putExtra("restaurantID", mRestaurants.get(position).getRestaurantID());
-                intent.putExtra("restaurantName", mRestaurants.get(position).getRestaurantName());
-                //intent.putExtra("dishName",mFood.get(position).getDish_id());
-                // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+                intent.putExtra("restaurantID", restaurantList.get(position).getRestaurantID());
+                intent.putExtra("restaurantName", restaurantList.get(position).getRestaurantName());
                 intent.putExtra("posi", 1);
                 startActivity(intent);
                 finish();
@@ -160,14 +159,23 @@ public class SearchActivity extends AppCompatActivity {
     private void setCuisineList(String searchTerm) {
         int i = 0;
         int j = 0;
+        if(cuisineList!=null)
         cuisineList.clear();
         cuisineResultAdapter.notifyDataSetChanged();
         while (j < 10) {
             if (searchTerm == null) {
-                cuisineList.add(mFood.get(i).getDish_id());
+                RestCuisineListItem cuisine=new RestCuisineListItem();
+                cuisine.setDisplayName(mFood.get(i).getDish_id());
+                cuisine.setRestaurantID(mFood.get(i).getRestaurant_id());
+                cuisine.setRestaurantName(mFood.get(i).getRestaurant_name());
+                cuisineList.add(cuisine);
                 j++;
             } else if (mFood.get(i).getDish_id().toLowerCase().contains(searchTerm.toLowerCase())) {
-                cuisineList.add(mFood.get(i).getDish_id());
+                RestCuisineListItem cuisine=new RestCuisineListItem();
+                cuisine.setDisplayName(mFood.get(i).getDish_id());
+                cuisine.setRestaurantID(mFood.get(i).getRestaurant_id());
+                cuisine.setRestaurantName(mFood.get(i).getRestaurant_name());
+                cuisineList.add(cuisine);
                 j++;
             }
             i++;
@@ -189,16 +197,25 @@ public class SearchActivity extends AppCompatActivity {
     private void setRestaurantList(String searchTerm) {
         int i = 0;
         int j = 0;
+        if(restaurantList!=null)
         restaurantList.clear();
         restaurantResultAdapter.notifyDataSetChanged();
         while (j < 10) {
             if (searchTerm == null) {
-                restaurantList.add(mRestaurants.get(i).getRestaurantName());
+                RestCuisineListItem rest=new RestCuisineListItem();
+                rest.setDisplayName(mRestaurants.get(i).getRestaurantName());
+                rest.setRestaurantID(mRestaurants.get(i).getRestaurantID());
+                rest.setRestaurantName(mRestaurants.get(i).getRestaurantName());
+                restaurantList.add(rest);
                 j++;
             } else
                 if ((mRestaurants.get(i).getRestaurantName()).toLowerCase().contains(searchTerm.toLowerCase())) {
-                restaurantList.add(mRestaurants.get(i).getRestaurantName());
-                j++;
+                    RestCuisineListItem rest=new RestCuisineListItem();
+                    rest.setDisplayName(mRestaurants.get(i).getRestaurantName());
+                    rest.setRestaurantID(mRestaurants.get(i).getRestaurantID());
+                    rest.setRestaurantName(mRestaurants.get(i).getRestaurantName());
+                    restaurantList.add(rest);
+                    j++;
             }
             i++;
             if (i == mRestaurants.size())
@@ -296,6 +313,53 @@ public class SearchActivity extends AppCompatActivity {
 
         public void setRestaurantName(String restaurantName) {
             this.restaurantName = restaurantName;
+        }
+    }
+    class RestCuisineListItem{
+        Integer position;
+        String displayName;
+        String restaurantID;
+        String restaurantName;
+        String dishName;
+
+        public Integer getPosition() {
+            return position;
+        }
+
+        public void setPosition(Integer position) {
+            this.position = position;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getRestaurantID() {
+            return restaurantID;
+        }
+
+        public void setRestaurantID(String restaurantID) {
+            this.restaurantID = restaurantID;
+        }
+
+        public String getRestaurantName() {
+            return restaurantName;
+        }
+
+        public void setRestaurantName(String restaurantName) {
+            this.restaurantName = restaurantName;
+        }
+
+        public String getDishName() {
+            return dishName;
+        }
+
+        public void setDishName(String dishName) {
+            this.dishName = dishName;
         }
     }
 }

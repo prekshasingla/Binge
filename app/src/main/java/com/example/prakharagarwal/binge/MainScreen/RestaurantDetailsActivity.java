@@ -292,7 +292,6 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
             for(int i=0;i<categoryList.size();i++){
                 for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
                     if (selectedItem.getName().equalsIgnoreCase(categoryList.get(i).getCategoryMenu().get(j).getName())) {
-
                         selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
                         selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
                         selectedItem.setPrice(categoryList.get(i).getCategoryMenu().get(j).getPrice());
@@ -346,10 +345,10 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         restaurantCostForTwo.setText("Cost for two: "+restaurant.getCostForTwo());
 
 
-        if(compareDates()){
-            restaurantOpenClosed.setText(""+ Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+        if(compareDates(restaurant.getOpeningTime(),restaurant.getClosingTime())){
+            restaurantOpenClosed.setText(Html.fromHtml("<font color='#07ad6a'>Open</font> "+restaurant.getOpeningTime() + "-" + restaurant.closingTime + " hrs"));
         }else{
-            restaurantOpenClosed.setText(""+Html.fromHtml(compareStringOne + "-" + compareStringTwo + " hrs"));
+            restaurantOpenClosed.setText(Html.fromHtml("<font color='red'>Closed</font> "+restaurant.getOpeningTime() + "-" + restaurant.getClosingTime() + " hrs"));
         }
         restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
     }
@@ -361,9 +360,10 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
 //        checkIfEmpty();
 
     }
+    private boolean compareDates(String open,String close) {
 
-    private boolean compareDates() {
-
+        compareStringOne=open;
+        compareStringTwo=close;
         try {
             Date time1 = new SimpleDateFormat("HH:mm").parse(compareStringOne);
 
@@ -446,7 +446,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         if (!wasRestored) {
             if(selectedItem.getVideo_url()!=null)
              player.loadVideo(selectedItem.getVideo_url());
-            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
             youTubePlayer=player;
 
         }

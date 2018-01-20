@@ -80,7 +80,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Rajouri Garden, Delhi"
                 android:textColor="#454545" />
 
             <TextView
@@ -89,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="Cost For Two : 2500"
                 android:textColor="#454545" />
 
         </LinearLayout>
@@ -110,7 +108,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Europian, Modern Indian, Salad"
                 android:textColor="#454545" />
 
             <TextView
@@ -119,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="Open now\n 11:00hrs - 01:00hrs"
                 android:textColor="#454545" />
 
         </LinearLayout>

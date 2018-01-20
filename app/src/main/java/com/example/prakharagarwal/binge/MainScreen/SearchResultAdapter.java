@@ -20,8 +20,8 @@ import java.util.List;
 public class SearchResultAdapter extends BaseAdapter {
 
   private final Context context;
-  List<String> names;
-  public SearchResultAdapter(Context context, List<String> names){
+  List<SearchActivity.RestCuisineListItem> names;
+  public SearchResultAdapter(Context context, List<SearchActivity.RestCuisineListItem> names){
     this.names=names;
     this.context =context;
   }
@@ -43,7 +43,7 @@ public class SearchResultAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     SearchResultAdapter.ViewHolder holder;
-    final String name =(String) getItem(position);
+    final String name = ((SearchActivity.RestCuisineListItem)getItem(position)).getDisplayName();
 
     if (convertView == null) {
       holder = new SearchResultAdapter.ViewHolder();
