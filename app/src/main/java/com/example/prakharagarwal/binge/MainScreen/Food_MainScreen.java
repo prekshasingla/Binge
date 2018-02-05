@@ -10,6 +10,24 @@ public class Food_MainScreen {
     String poster_url;
     String restaurant_id;
     String restaurant_name;
+    double latitude;
+    double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getDish_id() {
         return dish_id;

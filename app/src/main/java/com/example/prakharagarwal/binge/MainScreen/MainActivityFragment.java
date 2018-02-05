@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,8 +42,10 @@ public class MainActivityFragment extends Fragment {
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
     List<Food_MainScreen> mFood;
+    List<Food_MainScreen> mFood2;
     TextView emptyView;
     ProgressBar progressBar;
+    boolean flag;
 
     public static MainActivityFragment newInstance(String id) {
         Bundle args = new Bundle();
@@ -57,6 +61,7 @@ public class MainActivityFragment extends Fragment {
 
 
         mFood = new ArrayList<>();
+        mFood2= new ArrayList<>();
 
     }
 
@@ -77,6 +82,10 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                if(((MainActivity)getActivity()).getLatitude()!=null && ((MainActivity)getActivity()).getLongitude()!=null)
+                    flag=true;
+                else
+                    flag=false;
                 getData(dataSnapshot);
 
             }
@@ -90,9 +99,15 @@ public class MainActivityFragment extends Fragment {
 
 //        update();
         mFoodAdapter = new FoodMainScreenAdapter(mFood, getContext(), mRecyclerView, getFragmentManager());
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        final GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return mFoodAdapter.isHeader(position) ? mLayoutManager.getSpanCount() : 1;
+            }
+        });
         mRecyclerView.setAdapter(mFoodAdapter);
 
         return rootView;
@@ -101,24 +116,65 @@ public class MainActivityFragment extends Fragment {
 
     public void getData(DataSnapshot dataSnapshot) {
         mFood.clear();
+        mFood2.clear();
         progressBar.setVisibility(View.GONE);
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             if (child.getKey().equals(getArguments().getString("id"))) {
                 for (DataSnapshot child1 : child.getChildren()) {
                     Food_MainScreen food = child1.getValue(Food_MainScreen.class);
+                    mFood2.add(food);
+                    if(!flag)
+                        mFood.add(food);
+                    else
+                    if( flag && calRadius(food.getLatitude(),food.getLongitude()))
                     mFood.add(food);
                 }
             }
         }
-        if (mFood.size() == 0) {
+        Collections.shuffle(mFood);
+        Collections.shuffle(mFood2);
+        if(mFood.size()==0 && mFood2.size()==0)
+        {
             emptyView.setVisibility(View.VISIBLE);
+        }else
+        if (mFood.size() == 0) {
+            emptyView.setVisibility(View.GONE);
+            mFoodAdapter.addAll(mFood2);
+            mFoodAdapter.setHeaderEnabled(true);
+            mFoodAdapter.notifyDataSetChanged();
         } else {
             emptyView.setVisibility(View.GONE);
+            mFoodAdapter.setHeaderEnabled(false);
+            mFoodAdapter.addAll(mFood);
+            mFoodAdapter.notifyDataSetChanged();
         }
-        mFoodAdapter.addAll(mFood);
-        mFoodAdapter.notifyDataSetChanged();
+
     }
 
+    private boolean calRadius(double lat2,double lon2) {
+        double lat1=Double.parseDouble(((MainActivity)getActivity()).getLatitude());
+        double lon1=Double.parseDouble(((MainActivity)getActivity()).getLongitude());
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        if(dist<=5)
+        return true;
+        else
+            return false;
+    }
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
 
 }
 

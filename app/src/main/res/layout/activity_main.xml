@@ -33,8 +33,9 @@
 
 
                     <LinearLayout
+                        android:id="@+id/location_layout"
                         android:layout_width="0dp"
-                        android:layout_weight="7"
+                        android:layout_weight="9"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_gravity="left">
@@ -53,9 +54,10 @@
                             android:id="@+id/user_location"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="New Delhi"
+                            android:text="Locating  ..."
+                            android:maxLines="1"
                             android:textColor="@color/cardview_dark_background"
-                            android:textSize="18dp" />
+                            android:textSize="16dp" />
 
                     </LinearLayout>
 

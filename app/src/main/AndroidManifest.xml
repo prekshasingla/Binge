@@ -67,8 +67,8 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/Login"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Login" />
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait"
@@ -98,7 +98,11 @@
         <activity
             android:name=".OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/AppTheme_onBoarding"></activity>
+            android:theme="@style/AppTheme_onBoarding" />
+        <activity
+            android:name=".MainScreen.LocationSearchActivity"
+            android:label="Select Location" />
+        <activity android:name=".DishRecommend"></activity>
     </application>
 
 </manifest>

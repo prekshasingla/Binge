@@ -1,6 +1,7 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,28 +24,42 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.VolleySingleton;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     private TabLayout tabLayout;
 
-    //This is our viewPager
     private ViewPager viewPager;
 
     TextView textViewLocation;
 
-    String latitude=null;
-    String longitude=null;
+    String latitude = null;
+    String longitude = null;
     private Menu menu;
+    private FusedLocationProviderClient mFusedLocationClient;
+
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     CardView cv;
@@ -54,24 +69,23 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-        SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String uID = prefs.getString("username", null);
         MenuItem menuItemLogin = menu.findItem(R.id.menu_login_status);
         MenuItem menuItemUser = menu.findItem(R.id.menu_username);
 
-        if(uID!=null)
-        {
+
+        if (uID != null) {
             menuItemUser.setTitle(uID);
             menuItemLogin.setTitle("Logout");
 
-        }
-        else {
+        } else {
             menuItemUser.setTitle("");
             menuItemLogin.setTitle("Login");
             //Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         }
 
-        this.menu=menu;
+        this.menu = menu;
         return true;
     }
 
@@ -80,18 +94,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         int id = item.getItemId();
 
         if (id == R.id.menu_login_status) {
-            if(item.getTitle().equals("Logout")){
-                SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+            if (item.getTitle().equals("Logout")) {
+                SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
                 String uID = prefs.getString("username", null);
-                if(uID!=null)
-                {
+                if (uID != null) {
                     SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
                     editor.remove("username").commit();
                     updateMenuTitles();
                 }
-            }
-            else{
-                Intent intent=new Intent(MainActivity.this, LoginActivity.class);
+            } else {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
             return true;
@@ -99,10 +111,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         return super.onOptionsItemSelected(item);
     }
+
     private void updateMenuTitles() {
-        SharedPreferences prefs =getSharedPreferences("Login", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String uID = prefs.getString("username", null);
-        if(menu!=null) {
+        if (menu != null) {
             MenuItem menuItemLogin = menu.findItem(R.id.menu_login_status);
             MenuItem menuItemUser = menu.findItem(R.id.menu_username);
 
@@ -117,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,125 +150,79 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 startActivity(intent);
             }
         });
-        //Adding the tabs using addTab() method
-//        tabLayout.addTab(tabLayout.newTab().setText("Fine & Dining"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Cafes & more"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Drinks & Nighlife"));
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (getIntent().getStringExtra("callingActivity") != null) {
+            latitude=getIntent().getStringExtra("latitude");
+            longitude=getIntent().getStringExtra("longitude");
+            setAddress();
+        } else {
+            checkLocationPermission();
+        }
 
-        //tabLayout.setBackground(R.drawable.primary_btn);
+        createUI();
+
+        LinearLayout locationLayout = (LinearLayout) findViewById(R.id.location_layout);
+        locationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocationSearchActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
 
 
+        //  update();
+
+
+    }
+
+    private void createUI() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"),"Fine Dining");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cafes & more"),"Cafes & More");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Drinks & nightlife"),"Drinks & Nightlife");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cakes & Bakes"),"Cakes & Bakes");
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"), "Fine Dining");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cafes & more"), "Cafes & More");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Drinks & nightlife"), "Drinks & Nightlife");
+        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cakes & Bakes"), "Cakes & Bakes");
 
         viewPager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
-
-        checkLocationPermission();
-
-        if (checkUserPermission()) {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, gps);
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (location != null) {
-                latitude = "" + location.getLatitude();
-                longitude = "" + location.getLongitude();
-            } else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
-                // locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, gps);
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                latitude = "" + location.getLatitude();
-                longitude = "" + location.getLongitude();
-            }
-        }
-
-        if (latitude != null && longitude != null) {
-            try {
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1);
-                if (!addresses.isEmpty()) {
-                    Address add = addresses.get(0);
-                    String country = add.getCountryName();
-                    String city = add.getAddressLine(2);
-                    if (city != null && country != null)
-                        textViewLocation.setText(city);
-                    else if (country != null)
-                        textViewLocation.setText(country);
-                    else if (city != null)
-                        textViewLocation.setText(city);
-                    else
-                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
-
-                } else {
-                    Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
-                }
-
-            } catch (IOException e) {
-            }
-        }
-
-
-
-      //  update();
-
-
-
-
     }
 
-//
-//    private void createTabIcons() {
-//
-//        CardView tabOne = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
-//        //tabOne.setText("Fine Dining");
-//        // tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_dash26, 0, 0);
-//        tabLayout.getTabAt(0).setCustomView(tabOne);
-//        cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
-//
-//        CardView tabTwo = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
-//       // tabTwo.setText("Cafes and More");
-//        //  tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_category, 0, 0);
-//        tabLayout.getTabAt(1).setCustomView(tabTwo);
-//
-//        CardView tabThree = (CardView) LayoutInflater.from(this).inflate(R.layout.custom_tab1, null);
-//        //tabThree.setText("Drinks and Nightlife");
-//        // tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_order, 0, 0);
-//        tabLayout.getTabAt(2).setCustomView(tabThree);
-//
-//    }
-
-    public boolean checkUserPermission()
-    {
-        int statusintfine = getPackageManager().checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION,getPackageName());
-        int statusintcoarse = getPackageManager().checkPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION,getPackageName());
-        boolean flag=false;
-
-        if (statusintfine != PackageManager.PERMISSION_GRANTED && statusintcoarse != PackageManager.PERMISSION_GRANTED) {
-            flag = false;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                latitude=data.getStringExtra("latitude");
+                longitude=data.getStringExtra("longitude");
+                setAddress();
+                createUI();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
         }
-        else { flag=true; }
-        return flag;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
 
-
-
+    public String getLongitude() {
+        return longitude;
+    }
 
     public boolean checkLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission. ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission. ACCESS_FINE_LOCATION)) {
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
@@ -278,12 +246,53 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission. ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
             return false;
         } else {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+                                latitude = "" + location.getLatitude();
+                                longitude = "" + location.getLongitude();
+                                setAddress();
+                            } else {
+                                textViewLocation.setText("Unavailable");
+                            }
+
+                        }
+                    });
             return true;
+        }
+    }
+
+    public void setAddress() {
+        if (latitude != null && longitude != null) {
+            try {
+
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1);
+                if (!addresses.isEmpty()) {
+                    Address add = addresses.get(0);
+                    String locality = add.getLocality();
+                    String sublocality = add.getSubLocality();
+                    if (locality != null && sublocality != null)
+                        textViewLocation.setText(sublocality + " " + locality);
+                    else
+                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
+                }
+
+            } catch (IOException e) {
+
+            }
         }
     }
 
@@ -299,49 +308,23 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     // permission was granted, yay! Do the
                     // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission. ACCESS_FINE_LOCATION)
+                            Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        //Request location updates:
-                        //LocationManager locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
 
-                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, gps);
-                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) {
-                            latitude = "" + location.getLatitude();
-                            longitude = "" + location.getLongitude();
-                        } else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
-                            // locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, gps);
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            latitude = "" + location.getLatitude();
-                            longitude = "" + location.getLongitude();
-                        }
-
-                        if (latitude != null && longitude != null) {
-                            try {
-                                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                                List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1);
-                                if (!addresses.isEmpty()) {
-                                    Address add = addresses.get(0);
-                                    String country = add.getCountryName();
-                                    String city = add.getAddressLine(2);
-                                    if (city != null && country != null)
-                                        textViewLocation.setText(city);
-                                    else if (country != null)
-                                        textViewLocation.setText(country);
-                                    else if (city != null)
-                                        textViewLocation.setText(city);
-                                    else
-                                        Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
-
-                                } else {
-                                    Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
-                                }
-
-                            } catch (IOException e) {
-                            }
-                        }
+                        mFusedLocationClient.getLastLocation()
+                                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                                    @Override
+                                    public void onSuccess(Location location) {
+                                        // Got last known location. In some rare situations this can be null.
+                                        if (location != null) {
+                                            // Logic to handle location object
+                                            latitude = "" + location.getLatitude();
+                                            longitude = "" + location.getLongitude();
+                                        }
+                                    }
+                                });
+                        setAddress();
                     }
 
                 } else {
@@ -355,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -370,11 +354,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-       // cv.setCardBackgroundColor(getResources().getColor(R.color.white_opaque));
+        // cv.setCardBackgroundColor(getResources().getColor(R.color.white_opaque));
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-       // cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
+        // cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
     }
 }
