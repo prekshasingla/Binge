@@ -163,7 +163,7 @@ public class MainActivityFragment extends Fragment {
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-        if(dist<=5)
+        if(dist<=6)
         return true;
         else
             return false;

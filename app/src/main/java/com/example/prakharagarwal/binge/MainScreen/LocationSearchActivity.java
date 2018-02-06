@@ -86,17 +86,18 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
             }
 
         });
-        findViewById(R.id.location_cp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("latitude", LocationConstants.LAT_CP + "");
-                returnIntent.putExtra("longitude", LocationConstants.LON_CP + "");
-                returnIntent.putExtra("callingActivity", "LocationSearchActivity");
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
+//        findViewById(R.id.location_cp).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent returnIntent = new Intent();
+//                returnIntent.putExtra("latitude", LocationConstants.LAT_CP + "");
+//                returnIntent.putExtra("longitude", LocationConstants.LON_CP + "");
+//                returnIntent.putExtra("callingActivity", "LocationSearchActivity");
+//                setResult(Activity.RESULT_OK, returnIntent);
+//                finish();
+//            }
+//        });
+
 //        EditText search=(EditText)findViewById(R.id.search_location);
 //        search.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -117,7 +118,35 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
 //        });
 
     }
-
+public void returnLocation(View view){
+        String lat="";
+        String lon="";
+    if(view.getId()==R.id.location_cp) {
+         lat = LocationConstants.LAT_CP+"";
+         lon =LocationConstants.LON_CP+"";
+    }else if(view.getId()==R.id.location_hz) {
+        lat = LocationConstants.LAT_HZ+"";
+        lon =LocationConstants.LON_HZ+"";
+    }else if(view.getId()==R.id.location_gur) {
+        lat = LocationConstants.LAT_GUR+"";
+        lon =LocationConstants.LON_GUR+"";
+    }else if(view.getId()==R.id.location_sd) {
+        lat = LocationConstants.LAT_SD+"";
+        lon =LocationConstants.LON_SD+"";
+    }else if(view.getId()==R.id.location_raj) {
+        lat = LocationConstants.LAT_RAJ+"";
+        lon =LocationConstants.LON_RAJ+"";
+    } else if(view.getId()==R.id.location_ncr) {
+        lat = LocationConstants.LAT_NCR+"";
+        lon =LocationConstants.LON_NCR+"";
+    }
+    Intent returnIntent = new Intent();
+    returnIntent.putExtra("latitude", lat);
+    returnIntent.putExtra("longitude", lon);
+    returnIntent.putExtra("callingActivity", "LocationSearchActivity");
+    setResult(Activity.RESULT_OK, returnIntent);
+    finish();
+}
     //    private void getPLaces(String search) {
 //        Geocoder geocoder=new Geocoder(LocationSearchActivity.this);
 //        List<Address> results=new ArrayList<>();

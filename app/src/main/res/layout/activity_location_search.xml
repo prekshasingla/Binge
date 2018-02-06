@@ -97,27 +97,31 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
+                android:onClick="returnLocation"
                 android:background="@drawable/background_box_grey"
                 android:text="Cannaught Place"
                 android:textColor="#f1bb3a"/>
             <Button
-                android:id="@+id/location_gk"
+                android:id="@+id/location_hz"
                 android:layout_width="0dp"
                 android:layout_weight=".33"                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
-                android:background="@drawable/primary_btn"
+                android:onClick="returnLocation"
+                android:background="@drawable/background_box_grey"
                 android:text="Hauz Khas"
                 android:textColor="#f1bb3a"/>
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/location_gur"
                 android:layout_width="0dp"
-                android:layout_weight=".33"                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:onClick="returnLocation"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
-                android:background="@drawable/primary_btn"
+                android:background="@drawable/background_box_grey"
                 android:text="Gurugram"
                 android:textColor="#f1bb3a"/>
         </LinearLayout>
@@ -129,31 +133,39 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/location_sd"
                 android:layout_width="0dp"
+                android:onClick="returnLocation"
                 android:layout_weight=".33"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
-                android:background="@drawable/primary_btn"
+                android:background="@drawable/background_box_grey"
                 android:text="South Delhi"
                 android:textColor="#f1bb3a"/>
             <Button
+                android:id="@+id/location_raj"
                 android:layout_width="0dp"
-                android:layout_weight=".33"                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:onClick="returnLocation"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
-                android:background="@drawable/primary_btn"
+                android:background="@drawable/background_box_grey"
                 android:text="Rajouri Garden"
                 android:textColor="#f1bb3a"/>
             <Button
+                android:id="@+id/location_ncr"
                 android:layout_width="0dp"
-                android:layout_weight=".33"                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:onClick="returnLocation"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
                 android:elevation="5dp"
-                android:background="@drawable/primary_btn"
+                android:background="@drawable/background_box_grey"
                 android:text="NCR"
                 android:textColor="#f1bb3a"/>
         </LinearLayout>

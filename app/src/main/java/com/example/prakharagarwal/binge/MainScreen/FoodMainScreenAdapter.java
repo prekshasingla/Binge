@@ -47,36 +47,39 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position) ?
-                ITEM_VIEW_TYPE_HEADER : ITEM_VIEW_TYPE_ITEM;
+        return  isHeader(position)?
+                ITEM_VIEW_TYPE_HEADER:ITEM_VIEW_TYPE_ITEM;
     }
 
     public boolean isHeader(int position) {
+        if(isHeaderEnabled())
         return position == 0;
+        else
+            return false;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_screen_recommend_header, parent, false);
+            if (!headerEnabled)
+                view.setVisibility(View.GONE);
             holder = new FoodMainScreenAdapter.MainScreenHeaderViewHolder(view);
             return holder;
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_main_screen, parent, false);
+            holder = new FoodMainScreenAdapter.FoodMainScreenAdapterViewHolder(view);
+            return holder;
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_main_screen, parent, false);
-        holder = new FoodMainScreenAdapter.FoodMainScreenAdapterViewHolder(view);
-        return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (isHeader(position)) {
-            if (isHeaderEnabled())
-            {
+            if (isHeaderEnabled()) {
                 MainScreenHeaderViewHolder holder1 = (MainScreenHeaderViewHolder) holder;
                 holder1.nearby_empty_layout.setVisibility(View.VISIBLE);
-            }
-
-            else {
+            } else {
                 MainScreenHeaderViewHolder holder1 = (MainScreenHeaderViewHolder) holder;
                 holder1.nearby_empty_layout.setVisibility(View.GONE);
             }
@@ -84,6 +87,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         if (holder instanceof FoodMainScreenAdapterViewHolder) {
             FoodMainScreenAdapterViewHolder holder1 = (FoodMainScreenAdapterViewHolder) holder;
+            if(isHeaderEnabled())
             position -= 1;
             dishName = mFood.get(position).getDish_id();
             restaurantID = mFood.get(position).getRestaurant_id();
@@ -103,7 +107,10 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
+        if(isHeaderEnabled())
         return mFood.size() + 1;
+        else
+            return mFood.size();
     }
 
     public void setHeaderEnabled(boolean headerEnabled) {
@@ -133,9 +140,9 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void onClick(View v) {
 
             Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
-            intent.putExtra("restaurantID", mFood.get(getAdapterPosition()-1).getRestaurant_id());
-            intent.putExtra("restaurantName", mFood.get(getAdapterPosition()-1).getRestaurant_name());
-            intent.putExtra("dishName", mFood.get(getAdapterPosition()-1).getDish_id());
+            intent.putExtra("restaurantID", mFood.get(getAdapterPosition() - 1).getRestaurant_id());
+            intent.putExtra("restaurantName", mFood.get(getAdapterPosition() - 1).getRestaurant_name());
+            intent.putExtra("dishName", mFood.get(getAdapterPosition() - 1).getDish_id());
             // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
             intent.putExtra("posi", 1);
             mContext.startActivity(intent);
@@ -151,7 +158,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
 
             nearby_empty_layout = (RelativeLayout) itemView.findViewById(R.id.nearby_empty_layout);
-            recommend=(Button)itemView.findViewById(R.id.recommend_btn);
+            recommend = (Button) itemView.findViewById(R.id.recommend_btn);
             recommend.setOnClickListener(this);
         }
 
@@ -164,15 +171,12 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 mContext.startActivity(intent);
             } else {
-                Intent intent= new Intent(mContext, DishRecommend.class);
+                Intent intent = new Intent(mContext, DishRecommend.class);
                 mContext.startActivity(intent);
             }
         }
     }
 
-    public void removeAll() {
-        mFood.clear();
-    }
 
     public void addAll(List<Food_MainScreen> food) {
         mFood = food;
