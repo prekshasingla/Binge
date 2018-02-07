@@ -23,16 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#f1bb3a"
-                app:contentInsetStartWithNavigation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:orientation="horizontal">
-
-
-                </LinearLayout>
-
+                app:contentInsetStartWithNavigation="0dp"
+                app:title="Select Location"
+                app:titleTextColor="@color/white_opaque">
 
             </android.support.v7.widget.Toolbar>
 
@@ -71,6 +64,7 @@
                 android:gravity="center"
                 android:padding="5dp" />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/trendingHeader"
             android:layout_width="match_parent"
@@ -81,93 +75,101 @@
             android:gravity="center_vertical"
             android:text="Trending Places"
             android:textColor="#c1c1c1"
-            android:textSize="15sp"
-            />
+            android:textSize="15sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
+
             <Button
                 android:id="@+id/location_cp"
                 android:layout_width="0dp"
-                android:layout_weight=".33"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
+                android:layout_weight=".33"
+                android:background="@drawable/background_box_grey"
                 android:elevation="5dp"
                 android:onClick="returnLocation"
-                android:background="@drawable/background_box_grey"
-                android:text="Cannaught Place"
-                android:textColor="#f1bb3a"/>
+                android:text="Connaught Place"
+                android:textColor="#f1bb3a" />
+
             <Button
                 android:id="@+id/location_hz"
                 android:layout_width="0dp"
-                android:layout_weight=".33"                android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
+                android:layout_weight=".33"
+                android:background="@drawable/background_box_grey"
                 android:elevation="5dp"
                 android:onClick="returnLocation"
-                android:background="@drawable/background_box_grey"
                 android:text="Hauz Khas"
-                android:textColor="#f1bb3a"/>
+                android:textColor="#f1bb3a" />
+
             <Button
                 android:id="@+id/location_gur"
                 android:layout_width="0dp"
-                android:layout_weight=".33"
-                android:onClick="returnLocation"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
-                android:elevation="5dp"
+                android:layout_weight=".33"
                 android:background="@drawable/background_box_grey"
+                android:elevation="5dp"
+                android:onClick="returnLocation"
                 android:text="Gurugram"
-                android:textColor="#f1bb3a"/>
+                android:textColor="#f1bb3a" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:gravity="center"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
             <Button
                 android:id="@+id/location_sd"
                 android:layout_width="0dp"
-                android:onClick="returnLocation"
-                android:layout_weight=".33"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
-                android:elevation="5dp"
+                android:layout_weight=".33"
                 android:background="@drawable/background_box_grey"
+                android:elevation="5dp"
+                android:onClick="returnLocation"
                 android:text="South Delhi"
-                android:textColor="#f1bb3a"/>
+                android:textColor="#f1bb3a" />
+
             <Button
                 android:id="@+id/location_raj"
                 android:layout_width="0dp"
-                android:layout_weight=".33"
-                android:onClick="returnLocation"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
-                android:elevation="5dp"
+                android:layout_weight=".33"
                 android:background="@drawable/background_box_grey"
+                android:elevation="5dp"
+                android:onClick="returnLocation"
                 android:text="Rajouri Garden"
-                android:textColor="#f1bb3a"/>
+                android:textColor="#f1bb3a" />
+
             <Button
                 android:id="@+id/location_ncr"
                 android:layout_width="0dp"
-                android:layout_weight=".33"
-                android:onClick="returnLocation"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="3dp"
-                android:elevation="5dp"
+                android:layout_weight=".33"
                 android:background="@drawable/background_box_grey"
+                android:elevation="5dp"
+                android:onClick="returnLocation"
                 android:text="NCR"
-                android:textColor="#f1bb3a"/>
+                android:textColor="#f1bb3a" />
         </LinearLayout>
 
     </LinearLayout>

@@ -58,11 +58,12 @@ public class DishRecommend extends AppCompatActivity {
 
 
         if (uID != null) {
-            DatabaseReference ref1 = mDatabase.getReference().child("recommendations").child(encodeEmail(uID));
+            DatabaseReference ref1 = mDatabase.getReference().child("recommendations").push();
             Recommendation recommendation=new Recommendation();
             recommendation.dishName=dishName.getText().toString();
             recommendation.place=place.getText().toString();
             recommendation.rest=restName.getText().toString();
+            recommendation.userId=uID;
             ref1.setValue(recommendation);
             Toast.makeText(this, "Thank You for yor recommendation", Toast.LENGTH_SHORT).show();
             onBackPressed();
@@ -79,5 +80,6 @@ public class DishRecommend extends AppCompatActivity {
         String dishName;
         String place;
         String rest;
+        String userId;
     }
 }

@@ -47,13 +47,13 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        return  isHeader(position)?
-                ITEM_VIEW_TYPE_HEADER:ITEM_VIEW_TYPE_ITEM;
+        return isHeader(position) ?
+                ITEM_VIEW_TYPE_HEADER : ITEM_VIEW_TYPE_ITEM;
     }
 
     public boolean isHeader(int position) {
-        if(isHeaderEnabled())
-        return position == 0;
+        if (isHeaderEnabled())
+            return position == 0;
         else
             return false;
     }
@@ -87,8 +87,8 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         if (holder instanceof FoodMainScreenAdapterViewHolder) {
             FoodMainScreenAdapterViewHolder holder1 = (FoodMainScreenAdapterViewHolder) holder;
-            if(isHeaderEnabled())
-            position -= 1;
+            if (isHeaderEnabled())
+                position -= 1;
             dishName = mFood.get(position).getDish_id();
             restaurantID = mFood.get(position).getRestaurant_id();
             restaurantName = mFood.get(position).getRestaurant_name();
@@ -107,8 +107,8 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        if(isHeaderEnabled())
-        return mFood.size() + 1;
+        if (isHeaderEnabled())
+            return mFood.size() + 1;
         else
             return mFood.size();
     }
@@ -138,14 +138,23 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         @Override
         public void onClick(View v) {
-
-            Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
-            intent.putExtra("restaurantID", mFood.get(getAdapterPosition() - 1).getRestaurant_id());
-            intent.putExtra("restaurantName", mFood.get(getAdapterPosition() - 1).getRestaurant_name());
-            intent.putExtra("dishName", mFood.get(getAdapterPosition() - 1).getDish_id());
-            // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
-            intent.putExtra("posi", 1);
-            mContext.startActivity(intent);
+            if (isHeaderEnabled()) {
+                Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
+                intent.putExtra("restaurantID", mFood.get(getAdapterPosition() - 1).getRestaurant_id());
+                intent.putExtra("restaurantName", mFood.get(getAdapterPosition() - 1).getRestaurant_name());
+                intent.putExtra("dishName", mFood.get(getAdapterPosition() - 1).getDish_id());
+                // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+                intent.putExtra("posi", 1);
+                mContext.startActivity(intent);
+            } else {
+                Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
+                intent.putExtra("restaurantID", mFood.get(getAdapterPosition() ).getRestaurant_id());
+                intent.putExtra("restaurantName", mFood.get(getAdapterPosition()).getRestaurant_name());
+                intent.putExtra("dishName", mFood.get(getAdapterPosition() ).getDish_id());
+                // Log.i("TAG", mFood.get(getAdapterPosition()).getDishName());
+                intent.putExtra("posi", 1);
+                mContext.startActivity(intent);
+            }
         }
     }
 
