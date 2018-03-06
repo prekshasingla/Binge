@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
@@ -76,6 +77,15 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
     private String compareStringOne = "9:45";
     private String compareStringTwo = "1:45";
 
+    private boolean isCart = false;
+
+    TextView cartqty;
+
+    public boolean isCart() {
+        return isCart;
+    }
+
+    public HashMap<String, Integer> cartListMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +93,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         setContentView(R.layout.activity_restaurant_details);
 
 
-        SlidingUpPanelLayout panel=(SlidingUpPanelLayout)findViewById(R.id.stories_sliding_up);
+        SlidingUpPanelLayout panel = (SlidingUpPanelLayout) findViewById(R.id.stories_sliding_up);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -92,18 +102,19 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         Resources r = getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, r.getDisplayMetrics());
 
-        panel.setPanelHeight(height-(int)px);
+        panel.setPanelHeight(height - (int) px);
 
-        bottomRecycler=(RecyclerView)findViewById(R.id.restaurant_bottom_recycler);
-        bottomRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        restaurantBottomAdapter= new RestaurantBottomAdapter(categories,this,bottomRecycler.getLayoutManager());
+        bottomRecycler = (RecyclerView) findViewById(R.id.restaurant_bottom_recycler);
+        bottomRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        restaurantBottomAdapter = new RestaurantBottomAdapter(categories, this, bottomRecycler.getLayoutManager());
         bottomRecycler.setAdapter(restaurantBottomAdapter);
 
         menus = new ArrayList<Menu>();
-        categories=new ArrayList<String>();
-        categoryList=new ArrayList<Category>();
-        selectedItem=new Menu();
+        categories = new ArrayList<String>();
+        categoryList = new ArrayList<Category>();
+        selectedItem = new Menu();
         restaurant = new Restaurant();
+        cartListMap = new HashMap<>();
 
         resName = (TextView) findViewById(R.id.restaurant_name);
         resName.setOnClickListener(new View.OnClickListener() {
@@ -126,21 +137,20 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         dishName.setTypeface(typeface);
         price.setTypeface(typeface);
 
-        heading = (TextView)findViewById(R.id.heading);
-        String htmlString="<u>MENU</u>";
+        heading = (TextView) findViewById(R.id.heading);
+        String htmlString = "<u>MENU</u>";
         heading.setText(Html.fromHtml(htmlString));
         heading.setTypeface(typeface);
-        reviews = (TextView)findViewById(R.id.item_reviews_textview);
-        reviews.setTypeface(typeface2);
+//        reviews = (TextView)findViewById(R.id.item_reviews_textview);
+//        reviews.setTypeface(typeface2);
 
 
-
-        call=(TextView)findViewById(R.id.call_item_textview);
-        location=(TextView)findViewById(R.id.locate_item_textview);
-        restaurantCategory=(TextView)findViewById(R.id.category);
-        restaurantLocation=(TextView)findViewById(R.id.address);
-        restaurantCostForTwo=(TextView)findViewById(R.id.resCostForTwo);
-        restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
+        call = (TextView) findViewById(R.id.call_item_textview);
+        location = (TextView) findViewById(R.id.locate_item_textview);
+        restaurantCategory = (TextView) findViewById(R.id.category);
+        restaurantLocation = (TextView) findViewById(R.id.address);
+        restaurantCostForTwo = (TextView) findViewById(R.id.resCostForTwo);
+        restaurantOpenClosed = (TextView) findViewById(R.id.openClosed);
 
         call.setTypeface(typeface);
         location.setTypeface(typeface);
@@ -165,8 +175,8 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
 
 
         menuRecyler = (RecyclerView) findViewById(R.id.menu_recycler);
-        menuAdapter = new MenuAdapter(this,menus);
-        menuRecyler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        menuAdapter = new MenuAdapter(this, menus);
+        menuRecyler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         try {
             menuRecyler.setAdapter(menuAdapter);
         } catch (NoClassDefFoundError e) {
@@ -190,7 +200,6 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         });
 
 
-
         share = (ImageView) findViewById(R.id.share_button_stories);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,11 +212,36 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
+        cartqty = (TextView) findViewById(R.id.cart_qty);
+        findViewById(R.id.btn_place_order).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isCart = true;
+                cartqty.setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.btn_place_order_text)).setText("Cart");
+                menuAdapter = new MenuAdapter(RestaurantDetailsActivity.this, menus);
+                menuRecyler.setLayoutManager(new LinearLayoutManager(RestaurantDetailsActivity.this, LinearLayoutManager.VERTICAL, false));
+                try {
+                    menuRecyler.setAdapter(menuAdapter);
+                } catch (NoClassDefFoundError e) {
+
+                }
+                if (categoryList.size()>0) {
+                    addAllMenus(categoryList.get(0).getCategoryMenu());
+                    addAllCategories(categories);
+                }
+            }
+        });
+        updateCartQty();
 
     }
 
+    public void updateCartQty() {
+        cartqty.setText(cartListMap.size() + "");
+    }
+
     public void getData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot child0 : dataSnapshot.getChildren()) {
+        for (DataSnapshot child0 : dataSnapshot.getChildren()) {
             if (child0.getKey().equals("menu")) {
                 for (DataSnapshot child1 : child0.getChildren()) {
                     if (child1.getKey().equals(ID))
@@ -218,6 +252,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
                                 categories.add(child2.getKey());
                                 for (DataSnapshot child3 : child2.getChildren()) {
                                     Menu menu = child3.getValue(Menu.class);
+                                    menu.setCart_quantity(0);
                                     category.addCategoryMenu(menu);
                                 }
                                 categoryList.add(category);
@@ -284,13 +319,13 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
             }
         }
 
-        if(categoryList.size()>0)
-         addAllMenus(categoryList.get(0).getCategoryMenu());
+        if (categoryList.size() > 0)
+            addAllMenus(categoryList.get(0).getCategoryMenu());
         addAllCategories(categories);
 
-        if(selectedItem.getName()!=null){
-            for(int i=0;i<categoryList.size();i++){
-                for(int j=0;j<categoryList.get(i).getCategoryMenu().size();j++) {
+        if (selectedItem.getName() != null) {
+            for (int i = 0; i < categoryList.size(); i++) {
+                for (int j = 0; j < categoryList.get(i).getCategoryMenu().size(); j++) {
                     if (selectedItem.getName().equalsIgnoreCase(categoryList.get(i).getCategoryMenu().get(j).getName())) {
                         selectedItem.setDesc(categoryList.get(i).getCategoryMenu().get(j).getDesc());
                         selectedItem.setHas_video(categoryList.get(i).getCategoryMenu().get(j).getHas_video());
@@ -298,9 +333,9 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
                         selectedItem.setVeg(categoryList.get(i).getCategoryMenu().get(j).getVeg());
                         selectedItem.setVideo_url(categoryList.get(i).getCategoryMenu().get(j).getVideo_url());
 
-                        if(youTubePlayer!=null)
-                        youTubePlayer.loadVideo(selectedItem.getVideo_url());
-                       // youTubePlayer.play();
+                        if (youTubePlayer != null)
+                            youTubePlayer.loadVideo(selectedItem.getVideo_url());
+                        // youTubePlayer.play();
 
                         dishName.setText(selectedItem.getName());
                         desc.setText(selectedItem.getDesc());
@@ -314,7 +349,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
                                 dishName.setTextColor(getResources().getColor(R.color.nonveg_active));
                             }
                         }
-                       // youTubePlayer.play();
+                        // youTubePlayer.play();
                     }
                 }
             }
@@ -335,22 +370,22 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
             public void onClick(View v) {
                 String number = restaurant.getPhone();
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" +number));
+                intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
             }
         });
 
         restaurantCategory.setText(restaurant.getTypeOfRestaurant());
         restaurantLocation.setText(restaurant.getAddress());
-        restaurantCostForTwo.setText("Cost for two: "+restaurant.getCostForTwo());
+        restaurantCostForTwo.setText("Cost for two: " + restaurant.getCostForTwo());
 
 
-        if(compareDates(restaurant.getOpeningTime(),restaurant.getClosingTime())){
-            restaurantOpenClosed.setText(Html.fromHtml("<font color='#07ad6a'>Open</font> "+restaurant.getOpeningTime() + "-" + restaurant.closingTime + " hrs"));
-        }else{
-            restaurantOpenClosed.setText(Html.fromHtml("<font color='red'>Closed</font> "+restaurant.getOpeningTime() + "-" + restaurant.getClosingTime() + " hrs"));
+        if (compareDates(restaurant.getOpeningTime(), restaurant.getClosingTime())) {
+            restaurantOpenClosed.setText(Html.fromHtml("<font color='#07ad6a'>Open</font> " + restaurant.getOpeningTime() + "-" + restaurant.closingTime + " hrs"));
+        } else {
+            restaurantOpenClosed.setText(Html.fromHtml("<font color='red'>Closed</font> " + restaurant.getOpeningTime() + "-" + restaurant.getClosingTime() + " hrs"));
         }
-        restaurantOpenClosed=(TextView)findViewById(R.id.openClosed);
+        restaurantOpenClosed = (TextView) findViewById(R.id.openClosed);
     }
 
 
@@ -360,10 +395,11 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
 //        checkIfEmpty();
 
     }
-    private boolean compareDates(String open,String close) {
 
-        compareStringOne=open;
-        compareStringTwo=close;
+    private boolean compareDates(String open, String close) {
+
+        compareStringOne = open;
+        compareStringTwo = close;
         try {
             Date time1 = new SimpleDateFormat("HH:mm").parse(compareStringOne);
 
@@ -380,20 +416,20 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
             Calendar now = Calendar.getInstance();
             int hour = now.get(Calendar.HOUR_OF_DAY);
             int minute = now.get(Calendar.MINUTE);
-            String a =hour+":"+minute;
+            String a = hour + ":" + minute;
             Date d = new SimpleDateFormat("HH:mm").parse(a);
             now.setTime(d);
             now.add(Calendar.DATE, 1);
 
             Date x = now.getTime();
 
-            if(calendar1.get(Calendar.HOUR_OF_DAY)>calendar2.get(Calendar.HOUR_OF_DAY)){
-                if(now.get(Calendar.HOUR_OF_DAY)<calendar2.get(Calendar.HOUR_OF_DAY)){
+            if (calendar1.get(Calendar.HOUR_OF_DAY) > calendar2.get(Calendar.HOUR_OF_DAY)) {
+                if (now.get(Calendar.HOUR_OF_DAY) < calendar2.get(Calendar.HOUR_OF_DAY)) {
                     return true;
                 }
-                int hr =calendar2.get(Calendar.HOUR_OF_DAY)+24;
+                int hr = calendar2.get(Calendar.HOUR_OF_DAY) + 24;
                 int min = calendar2.get(Calendar.MINUTE);
-                String b = hr+":"+min;
+                String b = hr + ":" + min;
                 Date d1 = new SimpleDateFormat("HH:mm").parse(b);
                 calendar2.setTime(d1);
                 calendar2.add(Calendar.DATE, 1);
@@ -403,24 +439,24 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
             }
             return false;
 
-        } catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
 
         }
         return true;
     }
+
     public void addAllMenus(List<com.example.prakharagarwal.binge.StoriesMenu.Menu> menus) {
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
-//        checkIfEmpty();
-
-
+//        populateCartQuantities(menus);
     }
+
 
     @Override
     public void selectCategory(String categoryName) {
-        for(int i=0;i<categoryList.size();i++) {
-            if(categoryList.get(i).getCategory().equals(categoryName)) {
+        for (int i = 0; i < categoryList.size(); i++) {
+            if (categoryList.get(i).getCategory().equals(categoryName)) {
                 menuAdapter.addAll(categoryList.get(i).getCategoryMenu());
                 menuAdapter.notifyDataSetChanged();
             }
@@ -444,10 +480,10 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                         YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            if(selectedItem.getVideo_url()!=null)
-             player.loadVideo(selectedItem.getVideo_url());
+            if (selectedItem.getVideo_url() != null)
+                player.loadVideo(selectedItem.getVideo_url());
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-            youTubePlayer=player;
+            youTubePlayer = player;
 
         }
     }

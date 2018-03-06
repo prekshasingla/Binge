@@ -11,6 +11,7 @@ public class Menu {
     String price;
     Long veg;
     Long has_video;
+    int cart_quantity;
 
 
     public String getVideo_url() {
@@ -41,6 +42,14 @@ public class Menu {
         return price;
     }
 
+    public int getCart_quantity() {
+        return cart_quantity;
+    }
+
+    public void setCart_quantity(int cart_quantity) {
+        this.cart_quantity = cart_quantity;
+    }
+
     public void setPrice(String price) {
         this.price = price;
     }
@@ -60,4 +69,5 @@ public class Menu {
     public void setVeg(Long veg) {
         this.veg = veg;
     }
+
 }

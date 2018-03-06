@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.MainScreen.RestaurantDetailsActivity;
 import com.example.prakharagarwal.binge.R;
 
 import java.util.List;
@@ -63,9 +65,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
 
 
         if (menus.get(position).getHas_video() == 0) {
-            holder.play.setVisibility(View.VISIBLE);
-        }else{
-            holder.play.setVisibility(View.INVISIBLE);
+//            holder.play.setVisibility(View.VISIBLE);
+        } else {
+//            holder.play.setVisibility(View.INVISIBLE);
         }
 
         if (menus.get(position).getVeg() != null) {
@@ -81,16 +83,47 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         holder.textViewPrice.setTypeface(typeface);
         holder.textViewDescription.setText(description);
         holder.textViewDescription.setTypeface(typeface);
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (menus.get(position).getHas_video() == 0) {
-                    ((Callback )mContext).showStory(mContext,menus.get(position));
-                }else{
-                    Toast.makeText(mContext, "Video requested. Will be available soon", Toast.LENGTH_SHORT).show();
+//        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (menus.get(position).getHas_video() == 0) {
+//                    ((Callback )mContext).showStory(mContext,menus.get(position));
+//                }else{
+//                    Toast.makeText(mContext, "Video requested. Will be available soon", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+        if(((RestaurantDetailsActivity)mContext).isCart()){
+            holder.cartLayout.setVisibility(View.VISIBLE);
+            holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
+            holder.plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menus.get(position).setCart_quantity(menus.get(position).getCart_quantity() + 1);
+                    holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
+                    ((RestaurantDetailsActivity)mContext).cartListMap.put(name,menus.get(position).getCart_quantity());
+                    ((RestaurantDetailsActivity)mContext).updateCartQty();
+
                 }
-            }
-        });
+            });
+            holder.minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (menus.get(position).getCart_quantity() == 0) {
+                    } else {
+                        menus.get(position).setCart_quantity(menus.get(position).getCart_quantity() - 1);
+                        holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
+                        if(menus.get(position).getCart_quantity() == 0)
+                            ((RestaurantDetailsActivity)mContext).cartListMap.remove(name);
+                            else
+                        ((RestaurantDetailsActivity)mContext).cartListMap.put(name,menus.get(position).getCart_quantity());
+                        ((RestaurantDetailsActivity)mContext).updateCartQty();
+                    }
+                }
+            });
+        }else{
+            holder.cartLayout.setVisibility(View.GONE);
+        }
 
 
 
@@ -111,7 +144,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         public TextView textViewDescription;
         public ImageView imageViewVeg;
         public LinearLayout linearLayout;
-        public ImageView play;
+        public LinearLayout cartLayout;
+        public TextView qty_text;
+        public Button plus;
+        public Button minus;
+//        public LinearLayout play;
 
 
         public MenuAdapterViewHolder(View view) {
@@ -123,7 +160,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
             textViewDescription = (TextView) view.findViewById(R.id.menu_item_description);
             imageViewVeg = (ImageView) view.findViewById(R.id.menu_item_veg);
             linearLayout = (LinearLayout) view.findViewById(R.id.menu_adapter_lin_lay);
-        play=(ImageView)view.findViewById(R.id.menu_adapter_play);
+            cartLayout = (LinearLayout) view.findViewById(R.id.menu_adapter_cart);
+            qty_text = (TextView) view.findViewById(R.id.menu_adapter_add_number);
+            plus = (Button) view.findViewById(R.id.menu_adapter_plus);
+            minus = (Button) view.findViewById(R.id.menu_adapter_minus);
+//        play=(LinearLayout)view.findViewById(R.id.menu_adapter_play);
         }
     }
 
