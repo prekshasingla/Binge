@@ -102,7 +102,10 @@
         <activity
             android:name=".MainScreen.LocationSearchActivity"
             android:label="Select Location" />
-        <activity android:name=".DishRecommend"></activity>
+        <activity android:name=".DishRecommend" />
+        <activity
+            android:name=".cart.CartActivity"
+            android:label="@string/title_activity_cart"></activity>
     </application>
 
 </manifest>

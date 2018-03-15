@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.StoriesMenu.Menu;
 import com.example.prakharagarwal.binge.StoriesMenu.MenuAdapter;
+import com.example.prakharagarwal.binge.cart.CartActivity;
+import com.example.prakharagarwal.binge.cart.CartItem;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -85,7 +87,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         return isCart;
     }
 
-    public HashMap<String, Integer> cartListMap;
+    public HashMap<String, CartItem> cartListMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +218,13 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         findViewById(R.id.btn_place_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isCart){
+                    Intent intent=new Intent(RestaurantDetailsActivity.this, CartActivity.class);
+                    intent.putExtra("cartListMap",cartListMap);
+                    intent.putExtra("restaurantID",ID);
+                    intent.putExtra("restaurantName",res_Name);
+                    startActivity(intent);
+                }
                 isCart = true;
                 cartqty.setVisibility(View.VISIBLE);
                 ((TextView) findViewById(R.id.btn_place_order_text)).setText("Cart");

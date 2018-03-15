@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.MainScreen.RestaurantDetailsActivity;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.cart.CartItem;
 
 import java.util.List;
 
@@ -93,7 +94,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
 //                }
 //            }
 //        });
-        if(((RestaurantDetailsActivity)mContext).isCart()){
+        if (((RestaurantDetailsActivity) mContext).isCart()) {
             holder.cartLayout.setVisibility(View.VISIBLE);
             holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
             holder.plus.setOnClickListener(new View.OnClickListener() {
@@ -101,8 +102,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
                 public void onClick(View v) {
                     menus.get(position).setCart_quantity(menus.get(position).getCart_quantity() + 1);
                     holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
-                    ((RestaurantDetailsActivity)mContext).cartListMap.put(name,menus.get(position).getCart_quantity());
-                    ((RestaurantDetailsActivity)mContext).updateCartQty();
+                    CartItem item = new CartItem();
+                    item.setQty(menus.get(position).getCart_quantity() + "");
+                    item.setName(name);
+                    item.setPrice(price);
+                    item.setVeg(menus.get(position).getVeg());
+                    ((RestaurantDetailsActivity) mContext).cartListMap.put(name, item);
+                    ((RestaurantDetailsActivity) mContext).updateCartQty();
 
                 }
             });
@@ -113,18 +119,23 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
                     } else {
                         menus.get(position).setCart_quantity(menus.get(position).getCart_quantity() - 1);
                         holder.qty_text.setText(menus.get(position).getCart_quantity() + "");
-                        if(menus.get(position).getCart_quantity() == 0)
-                            ((RestaurantDetailsActivity)mContext).cartListMap.remove(name);
-                            else
-                        ((RestaurantDetailsActivity)mContext).cartListMap.put(name,menus.get(position).getCart_quantity());
-                        ((RestaurantDetailsActivity)mContext).updateCartQty();
+                        if (menus.get(position).getCart_quantity() == 0)
+                            ((RestaurantDetailsActivity) mContext).cartListMap.remove(name);
+                        else {
+                            CartItem item = new CartItem();
+                            item.setQty(menus.get(position).getCart_quantity() + "");
+                            item.setName(name);
+                            item.setPrice(price);
+                            item.setVeg(menus.get(position).getVeg());
+                            ((RestaurantDetailsActivity) mContext).cartListMap.put(name, item);
+                        }
+                        ((RestaurantDetailsActivity) mContext).updateCartQty();
                     }
                 }
             });
-        }else{
+        } else {
             holder.cartLayout.setVisibility(View.GONE);
         }
-
 
 
     }
