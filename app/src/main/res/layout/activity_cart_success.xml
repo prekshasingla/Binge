@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.prakharagarwal.binge.cart.CartSuccess">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                app:title="Order Placed">
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.AppBarLayout>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/appbar"
+            tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+        <TextView
+            android:id="@+id/time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Time To Reach"
+            android:layout_below="@+id/map"
+            android:textSize="16sp"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:id="@+id/eta_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12m"
+            android:layout_below="@+id/map"
+            android:layout_toRightOf="@+id/time_text"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:textColor="#279028"
+            />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

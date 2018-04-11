@@ -33,4 +33,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_on_boarding">OnBoardingActivity</string>
     <string name="title_activity_cart">Cart</string>
+    <string name="title_activity_cart_success">Cart Success</string>
+    <string name="google_maps_key">AIzaSyAxWmD50beu0If37tRuoOFhZ8ULRENEqXM</string>
 </resources>

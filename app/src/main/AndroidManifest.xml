@@ -28,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="stateHidden">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <activity
             android:name=".MainScreen.MainActivity"
             android:screenOrientation="portrait">
@@ -105,7 +108,10 @@
         <activity android:name=".DishRecommend" />
         <activity
             android:name=".cart.CartActivity"
-            android:label="@string/title_activity_cart"></activity>
+            android:label="@string/title_activity_cart" />
+        <activity
+            android:name=".cart.CartSuccess"
+            android:label="@string/title_activity_cart_success"></activity>
     </application>
 
 </manifest>
