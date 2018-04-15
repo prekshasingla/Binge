@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.binge.StoriesMenu;
+package com.example.prakharagarwal.binge.Menu;
 
 import android.content.Context;
 import android.graphics.Typeface;

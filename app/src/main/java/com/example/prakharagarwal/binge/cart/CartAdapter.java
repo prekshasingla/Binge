@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.MainScreen.RestaurantDetailsActivity;
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.StoriesMenu.Menu;
-import com.example.prakharagarwal.binge.StoriesMenu.MenuAdapter;
 
 import java.util.HashMap;
 import java.util.List;

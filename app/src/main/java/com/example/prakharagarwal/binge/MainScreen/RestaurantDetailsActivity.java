@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.StoriesMenu.Menu;
-import com.example.prakharagarwal.binge.StoriesMenu.MenuAdapter;
+import com.example.prakharagarwal.binge.Menu.Menu;
+import com.example.prakharagarwal.binge.Menu.MenuAdapter;
 import com.example.prakharagarwal.binge.cart.CartActivity;
 import com.example.prakharagarwal.binge.cart.CartItem;
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -455,7 +455,7 @@ public class RestaurantDetailsActivity extends YouTubeBaseActivity implements
         return true;
     }
 
-    public void addAllMenus(List<com.example.prakharagarwal.binge.StoriesMenu.Menu> menus) {
+    public void addAllMenus(List<com.example.prakharagarwal.binge.Menu.Menu> menus) {
         menuAdapter.addAll(menus);
         menuAdapter.notifyDataSetChanged();
 //        populateCartQuantities(menus);

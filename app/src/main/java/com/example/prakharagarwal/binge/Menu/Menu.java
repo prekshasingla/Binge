@@ -1,4 +1,4 @@
-package com.example.prakharagarwal.binge.StoriesMenu;
+package com.example.prakharagarwal.binge.Menu;
 
 /**
  * Created by prekshasingla on 11/07/17.

@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.StoriesMenu.Menu;
-import com.example.prakharagarwal.binge.StoriesMenu.MenuAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
