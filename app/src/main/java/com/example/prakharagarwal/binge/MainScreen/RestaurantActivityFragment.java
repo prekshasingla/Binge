@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +32,8 @@ public class RestaurantActivityFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
-    List<Food_MainScreen> mFood;
-    List<Food_MainScreen> mFoodData;
+    List<Menu> mFood;
+    List<Menu> mFoodData;
 
     TextView emptyView;
     ProgressBar progressBar;
@@ -93,7 +94,7 @@ public class RestaurantActivityFragment extends Fragment {
 
 
 //        update();
-        mFoodAdapter = new FoodMainScreenAdapter(mFood, getContext(), mRecyclerView, getFragmentManager());
+        //mFoodAdapter = new FoodMainScreenAdapter(mFood, getActivity(), mRecyclerView, getFragmentManager());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -111,7 +112,7 @@ public class RestaurantActivityFragment extends Fragment {
             for (DataSnapshot child1 : child.getChildren()) {
                 flag = 0;
                     Food_MainScreen food = child1.getValue(Food_MainScreen.class);
-                    mFoodData.add(food);
+//                    mFoodData.add(food);
 //                    }
 
 //            }
@@ -119,9 +120,9 @@ public class RestaurantActivityFragment extends Fragment {
         }
 
         for(int i=0; i<mFoodData.size();i++){
-                    if(mFoodData.get(i).getRestaurant_id().equals(getArguments().getString("id"))){
-                        mFood.add(mFoodData.get(i));
-                    }
+//                    if(mFoodData.get(i).getRestaurant_id().equals(getArguments().getString("id"))){
+//                        mFood.add(mFoodData.get(i));
+//                    }
         }
         if (mFood.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);

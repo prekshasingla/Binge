@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white_opaque">
 
-    <LinearLayout
-        android:id="@+id/main_activity_relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white_opaque"
-        android:orientation="vertical">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
+        <LinearLayout
+            android:id="@+id/main_activity_relative_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="6dp"
-            android:theme="@style/AppTheme_search">
+            android:layout_height="match_parent"
+            android:background="@color/white_opaque"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="6dp"
+                android:theme="@style/AppTheme_search">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#f1bb3a"
+                    app:contentInsetStartWithNavigation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/search_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical|right"
+                            android:background="@color/transparent"
+                            android:hint="Search for Cuisines and Restaurants"
+                            android:textColor="@color/white_opaque"
+                            android:textColorHint="@color/white_opaque"
+                            android:visibility="visible"
+
+                            />
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.AppBarLayout>
+
+            <TextView
+                android:id="@+id/cuisinesHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="DISHES"
+                android:textColor="#c1c1c1"
+                android:textSize="15sp" />
+
+            <ListView
+                android:id="@+id/cuisinesList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#f1bb3a"
-                app:contentInsetStartWithNavigation="0dp">
+                android:layout_marginLeft="10dp"
+                android:descendantFocusability="beforeDescendants"
+                android:divider="@null"
+                android:dividerHeight="10dp"
+                android:footerDividersEnabled="false"
+                android:scrollbars="none"
+                android:visibility="visible" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:orientation="horizontal">
+            <TextView
+                android:id="@+id/restaurantsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="RESTAURANTS"
+                android:textColor="#c1c1c1"
+                android:textSize="15sp" />
 
-                    <EditText
-                        android:id="@+id/search_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/white_opaque"
-                        android:layout_gravity="center_vertical|right"
-                        android:hint="Search for Cuisines and Restaurants"
-                        android:textColorHint="@color/white_opaque"
-                        android:visibility="visible"
-                        android:background="@color/transparent"
-
-                        />
-                </LinearLayout>
-
-
-            </android.support.v7.widget.Toolbar>
-
-
-        </android.support.design.widget.AppBarLayout>
-
-        <TextView
-            android:id="@+id/cuisinesHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:text="DISHES"
-            android:textColor="#c1c1c1"
-            android:layout_margin="10dp"
-            android:textSize="15sp"
-            />
-        <ListView
-            android:id="@+id/cuisinesList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="beforeDescendants"
-            android:divider="@null"
-            android:footerDividersEnabled="false"
-            android:dividerHeight="10dp"
-            android:scrollbars="none"
-            android:layout_marginLeft="10dp"
-            android:visibility="visible"/>
-        <TextView
-            android:id="@+id/restaurantsHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:text="RESTAURANTS"
-            android:textColor="#c1c1c1"
-            android:layout_margin="10dp"
-            android:textSize="15sp"
-            />
-        <ListView
-            android:id="@+id/restaurantsList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="beforeDescendants"
-            android:divider="@null"
-            android:footerDividersEnabled="false"
-            android:dividerHeight="10dp"
-            android:scrollbars="none"
-            android:layout_marginLeft="10dp"
-            android:visibility="visible"/>
-    </LinearLayout>
+            <ListView
+                android:id="@+id/restaurantsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:descendantFocusability="beforeDescendants"
+                android:divider="@null"
+                android:dividerHeight="10dp"
+                android:footerDividersEnabled="false"
+                android:scrollbars="none"
+                android:visibility="visible" />
+        </LinearLayout>
 
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

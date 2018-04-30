@@ -35,6 +35,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +48,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity  {
 
     private TabLayout tabLayout;
 
@@ -135,12 +136,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Fresco.initialize(this);
+
         setContentView(R.layout.activity_main);
         textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Initializing the tablayout
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         searchIcon = (ImageView) findViewById(R.id.search_icon);
         searchIcon.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             checkLocationPermission();
         }
-
+        latitude=""+LocationConstants.LAT_CP;
+        longitude=""+LocationConstants.LON_CP;
         createUI();
 
         LinearLayout locationLayout = (LinearLayout) findViewById(R.id.location_layout);
@@ -181,13 +184,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"), "Fine Dining");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cafes & more"), "Cafes & More");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Drinks & nightlife"), "Drinks & Nightlife");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cakes & Bakes"), "Cakes & Bakes");
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -346,19 +345,5 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         updateMenuTitles();
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-        //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
-    }
 
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        // cv.setCardBackgroundColor(getResources().getColor(R.color.white_opaque));
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-        // cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
-    }
 }

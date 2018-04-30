@@ -35,4 +35,5 @@
     <string name="title_activity_cart">Cart</string>
     <string name="title_activity_cart_success">Cart Success</string>
     <string name="google_maps_key">AIzaSyAxWmD50beu0If37tRuoOFhZ8ULRENEqXM</string>
+    <string name="video_component_tag">video_container</string>
 </resources>

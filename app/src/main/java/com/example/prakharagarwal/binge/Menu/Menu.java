@@ -1,9 +1,12 @@
 package com.example.prakharagarwal.binge.Menu;
 
+
+import java.io.Serializable;
+
 /**
  * Created by prekshasingla on 11/07/17.
  */
-public class Menu {
+public class Menu implements Serializable {
 
     String video_url;
     String name;
@@ -12,8 +15,10 @@ public class Menu {
     Long veg;
     Long has_video;
     int cart_quantity;
+    String restaurantName;
+    String imageUrl="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FAM%20PM%2Fchocolate%20bomb.jpg?alt=media&token=330da156-0cdc-4dce-a10e-1b7654837b84";
 
-
+    public transient VideoBinder binder = new VideoBinder(this);
     public String getVideo_url() {
         return video_url;
     }
@@ -70,4 +75,19 @@ public class Menu {
         this.veg = veg;
     }
 
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

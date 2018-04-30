@@ -1,33 +1,49 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.prakharagarwal.binge.CheckNetwork;
+import com.example.prakharagarwal.binge.Menu.Menu;
+import com.example.prakharagarwal.binge.Menu.VideoBinder;
 import com.example.prakharagarwal.binge.R;
-import com.google.firebase.database.ChildEventListener;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeIntents;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,16 +52,22 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements IFragmentManager,Serializable {
 
 
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
-    List<Food_MainScreen> mFood;
-    List<Food_MainScreen> mFood2;
+    List<Menu> mFood;
+    List<Menu> mFood2;
     TextView emptyView;
     ProgressBar progressBar;
-    boolean flag;
+    boolean locationFlag;
+    boolean flag = false;
+    LinearLayout nearbyEmptyLayout;
+    private ViewPager trendingViewpager;
+    IFragmentManager iFragmentManager;
+    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+
 
     public static MainActivityFragment newInstance(String id) {
         Bundle args = new Bundle();
@@ -59,9 +81,9 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        iFragmentManager = this;
         mFood = new ArrayList<>();
-        mFood2= new ArrayList<>();
+        mFood2 = new ArrayList<>();
 
     }
 
@@ -75,17 +97,19 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
+        nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("mainscreen");
+        DatabaseReference ref = database.getReference("menu");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(((MainActivity)getActivity()).getLatitude()!=null && ((MainActivity)getActivity()).getLongitude()!=null)
-                    flag=true;
+                if (((MainActivity) getActivity()).getLatitude() != null && ((MainActivity) getActivity()).getLongitude() != null)
+                    locationFlag = true;
                 else
-                    flag=false;
+                    locationFlag = false;
                 getData(dataSnapshot);
 
             }
@@ -98,17 +122,16 @@ public class MainActivityFragment extends Fragment {
 
 
 //        update();
-        mFoodAdapter = new FoodMainScreenAdapter(mFood, getContext(), mRecyclerView, getFragmentManager());
-        final GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-
+        mFoodAdapter = new FoodMainScreenAdapter(mFood, getActivity(), mRecyclerView, this);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return mFoodAdapter.isHeader(position) ? mLayoutManager.getSpanCount() : 1;
-            }
-        });
         mRecyclerView.setAdapter(mFoodAdapter);
+        mRecyclerView.setVisibility(View.GONE);
+
+        trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
+//        mDemoCollectionPagerAdapter =
+//                new DemoCollectionPagerAdapter(getSupportFragmentManager(),mFood);
+//        trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
 
         return rootView;
     }
@@ -118,42 +141,86 @@ public class MainActivityFragment extends Fragment {
         mFood.clear();
         mFood2.clear();
         progressBar.setVisibility(View.GONE);
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-            if (child.getKey().equals(getArguments().getString("id"))) {
+        for (DataSnapshot child : dataSnapshot.getChildren()) { //38_barakks
+
+            Double latitude = 0d;
+            Double longitude = 0d;
+            String restuarant_name = null;
+            for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
+                if (child1.getKey().equals("latitude"))
+                    latitude = (Double) child1.getValue();
+                if (child1.getKey().equals("longitude"))
+                    longitude = (Double) child1.getValue();
+                if (child1.getKey().equals("restaurant_name"))
+                    restuarant_name = (String) child1.getValue();
+            }
+            if (locationFlag && calRadius(latitude, longitude)) {
+                flag = true;
                 for (DataSnapshot child1 : child.getChildren()) {
-                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
-                    mFood2.add(food);
-                    if(!flag)
-                        mFood.add(food);
-                    else
-                    if( flag && calRadius(food.getLatitude(),food.getLongitude()))
-                    mFood.add(food);
+                    if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
+                        for (DataSnapshot child2 : child1.getChildren()) {
+                            Menu menu = child2.getValue(Menu.class);
+                            menu.setRestaurantName(restuarant_name);
+                            mFood.add(menu);
+                        }
+                    }
+
+                }
+            } else if (!flag) {
+                for (DataSnapshot child1 : child.getChildren()) {
+                    if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
+                        for (DataSnapshot child2 : child1.getChildren()) {
+                            Menu menu = child2.getValue(Menu.class);
+                            menu.setRestaurantName(restuarant_name);
+                            mFood2.add(menu);
+                        }
+                    }
+
                 }
             }
+//            for (DataSnapshot child1 : child.getChildren()) {
+//                if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
+//                    for (DataSnapshot child2 : child1.getChildren()) {
+//                        Menu menu = child2.getValue(Menu.class);
+//                        menu.setRestaurantName(restuarant_name);
+//                        mFood2.add(menu);
+//                        if (!locationFlag)
+//                            mFood.add(menu);
+//                        else if (locationFlag && calRadius(latitude, longitude))
+//                            mFood.add(menu);
+//                    }
+//                }
+//
+//            }
+
         }
         Collections.shuffle(mFood);
         Collections.shuffle(mFood2);
-        if(mFood.size()==0 && mFood2.size()==0)
-        {
+        if (mFood.size() == 0 && mFood2.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
-        }else
-        if (mFood.size() == 0) {
+        } else if (mFood.size() == 0) {
             emptyView.setVisibility(View.GONE);
             mFoodAdapter.addAll(mFood2);
-            mFoodAdapter.setHeaderEnabled(true);
+            nearbyEmptyLayout.setVisibility(View.VISIBLE);
+            mDemoCollectionPagerAdapter =
+                    new DemoCollectionPagerAdapter(getSupportFragmentManager(),mFood2);
+            trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
             mFoodAdapter.notifyDataSetChanged();
         } else {
             emptyView.setVisibility(View.GONE);
-            mFoodAdapter.setHeaderEnabled(false);
+            nearbyEmptyLayout.setVisibility(View.GONE);
             mFoodAdapter.addAll(mFood);
+            mDemoCollectionPagerAdapter =
+                    new DemoCollectionPagerAdapter(getSupportFragmentManager(),mFood);
+            trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
             mFoodAdapter.notifyDataSetChanged();
         }
 
     }
 
-    private boolean calRadius(double lat2,double lon2) {
-        double lat1=Double.parseDouble(((MainActivity)getActivity()).getLatitude());
-        double lon1=Double.parseDouble(((MainActivity)getActivity()).getLongitude());
+    private boolean calRadius(double lat2, double lon2) {
+        double lat1 = Double.parseDouble(((MainActivity) getActivity()).getLatitude());
+        double lon1 = Double.parseDouble(((MainActivity) getActivity()).getLongitude());
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))
                 * Math.sin(deg2rad(lat2))
@@ -163,11 +230,12 @@ public class MainActivityFragment extends Fragment {
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-        if(dist<=6)
-        return true;
+        if (dist <= 6)
+            return true;
         else
             return false;
     }
+
     private double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
     }
@@ -176,5 +244,245 @@ public class MainActivityFragment extends Fragment {
         return (rad * 180.0 / Math.PI);
     }
 
+    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+        FragmentManager fragmentManager;
+        private List<Menu> mFood;
+
+
+        public DemoCollectionPagerAdapter(FragmentManager fm,List<Menu> mFood) {
+            super(fm);
+            this.fragmentManager = fm;
+            this.mFood=mFood;
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Fragment fragment = new DemoObjectFragment();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(DemoObjectFragment.ARG_OBJECT, i + 1);
+            args.putString("videoId", "1fwwqY9293s");
+            Menu dish=mFood.get(i);
+            args.putSerializable("dish",dish);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+
+        }
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "OBJECT " + (position + 1);
+        }
+    }
+
+    public static class DemoObjectFragment extends Fragment {
+        public static final String ARG_OBJECT = "object";
+        private static final String TAG = VideoBinder.class.getSimpleName();
+        private static final int HACK_ID_PREFIX = 12331293; //some random number
+        private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+        private static YouTubePlayerSupportFragment youTubePlayerFragment;
+        private static YouTubePlayer youTubePlayer;
+        private static boolean isFullScreen = false;
+        private Menu dish;
+
+        private ImageRequest imageRequest;
+        private Uri uri;
+        public SimpleDraweeView image;
+        public TextView title;
+        public TextView description;
+        public FrameLayout videoContainer;
+        public int position;
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater,
+                                 ViewGroup container, Bundle savedInstanceState) {
+            // The last two arguments ensure LayoutParams are inflated
+            // properly.
+            View rootView = inflater.inflate(
+                    R.layout.fragment_trending, container, false);
+            Bundle args = getArguments();
+            position = (int) args.get(ARG_OBJECT);
+            dish=(Menu) args.getSerializable("dish");
+            image = (SimpleDraweeView) rootView.findViewById(R.id.image);
+            title = (TextView) rootView.findViewById(R.id.title);
+            description = (TextView) rootView.findViewById(R.id.description);
+            videoContainer = (FrameLayout) rootView.findViewById(R.id.video_container);
+            prepare();
+            return rootView;
+        }
+
+        public void prepare() {
+            if (!TextUtils.isEmpty(dish.getImageUrl()) && uri == null) {
+                try {
+                    uri = Uri.parse(dish.getImageUrl());
+                } catch (Exception e) {
+                    Log.e(TAG, "", e);
+                }
+            }
+            bind();
+        }
+
+        public void bind() {
+            image.setAspectRatio(16f / 9f);
+            if (imageRequest == null) {
+                image.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ImageRequestBuilder builder;
+                        if (uri == null) {
+                            builder = ImageRequestBuilder.newBuilderWithResourceId(android.R.color.darker_gray);
+                        } else {
+                            builder = ImageRequestBuilder.newBuilderWithSource(uri);
+                        }
+                        imageRequest = builder.setResizeOptions(new ResizeOptions(
+                                image.getWidth(), image.getHeight()
+                        )).build();
+                        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                .setImageRequest(imageRequest)
+                                .setOldController(image.getController())
+                                .build();
+                        image.setController(controller);
+                    }
+                });
+            } else {
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(image.getController())
+                        .build();
+                image.setController(controller);
+            }
+            bindVideo();
+//            bindTitle(videoViewHolder);
+//            bindDescription(videoViewHolder);
+        }
+
+        private void bindVideo() {
+            View view = videoContainer;
+            if (view != null) {
+                view.setId(HACK_ID_PREFIX + position);
+            }
+            handleClick();
+        }
+
+        private void handleClick() {
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (TextUtils.isEmpty(dish.getVideo_url())) {
+                        return;
+                    }
+                    if (!YouTubeIntents.isYouTubeInstalled(view.getContext()) ||
+                            YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(view.getContext()) != YouTubeInitializationResult.SUCCESS) {
+                        if (YouTubeIntents.canResolvePlayVideoIntent(view.getContext())) {
+                            getActivity().
+                                    startActivity(YouTubeIntents.createPlayVideoIntent(view.getContext(), dish.getVideo_url()));
+                            return;
+                        }
+                        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_BASE_URL + dish.getVideo_url()));
+                        getActivity().startActivity(viewIntent);
+                        return;
+                    }
+                    if (videoContainer.getChildCount() == 0) {
+                        if (youTubePlayerFragment == null) {
+                            youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+                        }
+                        if (youTubePlayerFragment.isAdded()) {
+                            if (DemoObjectFragment.youTubePlayer != null) {
+                                try {
+                                    DemoObjectFragment.youTubePlayer.pause();
+                                    DemoObjectFragment.youTubePlayer.release();
+                                } catch (Exception e) {
+                                    if (DemoObjectFragment.youTubePlayer != null) {
+                                        try {
+                                            DemoObjectFragment.youTubePlayer.release();
+                                        } catch (Exception ignore) {
+                                        }
+
+                                    }
+                                }
+                                DemoObjectFragment.youTubePlayer = null;
+                            }
+
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .remove(youTubePlayerFragment)
+                                    .commit();
+                            getActivity().getSupportFragmentManager()
+                                    .executePendingTransactions();
+                            youTubePlayerFragment = null;
+                        }
+                        if (youTubePlayerFragment == null) {
+                            youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+                        }
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(HACK_ID_PREFIX + position, youTubePlayerFragment)
+                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                .commit();
+                        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY,
+                                new YouTubePlayer.OnInitializedListener() {
+                                    @Override
+                                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                                        YouTubePlayer youTubePlayer, boolean b) {
+                                        DemoObjectFragment.youTubePlayer = youTubePlayer;
+                                        DemoObjectFragment.youTubePlayer.loadVideo(dish.getVideo_url());
+                                        DemoObjectFragment.youTubePlayer.setFullscreenControlFlags(0);
+                                        DemoObjectFragment.youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
+                                            @Override
+                                            public void onFullscreen(boolean b) {
+                                                isFullScreen = b;
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                                        YouTubeInitializationResult youTubeInitializationResult) {
+                                        Log.e(VideoBinder.class.getSimpleName(), youTubeInitializationResult.name());
+                                        if (YouTubeIntents.canResolvePlayVideoIntent(
+                                                getActivity())) {
+                                            getActivity()
+                                                    .startActivity(YouTubeIntents.createPlayVideoIntent(
+                                                            getActivity(),
+                                                            dish.getVideo_url()));
+                                            return;
+                                        }
+                                        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_BASE_URL + dish.getVideo_url()));
+                                        getActivity().startActivity(viewIntent);
+                                    }
+                                });
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public FragmentManager getSupportFragmentManager() {
+        return getFragmentManager();
+    }
+
+    @Override
+    public Fragment getSupportFragment() {
+        return this;
+    }
 }
 
