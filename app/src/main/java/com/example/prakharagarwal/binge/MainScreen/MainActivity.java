@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity  {
         } else {
             checkLocationPermission();
         }
-        latitude=""+LocationConstants.LAT_CP;
-        longitude=""+LocationConstants.LON_CP;
+//        latitude=""+LocationConstants.LAT_CP;
+//        longitude=""+LocationConstants.LON_CP;
         createUI();
 
         LinearLayout locationLayout = (LinearLayout) findViewById(R.id.location_layout);

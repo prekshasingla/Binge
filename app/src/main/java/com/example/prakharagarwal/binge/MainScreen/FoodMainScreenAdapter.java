@@ -44,15 +44,13 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
     final private Activity mContext;
 
     FoodMainScreenAdapterViewHolder holder;
-    IFragmentManager fragmentManager;
     RecyclerView recyclerView;
     private boolean headerEnabled;
 
-    public FoodMainScreenAdapter(List<Menu> mFood, Activity mContext, RecyclerView recyclerView, IFragmentManager fragmentManager) {
+    public FoodMainScreenAdapter(List<Menu> mFood, Activity mContext, RecyclerView recyclerView) {
         this.mFood = mFood;
         this.mContext = mContext;
         this.recyclerView = recyclerView;
-        this.fragmentManager = fragmentManager;
 
     }
 
@@ -72,22 +70,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
     }
 
-    @Override
-    public void onViewAttachedToWindow(FoodMainScreenAdapterViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        int position = holder.getAdapterPosition();
-        Menu dish = mFood.get(position);
-        dish.binder.prepare();
-        dish.binder.bind(holder, fragmentManager);
-    }
 
-    @Override
-    public void onViewDetachedFromWindow(FoodMainScreenAdapterViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        int position = holder.getAdapterPosition();
-        Menu video = mFood.get(position);
-        video.binder.unBind(holder, fragmentManager);
-    }
 
     @Override
     public int getItemCount() {

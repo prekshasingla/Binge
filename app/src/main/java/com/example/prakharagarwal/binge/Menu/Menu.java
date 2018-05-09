@@ -16,9 +16,8 @@ public class Menu implements Serializable {
     Long has_video;
     int cart_quantity;
     String restaurantName;
-    String imageUrl="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FAM%20PM%2Fchocolate%20bomb.jpg?alt=media&token=330da156-0cdc-4dce-a10e-1b7654837b84";
+    String poster_url="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FMinistry%20of%20Beer%2Fchicken%20quiche.jpg?alt=media&token=b9504b59-0330-41ec-b7e5-0a0ae323eca7";
 
-    public transient VideoBinder binder = new VideoBinder(this);
     public String getVideo_url() {
         return video_url;
     }
@@ -83,11 +82,11 @@ public class Menu implements Serializable {
         this.restaurantName = restaurantName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPoster_url() {
+        return poster_url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPoster_url(String poster_url) {
+        this.poster_url = poster_url;
     }
 }
