@@ -79,21 +79,19 @@
             android:textSize="15sp" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_main_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nearby_empty_layout"
-        android:padding="10dp"
-        android:paddingTop="48dp" />
     <android.support.v4.view.ViewPager
         android:id="@+id/trending_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_margin="10dp"
-        android:layout_below="@+id/fragment_main_recycler_view">
+        >
 
     </android.support.v4.view.ViewPager>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/trending_viewpager"
+        android:id="@+id/brands_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </RelativeLayout>

@@ -55,10 +55,11 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
 
-    RecyclerView mRecyclerView;
-    FoodMainScreenAdapter mFoodAdapter;
+    RecyclerView mBrandRecyclerView;
+    BrandsAdapter mBrandsAdapter;
     List<Menu> mFood;
     List<Menu> mFood2;
+    List<Brand> brands;
     TextView emptyView;
     ProgressBar progressBar;
     boolean locationFlag;
@@ -66,7 +67,7 @@ public class MainActivityFragment extends Fragment {
     LinearLayout nearbyEmptyLayout;
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
-    private int mFood2Counter=0;
+    private int mFood2Counter = 0;
 
 
     public static MainActivityFragment newInstance(String id) {
@@ -83,6 +84,7 @@ public class MainActivityFragment extends Fragment {
 
         mFood = new ArrayList<>();
         mFood2 = new ArrayList<>();
+        brands = new ArrayList<>();
 
     }
 
@@ -91,7 +93,7 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.activity_main_fragment, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main_recycler_view);
+        mBrandRecyclerView = (RecyclerView) rootView.findViewById(R.id.brands_recycler);
         emptyView = (TextView) rootView.findViewById(R.id.text_menu_empty);
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
@@ -119,13 +121,23 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        DatabaseReference ref1 = database.getReference("brands");
 
-//        update();
-        mFoodAdapter = new FoodMainScreenAdapter(mFood, getActivity(), mRecyclerView);
+        ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                new BrandsAsync().execute(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mBrandsAdapter = new BrandsAdapter(brands, getActivity());
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mFoodAdapter);
-        mRecyclerView.setVisibility(View.GONE);
+        mBrandRecyclerView.setLayoutManager(mLayoutManager);
+        mBrandRecyclerView.setAdapter(mBrandsAdapter);
 
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
 
@@ -163,7 +175,7 @@ public class MainActivityFragment extends Fragment {
                         }
 
                     }
-                } else if (!flag && mFood2Counter<50) {
+                } else if (!flag && mFood2Counter < 50) {
                     for (DataSnapshot child1 : child.getChildren()) {
                         if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
                             for (DataSnapshot child2 : child1.getChildren()) {
@@ -184,11 +196,11 @@ public class MainActivityFragment extends Fragment {
         }
 
 
-
         protected void onPostExecute(Void d) {
             UpdateTrendingView();
         }
     }
+
     public void UpdateTrendingView() {
 
 //        Collections.shuffle(mFood);
@@ -199,12 +211,10 @@ public class MainActivityFragment extends Fragment {
             emptyView.setVisibility(View.VISIBLE);
         } else if (mFood.size() == 0) {
             emptyView.setVisibility(View.GONE);
-            mFoodAdapter.addAll(mFood2);
             nearbyEmptyLayout.setVisibility(View.VISIBLE);
             mDemoCollectionPagerAdapter =
                     new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
-            mFoodAdapter.notifyDataSetChanged();
         } else {
             emptyView.setVisibility(View.GONE);
             nearbyEmptyLayout.setVisibility(View.GONE);
@@ -213,11 +223,34 @@ public class MainActivityFragment extends Fragment {
                     new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
 //            trendingViewpager.removeAllViews();
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
-            mFoodAdapter.addAll(mFood);
-            mFoodAdapter.notifyDataSetChanged();
+
         }
 
     }
+
+    private class BrandsAsync extends AsyncTask<DataSnapshot, Void, Void> {
+
+        protected Void doInBackground(DataSnapshot... dataSnapshot) {
+
+            for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
+
+                Brand brand = child.getValue(Brand.class);
+                brands.add(brand);
+            }
+            return null;
+        }
+
+
+        protected void onPostExecute(Void d) {
+            UpdateBrandsView();
+        }
+    }
+
+    private void UpdateBrandsView() {
+        mBrandsAdapter.addAll(brands);
+        mBrandsAdapter.notifyDataSetChanged();
+    }
+
 
     private boolean calRadius(double lat2, double lon2) {
         double lat1 = Double.parseDouble(((MainActivity) getActivity()).getLatitude());

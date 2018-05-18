@@ -111,7 +111,7 @@ public class RestaurantActivityFragment extends Fragment {
 //            if (child.getKey().equals(getArguments().getString("id"))) {
             for (DataSnapshot child1 : child.getChildren()) {
                 flag = 0;
-                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
+//                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
 //                    mFoodData.add(food);
 //                    }
 
