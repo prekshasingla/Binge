@@ -37,6 +37,10 @@
 
         </FrameLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/trending_text_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -45,6 +49,8 @@
         android:textSize="20sp"/>
     <TextView
         android:id="@+id/restaurant_name"
+        android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </LinearLayout>

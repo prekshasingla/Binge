@@ -57,6 +57,8 @@ public class MainActivityFragment extends Fragment {
 
     RecyclerView mBrandRecyclerView;
     BrandsAdapter mBrandsAdapter;
+    RecyclerView mCategoryRecyclerView;
+    CategoriesAdapter mCategoriesAdapter;
     List<Menu> mFood;
     List<Menu> mFood2;
     List<Brand> brands;
@@ -68,6 +70,7 @@ public class MainActivityFragment extends Fragment {
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private int mFood2Counter = 0;
+    private List<Category1> categories;
 
 
     public static MainActivityFragment newInstance(String id) {
@@ -85,6 +88,7 @@ public class MainActivityFragment extends Fragment {
         mFood = new ArrayList<>();
         mFood2 = new ArrayList<>();
         brands = new ArrayList<>();
+        categories = new ArrayList<>();
 
     }
 
@@ -94,6 +98,7 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.activity_main_fragment, container, false);
         mBrandRecyclerView = (RecyclerView) rootView.findViewById(R.id.brands_recycler);
+        mCategoryRecyclerView = rootView.findViewById(R.id.category_recycler);
         emptyView = (TextView) rootView.findViewById(R.id.text_menu_empty);
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
@@ -138,6 +143,24 @@ public class MainActivityFragment extends Fragment {
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mBrandRecyclerView.setLayoutManager(mLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
+
+        DatabaseReference ref2 = database.getReference("categories");
+
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                new CategoriesAsync().execute(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity());
+        final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
+        mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
 
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
 
@@ -218,7 +241,6 @@ public class MainActivityFragment extends Fragment {
         } else {
             emptyView.setVisibility(View.GONE);
             nearbyEmptyLayout.setVisibility(View.GONE);
-            nearbyEmptyLayout.setVisibility(View.GONE);
             mDemoCollectionPagerAdapter =
                     new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
 //            trendingViewpager.removeAllViews();
@@ -249,6 +271,29 @@ public class MainActivityFragment extends Fragment {
     private void UpdateBrandsView() {
         mBrandsAdapter.addAll(brands);
         mBrandsAdapter.notifyDataSetChanged();
+    }
+
+    private class CategoriesAsync extends AsyncTask<DataSnapshot, Void, Void> {
+
+        protected Void doInBackground(DataSnapshot... dataSnapshot) {
+
+            for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
+
+                Category1 category1 = child.getValue(Category1.class);
+                categories.add(category1);
+            }
+            return null;
+        }
+
+
+        protected void onPostExecute(Void d) {
+            UpdateCategoriesView();
+        }
+    }
+
+    private void UpdateCategoriesView() {
+        mCategoriesAdapter.addAll(categories);
+        mCategoriesAdapter.notifyDataSetChanged();
     }
 
 

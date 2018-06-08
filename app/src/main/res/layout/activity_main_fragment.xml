@@ -1,98 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.prakharagarwal.binge.MainScreen.MainActivityFragment">
 
-    <ProgressBar
-        android:id="@+id/main_activity_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/text_menu_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Adding Soon!"
-        android:visibility="gone" />
-
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/nearby_empty_layout"
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        tools:context="com.example.prakharagarwal.binge.MainScreen.MainActivityFragment">
 
-        <LinearLayout
-            android:id="@+id/nearby_empty_layout_lin"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/main_activity_progress"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_box_grey"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight=".4"
-                android:padding="10dp"
-                android:text="No Restaurants Nearby"
-                android:textSize="10dp" />
-
-            <Button
-                android:id="@+id/recommend_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".4"
-                android:background="@drawable/primary_btn"
-                android:text="Recommend A Dish"
-                android:textColor="#f1bb3a"
-                android:textSize="10dp" />
-        </LinearLayout>
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:visibility="visible" />
 
         <TextView
-            android:id="@+id/trendingHeader"
+            android:id="@+id/text_menu_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Adding Soon!"
+            android:visibility="gone" />
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/nearby_empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/nearby_empty_layout_lin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_box_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".4"
+                    android:padding="10dp"
+                    android:text="No Restaurants Nearby"
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/recommend_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".4"
+                    android:background="@drawable/primary_btn"
+                    android:text="Recommend A Dish"
+                    android:textColor="#f1bb3a"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/trendingHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nearby_empty_layout_lin"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Trending Dishes"
+                android:textColor="#c1c1c1"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/trending_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/nearby_empty_layout"
+            android:layout_margin="10dp">
+
+        </android.support.v4.view.ViewPager>
+
+        <TextView
+            android:id="@+id/trendingbrands"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nearby_empty_layout_lin"
+            android:layout_below="@+id/trending_viewpager"
             android:layout_margin="10dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="Trending Dishes"
+            android:text="Popular Brands"
             android:textColor="#c1c1c1"
             android:textSize="15sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_margin="10dp"
+            android:id="@+id/brands_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/trendingbrands" />
+        <TextView
+            android:id="@+id/trendingCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/brands_recycler"
+            android:layout_margin="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="Your Mood Today"
+            android:textColor="#c1c1c1"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_margin="10dp"
+            android:id="@+id/category_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/trendingCategories" />
+
+
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/trending_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_margin="10dp"
-        >
-
-    </android.support.v4.view.ViewPager>
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/trending_viewpager"
-        android:id="@+id/brands_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-</RelativeLayout>
-
+</ScrollView>
