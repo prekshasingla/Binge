@@ -22,4 +22,8 @@
     <!-- circle page indicator-->
     <dimen name="fvp_default_circle_radius">4dp</dimen>
     <dimen name="fvp_default_circle_padding">12dp</dimen>
+
+    <!-- UI dimension-->
+    <dimen name="editext_height">45dp</dimen>
+    <dimen name="drawable_padding">5dp</dimen>
 </resources>

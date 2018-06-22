@@ -1,12 +1,15 @@
 package com.example.prakharagarwal.binge.Menu;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by prekshasingla on 11/07/17.
  */
-public class Menu implements Serializable {
+public class Menu implements Serializable{
 
     String video_url;
     String name;
@@ -17,6 +20,24 @@ public class Menu implements Serializable {
     int cart_quantity;
     String restaurantName;
     String poster_url="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FMinistry%20of%20Beer%2Fchicken%20quiche.jpg?alt=media&token=b9504b59-0330-41ec-b7e5-0a0ae323eca7";
+    String category;
+    String restaurant_id;
+
+    public String getRestaurant_id() {
+        return restaurant_id;
+    }
+
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getVideo_url() {
         return video_url;
@@ -89,4 +110,5 @@ public class Menu implements Serializable {
     public void setPoster_url(String poster_url) {
         this.poster_url = poster_url;
     }
+
 }

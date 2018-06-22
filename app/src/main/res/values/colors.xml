@@ -27,6 +27,8 @@
     <color name="fpi_default_indicator_inactive_color">#FFFFFFFF</color>
     <color name="fpi_default_indicator_active_color">#ff5500</color>
     <color name="transparent">#00000000</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="white">#fff</color>
 
 
 </resources>

@@ -31,6 +31,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".MainScreen.MainActivity"
             android:screenOrientation="portrait">
@@ -111,7 +112,8 @@
             android:label="@string/title_activity_cart" />
         <activity
             android:name=".cart.CartSuccess"
-            android:label="@string/title_activity_cart_success"></activity>
+            android:label="@string/title_activity_cart_success" />
+        <activity android:name=".MainScreen.DishInfoActivity"></activity>
     </application>
 
 </manifest>

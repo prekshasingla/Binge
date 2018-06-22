@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/dish_name_menu"
+        android:textSize="18dp"
+        android:fontFamily="@font/quicksand"
+        android:textStyle="bold"
+        android:text="Dish Name"
+        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_dish_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dish_name_menu"
+        android:orientation="vertical">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/drawer_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded"
+            fresco:placeholderImage="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/play_button_menu"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/playbutton" />
+
+        <FrameLayout
+            android:id="@+id/video_container_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded"
+            android:tag="@string/video_component_tag">
+
+        </FrameLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

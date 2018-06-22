@@ -11,22 +11,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.gestures.GestureDetector;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
@@ -43,6 +49,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,12 +73,11 @@ public class MainActivityFragment extends Fragment {
     ProgressBar progressBar;
     boolean locationFlag;
     boolean flag = false;
-    LinearLayout nearbyEmptyLayout;
+   // LinearLayout nearbyEmptyLayout;
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private int mFood2Counter = 0;
     private List<Category1> categories;
-
 
     public static MainActivityFragment newInstance(String id) {
         Bundle args = new Bundle();
@@ -103,7 +109,7 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
+     //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
@@ -140,8 +146,10 @@ public class MainActivityFragment extends Fragment {
             }
         });
         mBrandsAdapter = new BrandsAdapter(brands, getActivity());
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mBrandRecyclerView.setLayoutManager(mLayoutManager);
+      //  final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(getActivity().getApplicationContext(),2);
+        gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mBrandRecyclerView.setLayoutManager(gridLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
 
         DatabaseReference ref2 = database.getReference("categories");
@@ -157,12 +165,15 @@ public class MainActivityFragment extends Fragment {
 
             }
         });
-        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity());
+        FoodList foodList=new FoodList();
+        foodList.mfood=mFood2;
+        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(),foodList);
         final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
         mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
-
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
+
+
 
         return rootView;
     }
@@ -177,6 +188,8 @@ public class MainActivityFragment extends Fragment {
                 Double latitude = 0d;
                 Double longitude = 0d;
                 String restuarant_name = null;
+                String restuarant_id=null;
+
                 for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
                     if (child1.getKey().equals("latitude"))
                         latitude = (Double) child1.getValue();
@@ -184,7 +197,9 @@ public class MainActivityFragment extends Fragment {
                         longitude = (Double) child1.getValue();
                     if (child1.getKey().equals("restaurant_name"))
                         restuarant_name = (String) child1.getValue();
-                }
+                    if(child1.getKey().equals("restaurant_id"))
+                        restuarant_id=(String)child1.getValue();
+                    }
                 if (locationFlag && calRadius(latitude, longitude)) {
                     flag = true;
                     for (DataSnapshot child1 : child.getChildren()) {
@@ -192,18 +207,22 @@ public class MainActivityFragment extends Fragment {
                             for (DataSnapshot child2 : child1.getChildren()) {
                                 Menu menu = child2.getValue(Menu.class);
                                 menu.setRestaurantName(restuarant_name);
+                                menu.setRestaurant_id(restuarant_id);
                                 if (menu.getHas_video() == 0)
                                     mFood.add(menu);
                             }
                         }
 
                     }
+                    //pass the data for the category
+                    PassingData.setMenuList(mFood);
                 } else if (!flag && mFood2Counter < 50) {
                     for (DataSnapshot child1 : child.getChildren()) {
                         if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
                             for (DataSnapshot child2 : child1.getChildren()) {
                                 Menu menu = child2.getValue(Menu.class);
                                 menu.setRestaurantName(restuarant_name);
+                                menu.setRestaurant_id(restuarant_id);
                                 if (menu.getHas_video() == 0) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
@@ -212,6 +231,7 @@ public class MainActivityFragment extends Fragment {
                         }
 
                     }
+                    PassingData.setMenuList(mFood2);
                 }
 
             }
@@ -234,13 +254,13 @@ public class MainActivityFragment extends Fragment {
             emptyView.setVisibility(View.VISIBLE);
         } else if (mFood.size() == 0) {
             emptyView.setVisibility(View.GONE);
-            nearbyEmptyLayout.setVisibility(View.VISIBLE);
+         //   nearbyEmptyLayout.setVisibility(View.VISIBLE);
             mDemoCollectionPagerAdapter =
                     new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
         } else {
             emptyView.setVisibility(View.GONE);
-            nearbyEmptyLayout.setVisibility(View.GONE);
+         //   nearbyEmptyLayout.setVisibility(View.GONE);
             mDemoCollectionPagerAdapter =
                     new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
 //            trendingViewpager.removeAllViews();
@@ -396,15 +416,15 @@ public class MainActivityFragment extends Fragment {
         public TextView restaurantName;
         public FrameLayout videoContainer;
         public int position;
+        private Button preOrder;
 
 
         @Override
-        public View onCreateView(LayoutInflater inflater,
+        public View onCreateView(final LayoutInflater inflater,
                                  ViewGroup container, Bundle savedInstanceState) {
             // The last two arguments ensure LayoutParams are inflated
             // properly.
-            View rootView = inflater.inflate(
-                    R.layout.fragment_trending, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_trending, container, false);
             Bundle args = getArguments();
             position = (int) args.get(ARG_OBJECT);
             dish = (Menu) args.getSerializable("dish");
@@ -412,8 +432,21 @@ public class MainActivityFragment extends Fragment {
             title = (TextView) rootView.findViewById(R.id.title);
             restaurantName = (TextView) rootView.findViewById(R.id.restaurant_name);
             videoContainer = (FrameLayout) rootView.findViewById(R.id.video_container);
+            preOrder=rootView.findViewById(R.id.pre_order);
             title.setText(dish.getName());
             restaurantName.setText(dish.getRestaurantName());
+
+//            preOrder.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent=new Intent(getContext(),RestaurantDetailsActivity.class);
+//                    intent.putExtra("restaurantID",dish.getRestaurantName());
+//                    startActivity(intent);
+//                }
+//            });
+
+
+
             prepare();
             return rootView;
         }
@@ -562,7 +595,9 @@ public class MainActivityFragment extends Fragment {
             });
         }
     }
-
+class FoodList implements Serializable{
+        List<Menu> mfood;
+}
 
 }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.example.prakharagarwal.binge.DishRecommend;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -67,7 +69,13 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
 
     @Override
     public void onBindViewHolder(FoodMainScreenAdapterViewHolder holder, int position) {
-
+        holder.dish_name_rest.setText(mFood.get(position).getName());
+      //  holder.dish_price_rest.setText("₹ "+mFood.get(position).getPrice());
+      //  holder.dish_time_rest.setText("10 min");
+        holder.resturant_name_rest.setText(mFood.get(position).getRestaurantName());
+        Picasso.with(mContext)
+                .load(mFood.get(position).getPoster_url())
+                .into(holder.dish_image_rest);
     }
 
 
@@ -79,19 +87,36 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
     }
 
 
-    public class FoodMainScreenAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class FoodMainScreenAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public SimpleDraweeView image;
-        public TextView title;
-        public TextView description;
-        public FrameLayout videoContainer;
+        public TextView dish_name_rest;
+        public TextView resturant_name_rest;
+   //     public TextView dish_price_rest;
+  //      public TextView dish_time_rest;
+        public ImageView dish_image_rest;
 
+        //public FrameLayout videoContainer;
+        public  ImageView imageview_food_mainScreen;
+        public CardView cardView;
         public FoodMainScreenAdapterViewHolder(View itemView) {
             super(itemView);
-            image = (SimpleDraweeView) itemView.findViewById(R.id.image);
-            title = (TextView) itemView.findViewById(R.id.title);
-            description = (TextView) itemView.findViewById(R.id.description);
-            videoContainer = (FrameLayout) itemView.findViewById(R.id.video_container);
+            //image = (SimpleDraweeView) itemView.findViewById(R.id.image);
+            dish_name_rest = (TextView) itemView.findViewById(R.id.dish_name_rest);
+            resturant_name_rest = (TextView) itemView.findViewById(R.id.resturant_name_rest);
+           // videoContainer = (FrameLayout) itemView.findViewById(R.id.video_container);
+            dish_image_rest=itemView.findViewById(R.id.dish_image_rest);
+     //       dish_price_rest=itemView.findViewById(R.id.dish_price_rest);
+     //       dish_time_rest=itemView.findViewById(R.id.dish_time_rest);
+
+            cardView=itemView.findViewById(R.id.cardview_dish_click);
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent=new Intent(mContext,DishInfoActivity.class);
+            PassingData.setMenu(mFood.get(getAdapterPosition()));
+            mContext.startActivity(intent);
         }
     }
 

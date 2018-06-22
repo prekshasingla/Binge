@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
+
+import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -52,10 +55,11 @@ public class RestaurantActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String restaurantID = getIntent().getStringExtra("restaurantID");
-        String restaurantName = getIntent().getStringExtra("restaurantName");
+        //String restaurantID = getIntent().getStringExtra("restaurantID");
+        //String restaurantName = getIntent().getStringExtra("restaurantName");
         textViewLocation = (TextView) findViewById(R.id.user_location);
-        textViewLocation.setText(restaurantName);
+       // textViewLocation.setText(restaurantName);
+       // textViewLocation.setText("some text");
 
         //Initializing the tablayout
         //tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -76,10 +80,12 @@ public class RestaurantActivity extends AppCompatActivity {
         //tabLayout.setBackground(R.drawable.primary_btn);
 
 
+        String category_id=getIntent().getStringExtra("category");
+        textViewLocation.setText(category_id.substring(0,1).toUpperCase()+category_id.substring(1).toLowerCase());
+       // MainActivityFragment.FoodList foodList= (MainActivityFragment.FoodList) getIntent().getSerializableExtra("mfood");
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(RestaurantActivityFragment.newInstance(restaurantID));
+        viewPagerAdapter.addFragment(RestaurantActivityFragment.newInstance(category_id));
         viewPager.setAdapter(viewPagerAdapter);
 
     }

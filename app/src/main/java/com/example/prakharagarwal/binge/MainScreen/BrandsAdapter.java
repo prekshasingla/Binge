@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
@@ -54,7 +55,8 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.BrandsAdap
         Picasso.with(mContext)
                 .load(brand.getLogo_url())
                 .into(holder.image);
-        holder.name.setText(brand.getRestaurant_name());
+      //  holder.name.setText(brand.getRestaurant_name());
+
     }
 
 
@@ -66,7 +68,7 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.BrandsAdap
     }
 
 
-    public class BrandsAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class BrandsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView image;
         public TextView name;
@@ -75,6 +77,11 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.BrandsAdap
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.brand_image);
             name = (TextView) itemView.findViewById(R.id.brand_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(mContext, "Position "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
         }
     }
 

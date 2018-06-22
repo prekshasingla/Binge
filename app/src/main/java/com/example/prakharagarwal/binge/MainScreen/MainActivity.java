@@ -2,6 +2,8 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,8 +69,9 @@ public class MainActivity extends AppCompatActivity  {
 
     CardView cv;
     SharedPreferences sharedpreferences;
-    private ImageView searchIcon;
+    //private ImageView searchIcon;
 
+    private EditText search_edittext;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
@@ -144,14 +149,30 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         //Initializing the tablayout
 
-        searchIcon = (ImageView) findViewById(R.id.search_icon);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
+
+        //hide the soft keyboard
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+ //       searchIcon = (ImageView) findViewById(R.id.search_icon);
+//        searchIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        search_edittext=findViewById(R.id.search_edit_text);
+        search_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (getIntent().getStringExtra("callingActivity") != null) {
             latitude=getIntent().getStringExtra("latitude");
@@ -186,6 +207,13 @@ public class MainActivity extends AppCompatActivity  {
         viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"), "Fine Dining");
 
         viewPager.setAdapter(viewPagerAdapter);
+
+//        MainActivityFragment mainActivityFragment=new MainActivityFragment();
+//        android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+//        android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+//        transaction.add(R.id.fragment_container,mainActivityFragment);
+//        transaction.commit();
+
 
     }
 

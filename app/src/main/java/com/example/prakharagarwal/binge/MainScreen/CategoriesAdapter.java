@@ -1,6 +1,14 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,14 +33,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     private static final int ITEM_VIEW_TYPE_ITEM = 2;
     private List<Category1> categories;
     final private Activity mContext;
+    MainActivityFragment.FoodList mfood;
 
     CategoriesAdapter.CategoriesAdapterViewHolder holder;
     private boolean headerEnabled;
 
-    public CategoriesAdapter(List<Category1> categories, Activity mContext) {
+    int color[]=new int[]{Color.parseColor("#FF4500"),Color.parseColor("#00cccc"),Color.parseColor("#ff70a6"),Color.parseColor("#16b886"),Color.parseColor("#ffb16d")};
+
+    public CategoriesAdapter(List<Category1> categories, Activity mContext,MainActivityFragment.FoodList mfood) {
         this.categories = categories;
         this.mContext = mContext;
-
+        this.mfood=mfood;
     }
 
 
@@ -52,6 +65,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                 .load(category1.getLogo_url())
                 .into(holder.image);
         holder.name.setText(category1.getCategory_name());
+        holder.carditem.setBackgroundColor(color[position]);
+
+
     }
 
 
@@ -62,16 +78,29 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         return categories.size();
     }
 
-
-    public class CategoriesAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class CategoriesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView image;
         public TextView name;
+        public CardView cardView;
+        public ConstraintLayout carditem;
 
         public CategoriesAdapterViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.category_image);
             name = (TextView) itemView.findViewById(R.id.category_name);
+            carditem=itemView.findViewById(R.id.carditem_layout);
+            cardView=itemView.findViewById(R.id.category_cardview);
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+           Category1 category1=categories.get(getAdapterPosition());
+            Intent intent =new Intent(mContext,RestaurantActivity.class);
+            intent.putExtra("category",category1.getCategory_id());
+           // intent.putExtra("mfood",mfood);
+            mContext.startActivity(intent);
         }
     }
 

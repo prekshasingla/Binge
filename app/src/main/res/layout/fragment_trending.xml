@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:elevation="4dp"
@@ -19,6 +20,7 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded"
             fresco:placeholderImage="@color/colorPrimary"/>
 
         <ImageView
@@ -26,31 +28,132 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/playcion"/>
+            android:src="@drawable/playbutton" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:tag="@string/video_component_tag"
             android:id="@+id/video_container"
-            >
-
+            android:background="@drawable/rounded">
         </FrameLayout>
+
     </RelativeLayout>
-    <RelativeLayout
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/trending_text_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chocolate"
-        android:textSize="20sp"/>
-    <TextView
-        android:id="@+id/restaurant_name"
-        android:layout_below="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </RelativeLayout>
+        android:layout_height="171dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Chocolate"
+            android:textColor="#000"
+            android:textSize="27sp"
+            fresco:layout_constraintBottom_toTopOf="@+id/restaurant_name"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toTopOf="parent"
+            fresco:layout_constraintVertical_bias="0.06" />
+
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="333dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/quicksand"
+            android:text="restaurant name"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="0.018"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toTopOf="parent"
+            fresco:layout_constraintVertical_bias="0.037" />
+
+        <TextView
+            android:id="@+id/restaurant_trent"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_below="@+id/title"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_restaurant_black_24dp"
+            android:fontFamily="@font/quicksand"
+            android:text="Trending"
+            android:drawablePadding="4dp"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="0.0"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toTopOf="parent"
+            fresco:layout_constraintVertical_bias="0.41" />
+
+        <TextView
+            android:id="@+id/restaurant_time"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_below="@+id/title"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_directions_car_black_24dp"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/quicksand"
+            android:text="10 min"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="0.0"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toBottomOf="@+id/restaurant_trent"
+            fresco:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/pre_order"
+            android:layout_width="89dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="52dp"
+            android:background="@drawable/preorder_btn"
+            android:text="Pre-Order"
+            android:textAllCaps="false"
+            android:textColor="#F95F62"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="1.0"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="87dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/postorder_btn"
+            android:text="Order Inside"
+            android:textAllCaps="false"
+            android:textColor="#FF77D353"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="1.0"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toBottomOf="@+id/pre_order"
+            fresco:layout_constraintVertical_bias="0.033" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
 </LinearLayout>

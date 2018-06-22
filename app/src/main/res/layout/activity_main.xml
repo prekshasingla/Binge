@@ -23,6 +23,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:background="#ffffff"
+                app:layout_scrollFlags="scroll|enterAlways"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -64,24 +65,12 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:src="@drawable/search_black"
-                        android:layout_marginLeft="110dp"
-                        android:id="@+id/search_icon"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_height="20dp"
-                        android:visibility="visible"
-                        android:layout_gravity="center_vertical|right"
-
-                        />
-                    <ImageView
                         android:src="@drawable/filter"
                         android:layout_marginLeft="14dp"
                         android:layout_marginRight="14dp"
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
                         android:layout_height="20dp"
-                        android:visibility="gone"
                         android:layout_gravity="center_vertical|right"
 
                         />
@@ -92,29 +81,35 @@
             <EditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/editext_height"
                 android:layout_gravity="center_vertical|right"
                 android:background="@drawable/background_box_grey"
                 android:layout_margin="15dp"
-                android:textSize="18sp"
-                android:hint="Search for Cuisines and Restaurants"
+                android:drawableLeft="@drawable/ic_search_black_24dp"
+                android:textSize="16sp"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:paddingLeft="12dp"
+                android:hint="Search Dishes, Cuisines, Restaurant"
                 android:visibility="visible"
-
                 />
-
-
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+<!--
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/appbar">
-
-        </android.support.v4.view.ViewPager>
-
-
+            android:background="#859"
+            android:layout_height="match_parent">
+-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/appbar"></android.support.v4.view.ViewPager>
+  <!--
+        </FrameLayout>
+-->
     </LinearLayout>
 
 
