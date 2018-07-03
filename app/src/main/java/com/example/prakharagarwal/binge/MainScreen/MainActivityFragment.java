@@ -417,6 +417,7 @@ public class MainActivityFragment extends Fragment {
         public FrameLayout videoContainer;
         public int position;
         private Button preOrder;
+        private Button postOrder;
 
 
         @Override
@@ -433,6 +434,7 @@ public class MainActivityFragment extends Fragment {
             restaurantName = (TextView) rootView.findViewById(R.id.restaurant_name);
             videoContainer = (FrameLayout) rootView.findViewById(R.id.video_container);
             preOrder=rootView.findViewById(R.id.pre_order);
+            postOrder=rootView.findViewById(R.id.post_order);
             title.setText(dish.getName());
             restaurantName.setText(dish.getRestaurantName());
 
@@ -444,6 +446,14 @@ public class MainActivityFragment extends Fragment {
 //                    startActivity(intent);
 //                }
 //            });
+
+            postOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(getContext(),PostOrderQRActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 
 

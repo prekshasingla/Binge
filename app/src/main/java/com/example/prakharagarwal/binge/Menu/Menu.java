@@ -19,9 +19,28 @@ public class Menu implements Serializable{
     Long has_video;
     int cart_quantity;
     String restaurantName;
-    String poster_url="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FMinistry%20of%20Beer%2Fchicken%20quiche.jpg?alt=media&token=b9504b59-0330-41ec-b7e5-0a0ae323eca7";
+  // String poster_url="https://firebasestorage.googleapis.com/v0/b/bingetesting.appspot.com/o/main_screen%2FMinistry%20of%20Beer%2Fchicken%20quiche.jpg?alt=media&token=b9504b59-0330-41ec-b7e5-0a0ae323eca7";
+    String poster_url="https://www.soomska.com/wp-content/uploads/2017/12/5.jpg";
     String category;
     String restaurant_id;
+    Long course_meal;
+    int totalcartItem=0;
+
+    public int getTotalcartItem() {
+        return totalcartItem;
+    }
+
+    public void setTotalcartItem(int totalcartItem) {
+        this.totalcartItem = totalcartItem;
+    }
+
+    public Long getCourse_meal() {
+        return course_meal;
+    }
+
+    public void setCourse_meal(Long course_meal) {
+        this.course_meal = course_meal;
+    }
 
     public String getRestaurant_id() {
         return restaurant_id;

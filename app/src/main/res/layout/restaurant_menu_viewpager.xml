@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/dish_name_menu"
-        android:textSize="18dp"
-        android:fontFamily="@font/quicksand"
-        android:textStyle="bold"
-        android:text="Dish Name"
-        android:layout_margin="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="Dish Name"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/relative_layout_dish_menu"
@@ -20,29 +23,58 @@
         android:layout_below="@+id/dish_name_menu"
         android:orientation="vertical">
 
-
-        <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/drawer_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded"
-            fresco:placeholderImage="@color/colorPrimary" />
-
         <ImageView
-            android:id="@+id/play_button_menu"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/playbutton" />
-
-        <FrameLayout
-            android:id="@+id/video_container_menu"
+            android:id="@+id/thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded"
-            android:tag="@string/video_component_tag">
+            android:layout_height="200dp"
+            android:layout_marginLeft="5dp"
+            android:scaleType="fitXY" />
 
-        </FrameLayout>
+        <TextView
+            android:id="@+id/price_rest"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/thumbnail"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/quicksand"
+            android:text="Dish Price"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/rupees"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/rating_rest_viewpager"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price_rest"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/ic_star_black_24dp"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/quicksand"
+            android:text="Rating"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+
+
+        <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton
+            android:id="@+id/element_btn_viewpager"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/thumbnail"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="10dp"
+            app:initialNumber="0"
+            app:finalNumber="20"
+            app:textSize="5dp"
+            app:backGroundColor="#ffd700">
+        </com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
     </RelativeLayout>
 
 

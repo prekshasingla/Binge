@@ -7,12 +7,13 @@
     tools:context=".MainScreen.DishInfoActivity"
     tools:layout_editor_absoluteY="25dp">
 
+
     <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/slide_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        sothree:umanoDragView="@id/drag_view"
+        sothree:umanoDragView="@id/full_layout"
         sothree:umanoPanelHeight="420dp"
         sothree:umanoShadowHeight="2dp">
 
@@ -28,203 +29,309 @@
                 android:background="@color/grey" />
 
         </android.support.constraint.ConstraintLayout>
-
+        <!--<ScrollView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/full_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
+            android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/drag_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:id="@+id/dish_name"
                     android:layout_width="292dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     android:text="Bitter Sweet Chocolate"
                     android:textSize="25dp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.017" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/dish_price"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginStart="2dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:text="₹ 625"
                     android:textSize="25dp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/dish_time"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.272"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/dish_name"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.015" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/dish_trending"
                     android:layout_width="122dp"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/ic_restaurant_black_24dp"
                     android:drawablePadding="5dp"
                     android:text="Treanding"
-                    app:layout_constraintBottom_toTopOf="@+id/dish_discription"
-                    app:layout_constraintEnd_toStartOf="@+id/dish_rating"
-                    app:layout_constraintHorizontal_bias="0.088"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dish_name" />
 
                 <TextView
                     android:id="@+id/dish_rating"
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="68dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="68dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_height="17dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/ic_star_black_24dp"
                     android:drawablePadding="5dp"
                     android:text="Rating"
-                    app:layout_constraintEnd_toStartOf="@+id/dish_time"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/dish_trending"
                     app:layout_constraintTop_toBottomOf="@+id/dish_name" />
 
                 <TextView
                     android:id="@+id/dish_time"
                     android:layout_width="72dp"
-                    android:layout_height="23dp"
+                    android:layout_height="18dp"
 
                     android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/ic_directions_car_black_24dp"
                     android:drawablePadding="5dp"
                     android:text="10 min"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/dish_rating"
                     app:layout_constraintTop_toBottomOf="@+id/dish_name" />
 
                 <TextView
                     android:id="@+id/dish_discription"
                     android:layout_width="354dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/quicksand"
-                    android:text="Our Chocolate Fresh Frozen Custard owes its dark, decadent demeanor to our very own special Dutch-blend cocoa recipe. We prepare each small batch right in our restaurants, all throughout the day, using real Wisconsin dairy, so it’s ever so rich and uncompromisingly creamy."
+                    android:text="Our Chocolate  We prepare each small batch right in our restaurants, all throughout the day, using real Wisconsin dairy, so it’s ever so rich and uncompromisingly creamy."
                     android:textSize="15dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.333"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dish_rating"
-                    app:layout_constraintVertical_bias="0.129" />
+                    app:layout_constraintTop_toBottomOf="@+id/dish_rating" />
 
-
-
-                <Button
-                    android:id="@+id/pre_order"
-                    android:layout_width="89dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="8dp"
+                <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/elegantNumberButton"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/preorder_btn"
-                    android:text="Pre-Order"
-                    android:textAllCaps="false"
-                    android:textColor="#F95F62"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button4"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dish_discription"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="87dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="60dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="60dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/postorder_btn"
-                    android:text="Order Inside"
-                    android:textAllCaps="false"
-                    android:textColor="#FF77D353"
+                    app:backGroundColor="#00bfff"
+                    app:finalNumber="20"
+                    app:initialNumber="0"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.995"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dish_discription"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0"
+                    app:textColor="#fff"
+                    app:textSize="5dp">
+
+                </com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
+
 
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="384dp"
+            <RelativeLayout
+                android:id="@+id/relative"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/drag_view"
-                app:layout_constraintVertical_bias="0.808">
+                app:layout_constraintTop_toBottomOf="@+id/drag_view">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/relative"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="NotSibling">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/cardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/drag_view"
+                            app:layout_constraintVertical_bias="0.808"
+                            tools:ignore="NotSibling">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <android.support.v4.view.ViewPager
+                                    android:id="@+id/dish_viewpager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="300dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_below="@+id/trendingHeader"
+                                    android:layout_marginBottom="2dp"
+                                    android:layout_marginRight="2dp"></android.support.v4.view.ViewPager>
 
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/dish_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/trendingHeader"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginRight="5dp">
+                                <View
+                                    android:id="@+id/simple"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_below="@+id/dish_viewpager"
+                                    android:layout_marginTop="3dp"
+                                    android:background="@color/silver"></View>
 
-                </android.support.v4.view.ViewPager>
+                                <android.support.v4.view.ViewPager
+                                    android:id="@+id/dish_viewpager_second"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="300dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_below="@+id/simple"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginRight="2dp"
+                                    android:layout_marginTop="10dp"></android.support.v4.view.ViewPager>
 
-            </android.support.v7.widget.CardView>
 
-
-
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+                    </RelativeLayout>
+                </ScrollView>
+            </RelativeLayout>
         </android.support.constraint.ConstraintLayout>
-
+        <!--</ScrollView>-->
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
+    <FrameLayout
+        android:id="@+id/cart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:background="#FF69B4"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/slide_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pending_item_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/quicksand"
+                android:text="Pending 0 Item | ₹0 "
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pending_item_textview"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/quicksand"
+                android:text="Placed 0 item"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_shopping_cart_black_24dp"
+                android:paddingRight="5dp"
+                android:text="View Cart"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153" />
 
 </android.support.constraint.ConstraintLayout>

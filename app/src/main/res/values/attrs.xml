@@ -21,4 +21,15 @@
         <!-- Style of the underline indicator. -->
         <attr name="vpiUnderlinePageIndicatorStyle" format="reference"/>
     </declare-styleable>
+
+
+    <declare-styleable name="CartNumberButton">
+
+        <attr name="backGroundColor" format="color"/>
+        <attr name="initialNumber" format="integer"/>
+        <attr name="finalNumber" format="integer" />
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="backgroundDrawable" format="reference"/>
+    </declare-styleable>
 </resources>

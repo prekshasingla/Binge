@@ -73,6 +73,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
       //  holder.dish_price_rest.setText("₹ "+mFood.get(position).getPrice());
       //  holder.dish_time_rest.setText("10 min");
         holder.resturant_name_rest.setText(mFood.get(position).getRestaurantName());
+
         Picasso.with(mContext)
                 .load(mFood.get(position).getPoster_url())
                 .into(holder.dish_image_rest);
@@ -116,6 +117,8 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
         public void onClick(View v) {
             Intent intent=new Intent(mContext,DishInfoActivity.class);
             PassingData.setMenu(mFood.get(getAdapterPosition()));
+            intent.putExtra("rest",mFood.get(getAdapterPosition()).getRestaurant_id());
+            intent.putExtra("dish",mFood.get(getAdapterPosition()).getName());
             mContext.startActivity(intent);
         }
     }

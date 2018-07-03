@@ -16,6 +16,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white_opaque">#FFFFFFFF</color>
     <color name="pitch_black">#FF000000</color>
+    <color name="lime_green">#32CD32</color>
+    <color name="yellow">#ffd700</color>
+    <color name="sky_color">#00bfff</color>
 
     <color name="veg_active">#279028</color>
     <color name="nonveg_active">#ff111c</color>
@@ -30,5 +33,6 @@
     <color name="silver">#C0C0C0</color>
     <color name="white">#fff</color>
 
-
+<color name="colorText">#fff</color>
+    <color name="background">#C0C0C0</color>
 </resources>

@@ -23,4 +23,5 @@ public class PassingData {
     public static void setMenu(Menu menu) {
         PassingData.menu = menu;
     }
+
 }

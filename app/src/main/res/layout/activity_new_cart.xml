@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cart.NewCartActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/resturant_cart_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:src="@mipmap/bingeicon" />
+
+            <TextView
+                android:id="@+id/resturatant_cart_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/resturant_cart_image"
+                android:fontFamily="@font/quicksand"
+                android:text="Resturant Name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/resturant_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resturatant_cart_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/resturant_cart_image"
+                android:fontFamily="@font/quicksand"
+                android:text="New Delhi" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/resturant_cart_image"
+                android:layout_marginTop="10dp">
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:id="@+id/line_1"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@id/recyclerview_cart"
+                android:layout_marginTop="10dp"
+                android:background="@color/silver"></View>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView_cart"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/line_1"
+                android:layout_marginTop="10dp"
+                app:cardElevation="1dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/coupon_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="7dp"
+                        android:drawableLeft="@drawable/ic_filter_tilt_shift_black_24dp"
+                        android:drawablePadding="15dp"
+                        android:fontFamily="@font/quicksand"
+                        android:text="Apply Coupon"
+                        android:textAllCaps="true"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="36dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="114dp"
+                        android:layout_toRightOf="@+id/coupon_text"
+                        android:text=">"
+                        android:textColor="@color/grey"
+                        android:textSize="30dp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/line_2"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/cardView_cart"
+                android:layout_marginTop="10dp"
+                android:background="@color/silver"></View>
+
+
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

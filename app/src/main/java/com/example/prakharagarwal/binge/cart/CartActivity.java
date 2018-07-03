@@ -89,11 +89,6 @@ public class CartActivity extends AppCompatActivity {
     private void placeOrderOnFirestore() {
         // Create a new user with a first and last name
         Map<String, Object> order = new HashMap<>();
-//        SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
-//        String uID = prefs.getString("username", null);
-//        if (uID != null) {
-//           order.put("userId",uID);
-//        }
         order.put("userId","prakhar");
         order.put("cart_value", cartValue);
 
@@ -103,7 +98,6 @@ public class CartActivity extends AppCompatActivity {
             Map.Entry pair = (Map.Entry)it.next();
             CartItem cartItem=(CartItem) pair.getValue();
             dishes.put(cartItem.getName(),Integer.parseInt(cartItem.getQty()));
-//            it.remove(); // avoids a ConcurrentModificationException
         }
         order.put("dishes",dishes);
 
@@ -154,7 +148,7 @@ public class CartActivity extends AppCompatActivity {
             Map.Entry pair = (Map.Entry)it.next();
             CartItem cartItem=(CartItem) pair.getValue();
             cartList.add(cartItem);
-//            it.remove(); // avoids a ConcurrentModificationException
+
         }
     }
 
