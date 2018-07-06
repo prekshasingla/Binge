@@ -23,21 +23,24 @@
         android:layout_marginStart="35dp"
         android:fontFamily="@font/quicksand"
         android:text="Dish Name"
-        android:textSize="12dp"
+        android:textSize="13dp"
         android:textStyle="bold" />
 
-    <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/elegantNumberButton_cart_recyclerview"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="101dp"
         app:initialNumber="0"
+        app:backgroundDrawable="@drawable/cartbackground"
         app:finalNumber="10"
         app:backGroundColor="@color/lime_green"
         android:layout_alignParentRight="true"
         android:layout_marginRight="101dp"></com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
+
 
     <TextView
         android:id="@+id/price_cart_item"
@@ -45,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="47dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/quicksand"
         android:text="₹ Price"
         android:textSize="15dp"
@@ -55,8 +58,8 @@
 
     <ImageView
         android:id="@+id/close_cart_item"
-        android:layout_width="38dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_close_black_24dp"

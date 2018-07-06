@@ -96,6 +96,7 @@ public class PostOrderQRActivity extends AppCompatActivity {
                                 intent = new Intent(PostOrderQRActivity.this, DishInfoActivity.class);
                                 intent.putExtra("rest", Restaurant_id[1]);
                                 startActivity(intent);
+                                PassingData.setResturant_Id(Restaurant_id[1]);
                             } else {
                                 text.setText("Invalid code");
                             }

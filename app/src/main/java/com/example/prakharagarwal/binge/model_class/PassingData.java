@@ -4,6 +4,17 @@ import com.example.prakharagarwal.binge.Menu.Menu;
 import java.util.List;
 
 public class PassingData {
+
+    public static String resturant_Id;
+
+    public static String getResturant_Id() {
+        return resturant_Id;
+    }
+
+    public static void setResturant_Id(String resturant_Id) {
+        PassingData.resturant_Id = resturant_Id;
+    }
+
     public static List<Menu> getMenuList() {
         return menuList;
     }

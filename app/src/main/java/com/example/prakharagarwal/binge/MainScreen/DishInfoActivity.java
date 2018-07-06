@@ -78,6 +78,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     static FrameLayout frameLayout;
     static TextView pending_item;
+    static TextView placed_item;
     static CartNumberButton cartNumberButton;
 
     static List<Menu> course_meal1;
@@ -99,6 +100,7 @@ public class DishInfoActivity extends AppCompatActivity implements
         frameLayout = findViewById(R.id.cart_layout);
         cartNumberButton = findViewById(R.id.elegantNumberButton);
         pending_item = findViewById(R.id.pending_item_textview);
+        placed_item=findViewById(R.id.placed_item);
         youTubePlayerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_player_fragment);
         pager = findViewById(R.id.dish_viewpager);
         pager2 = findViewById(R.id.dish_viewpager_second);
@@ -339,7 +341,8 @@ public class DishInfoActivity extends AppCompatActivity implements
         }
         pending_item.setText("Pending " + totalitem + " Item | ₹" + totalprice);
 
-        if (totalitem == 0) {
+        if (totalitem == 0 && PassingCartItem.placed_order_hashmap.isEmpty()) {
+
             frameLayout.setAnimation(animation);
             frameLayout.setVisibility(View.INVISIBLE);
         }
@@ -518,6 +521,16 @@ public class DishInfoActivity extends AppCompatActivity implements
             pager.setOffscreenPageLimit(10);
             pager2.setAdapter(pagerAdapter1);
             updatehasmap();
+        }
+        if(!PassingCartItem.placed_order_hashmap.isEmpty())
+        {
+            frameLayout.setVisibility(View.VISIBLE);
+            int totalitems=0,totalprices = 0;
+            for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
+                totalprices+=Integer.parseInt(entry.getKey().getPrice())*entry.getValue();
+                totalitems+=entry.getValue();
+            }
+            placed_item.setText("Placed " + totalitems + " Item | ₹" + totalprices);
         }
     }
 }

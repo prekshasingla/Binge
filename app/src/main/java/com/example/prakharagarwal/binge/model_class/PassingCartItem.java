@@ -11,6 +11,7 @@ public class PassingCartItem {
     public static List<Menu> menuArrayList = new ArrayList<>();
     public static List<Integer> integerArrayList = new ArrayList<>();
     public static HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
+    public static HashMap<Menu,Integer> placed_order_hashmap=new HashMap<>();
 
     public static void addmenu(Menu menu, Integer totalitem) {
         menuIntegerHashMap.put(menu,totalitem);

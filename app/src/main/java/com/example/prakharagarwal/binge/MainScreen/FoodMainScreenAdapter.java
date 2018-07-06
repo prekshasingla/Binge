@@ -26,6 +26,7 @@ import com.example.prakharagarwal.binge.DishRecommend;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -119,6 +120,7 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
             PassingData.setMenu(mFood.get(getAdapterPosition()));
             intent.putExtra("rest",mFood.get(getAdapterPosition()).getRestaurant_id());
             intent.putExtra("dish",mFood.get(getAdapterPosition()).getName());
+            PassingData.setResturant_Id(mFood.get(getAdapterPosition()).getRestaurant_id());
             mContext.startActivity(intent);
         }
     }

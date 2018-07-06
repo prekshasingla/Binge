@@ -45,6 +45,11 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         holder.dish_name.setText(menuList.get(position).getName());
         holder.item_price.setText("₹ "+Integer.parseInt(menuList.get(position).getPrice())*integerList.get(position));
         holder.NumberButton.setNumber(integerList.get(position).toString());
+        if(menuList.get(position).getVeg()==0)
+            holder.veg_nonveg.setBackgroundColor(context.getResources().getColor(R.color.veg_active));
+        else
+            holder.veg_nonveg.setBackgroundColor(context.getResources().getColor(R.color.nonveg_active));
+
         holder.NumberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
@@ -65,12 +70,16 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         holder.remove_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.item_price.setText("₹ "+Integer.parseInt(menuList.get(position).getPrice())*0);
-                holder.NumberButton.setNumber("0");
-                holder.NumberButton.setbuttonBackgroundColor(Color.GRAY,Color.GRAY,Color.GRAY);
-                menuList.get(position).setTotalcartItem(0);
+//                holder.item_price.setText("₹ "+Integer.parseInt(menuList.get(position).getPrice())*0);
+//                holder.NumberButton.setNumber("0");
+//                holder.NumberButton.setbuttonBackgroundColor(Color.GRAY,Color.GRAY,Color.GRAY);
+//                menuList.get(position).setTotalcartItem(0);
                 PassingCartItem.addmenu(menuList.get(position),0);
                 menuList.get(position).setTotalcartItem(0);
+                menuList.remove(position);
+                integerList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, menuList.size());
             }
         });
 
@@ -86,6 +95,7 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         CartNumberButton NumberButton;
         TextView item_price,dish_name;
         ImageView remove_item;
+        ImageView veg_nonveg;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -94,7 +104,7 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
             item_price=itemView.findViewById(R.id.price_cart_item);
             dish_name=itemView.findViewById(R.id.dish_name_cart_recyclerview);
             remove_item=itemView.findViewById(R.id.close_cart_item);
-
+            veg_nonveg=itemView.findViewById(R.id.veg_nonveg_cart);
 
         }
     }
