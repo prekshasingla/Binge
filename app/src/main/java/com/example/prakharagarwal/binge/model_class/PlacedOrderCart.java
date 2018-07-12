@@ -6,40 +6,67 @@ import java.util.HashMap;
 
 public class PlacedOrderCart {
 
-    private HashMap<String,String> OrderDishes;
-    private int totalCost;
-    private String userID;
-    private String gst;
+    public HashMap<String,String> dishes;
+    public int cart_value;
+    public String userId;
+    public String status="recived";
+    public double location_lat;
+    public double location_long;
+    public String id;
 
-    public String getGst() {
-        return gst;
+    public HashMap<String, String> getDishes() {
+        return dishes;
     }
 
-    public void setGst(String gst) {
-        this.gst = gst;
+    public void setDishes(HashMap<String, String> dishes) {
+        this.dishes = dishes;
     }
 
-    public HashMap<String, String> getDishesHashMap() {
-        return OrderDishes;
+    public int getCart_value() {
+        return cart_value;
     }
 
-    public void setDishesHashMap(HashMap<String, String> dishesHashMap) {
-        this.OrderDishes = dishesHashMap;
+    public void setCart_value(int cart_value) {
+        this.cart_value = cart_value;
     }
 
-    public int getTotalCost() {
-        return totalCost;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getStatus() {
+        return status;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public double getLocation_lat() {
+        return location_lat;
+    }
+
+    public void setLocation_lat(double location_lat) {
+        this.location_lat = location_lat;
+    }
+
+    public double getLocation_long() {
+        return location_long;
+    }
+
+    public void setLocation_long(double location_long) {
+        this.location_long = location_long;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

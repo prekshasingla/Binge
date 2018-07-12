@@ -66,14 +66,14 @@ public class MainActivityFragment extends Fragment {
     BrandsAdapter mBrandsAdapter;
     RecyclerView mCategoryRecyclerView;
     CategoriesAdapter mCategoriesAdapter;
-    List<Menu> mFood;
-    List<Menu> mFood2;
+    static private List<Menu> mFood;
+    static private List<Menu> mFood2;
     List<Brand> brands;
     TextView emptyView;
     ProgressBar progressBar;
     boolean locationFlag;
     boolean flag = false;
-   // LinearLayout nearbyEmptyLayout;
+    // LinearLayout nearbyEmptyLayout;
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private int mFood2Counter = 0;
@@ -91,6 +91,7 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("RISHABHRAWAT","On create ");
         mFood = new ArrayList<>();
         mFood2 = new ArrayList<>();
         brands = new ArrayList<>();
@@ -109,7 +110,7 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-     //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
+        //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
@@ -122,7 +123,14 @@ public class MainActivityFragment extends Fragment {
                     locationFlag = true;
                 else
                     locationFlag = false;
+
+
                 new TrendingAsync().execute(dataSnapshot);
+                Log.d("RISHABHRAWAT","Async task call treanfing");
+                if(dataSnapshot==null)
+                    Log.d("RISHABHRAWAT","datasnapshot is null");
+                else
+                    Log.d("RISHABHRAWAT","datasnapshot is not the null");
 
             }
 
@@ -146,8 +154,8 @@ public class MainActivityFragment extends Fragment {
             }
         });
         mBrandsAdapter = new BrandsAdapter(brands, getActivity());
-      //  final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(getActivity().getApplicationContext(),2);
+        //  final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mBrandRecyclerView.setLayoutManager(gridLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
@@ -165,14 +173,13 @@ public class MainActivityFragment extends Fragment {
 
             }
         });
-        FoodList foodList=new FoodList();
-        foodList.mfood=mFood2;
-        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(),foodList);
+        FoodList foodList = new FoodList();
+        foodList.mfood = mFood2;
+        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(), foodList);
         final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
         mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
-
 
 
         return rootView;
@@ -181,25 +188,27 @@ public class MainActivityFragment extends Fragment {
     private class TrendingAsync extends AsyncTask<DataSnapshot, Void, Void> {
 
         protected Void doInBackground(DataSnapshot... dataSnapshot) {
-            mFood.clear();
-            mFood2.clear();
+//            mFood.clear();
+//            mFood2.clear();
             for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
 
+                Log.d("RISHABHRAWAT","Async task call inside the datasnapshot");
                 Double latitude = 0d;
                 Double longitude = 0d;
                 String restuarant_name = null;
-                String restuarant_id=null;
+                String restuarant_id = null;
 
-                for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
+                for (DataSnapshot child1 : child.getChildren())
+                { //starter, lat, long
                     if (child1.getKey().equals("latitude"))
                         latitude = (Double) child1.getValue();
                     if (child1.getKey().equals("longitude"))
                         longitude = (Double) child1.getValue();
                     if (child1.getKey().equals("restaurant_name"))
                         restuarant_name = (String) child1.getValue();
-                    if(child1.getKey().equals("restaurant_id"))
-                        restuarant_id=(String)child1.getValue();
-                    }
+                    if (child1.getKey().equals("restaurant_id"))
+                        restuarant_id = (String) child1.getValue();
+                }
                 if (locationFlag && calRadius(latitude, longitude)) {
                     flag = true;
                     for (DataSnapshot child1 : child.getChildren()) {
@@ -209,6 +218,7 @@ public class MainActivityFragment extends Fragment {
                                 menu.setRestaurantName(restuarant_name);
                                 menu.setRestaurant_id(restuarant_id);
                                 if (menu.getHas_video() == 0)
+                                    Log.d("RISHABHRAWAT","Adding Food item");
                                     mFood.add(menu);
                             }
                         }
@@ -216,7 +226,8 @@ public class MainActivityFragment extends Fragment {
                     }
                     //pass the data for the category
                     PassingData.setMenuList(mFood);
-                } else if (!flag && mFood2Counter < 50) {
+                }
+                else if (!flag && mFood2Counter < 50) {
                     for (DataSnapshot child1 : child.getChildren()) {
                         if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
                             for (DataSnapshot child2 : child1.getChildren()) {
@@ -226,6 +237,7 @@ public class MainActivityFragment extends Fragment {
                                 if (menu.getHas_video() == 0) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
+                                    Log.d("RISHABHRAWAT","Adding Food item 2");
                                 }
                             }
                         }
@@ -240,6 +252,7 @@ public class MainActivityFragment extends Fragment {
 
 
         protected void onPostExecute(Void d) {
+
             UpdateTrendingView();
         }
     }
@@ -249,20 +262,19 @@ public class MainActivityFragment extends Fragment {
 //        Collections.shuffle(mFood);
 //        Collections.shuffle(mFood2);
         progressBar.setVisibility(View.GONE);
-
         if (mFood.size() == 0 && mFood2.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
         } else if (mFood.size() == 0) {
             emptyView.setVisibility(View.GONE);
-         //   nearbyEmptyLayout.setVisibility(View.VISIBLE);
+            //   nearbyEmptyLayout.setVisibility(View.VISIBLE);
             mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
+                    new DemoCollectionPagerAdapter(getChildFragmentManager(), mFood2);
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
         } else {
             emptyView.setVisibility(View.GONE);
-         //   nearbyEmptyLayout.setVisibility(View.GONE);
+            //   nearbyEmptyLayout.setVisibility(View.GONE);
             mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
+                    new DemoCollectionPagerAdapter(getChildFragmentManager(), mFood);
 //            trendingViewpager.removeAllViews();
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
 
@@ -433,8 +445,8 @@ public class MainActivityFragment extends Fragment {
             title = (TextView) rootView.findViewById(R.id.title);
             restaurantName = (TextView) rootView.findViewById(R.id.restaurant_name);
             videoContainer = (FrameLayout) rootView.findViewById(R.id.video_container);
-            preOrder=rootView.findViewById(R.id.pre_order);
-            postOrder=rootView.findViewById(R.id.post_order);
+            preOrder = rootView.findViewById(R.id.pre_order);
+            postOrder = rootView.findViewById(R.id.post_order);
             title.setText(dish.getName());
             restaurantName.setText(dish.getRestaurantName());
 
@@ -450,11 +462,10 @@ public class MainActivityFragment extends Fragment {
             postOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getContext(),PostOrderQRActivity.class);
+                    Intent intent = new Intent(getContext(), PostOrderQRActivity.class);
                     startActivity(intent);
                 }
             });
-
 
 
             prepare();
@@ -605,9 +616,10 @@ public class MainActivityFragment extends Fragment {
             });
         }
     }
-class FoodList implements Serializable{
+
+    class FoodList implements Serializable {
         List<Menu> mfood;
-}
+    }
 
 }
 

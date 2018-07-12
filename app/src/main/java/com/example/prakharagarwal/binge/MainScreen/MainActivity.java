@@ -22,11 +22,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,7 +60,8 @@ public class MainActivity extends AppCompatActivity  {
 
     private TabLayout tabLayout;
 
-    private ViewPager viewPager;
+   // private ViewPager viewPager;
+    public FrameLayout fragment_container;
 
     TextView textViewLocation;
 
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity  {
     String longitude = null;
     private Menu menu;
     private FusedLocationProviderClient mFusedLocationClient;
+    SearchActivity searchActivity;
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -163,15 +169,47 @@ public class MainActivity extends AppCompatActivity  {
 //            }
 //        });
 
+        fragment_container=findViewById(R.id.fragment_container);
         search_edittext=findViewById(R.id.search_edit_text);
         search_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+               // search_edittext.setFocusable(true);
+               // search_edittext.setFocusableInTouchMode(true);
+                searchActivity=new SearchActivity();
+                SearchActivity.activity=MainActivity.this;
+                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+                transaction.replace(R.id.fragment_container,searchActivity);
+                transaction.addToBackStack("search");
+                transaction.commit();
             }
         });
+
+
+//        search_edittext.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.setFocusable(true);
+//                v.setFocusableInTouchMode(true);
+//                searchActivity=new SearchActivity();
+//                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+//                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+//                transaction.replace(R.id.fragment_container,searchActivity);
+//                transaction.addToBackStack("search");
+//                transaction.commit();
+//                return false;
+//
+//
+//            }
+//        });
+
+
+
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (getIntent().getStringExtra("callingActivity") != null) {
@@ -200,21 +238,16 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+    public EditText getSearch_edittext() {
+        return search_edittext;
+    }
+
     private void createUI() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"), "Fine Dining");
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-//        MainActivityFragment mainActivityFragment=new MainActivityFragment();
-//        android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
-//        android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
-//        transaction.add(R.id.fragment_container,mainActivityFragment);
-//        transaction.commit();
-
-
+        MainActivityFragment mainActivityFragment=new MainActivityFragment();
+        android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+        transaction.add(R.id.fragment_container,mainActivityFragment);
+        transaction.commit();
     }
 
     @Override

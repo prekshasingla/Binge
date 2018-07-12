@@ -24,34 +24,34 @@
                 android:elevation="6dp"
                 android:theme="@style/AppTheme_search">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#f1bb3a"
-                    app:contentInsetStartWithNavigation="0dp">
+                <!--<android.support.v7.widget.Toolbar-->
+                    <!--android:id="@+id/toolbar"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#f1bb3a"-->
+                    <!--app:contentInsetStartWithNavigation="0dp">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:orientation="horizontal">
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="?attr/actionBarSize"-->
+                        <!--android:orientation="horizontal">-->
 
-                        <EditText
-                            android:id="@+id/search_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical|right"
-                            android:background="@color/transparent"
-                            android:hint="Search for Cuisines and Restaurants"
-                            android:textColor="@color/white_opaque"
-                            android:textColorHint="@color/white_opaque"
-                            android:visibility="visible"
+                        <!--<EditText-->
+                            <!--android:id="@+id/search_edit_text"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_gravity="center_vertical|right"-->
+                            <!--android:background="@color/transparent"-->
+                            <!--android:hint="Search for Cuisines and Restaurants"-->
+                            <!--android:textColor="@color/white_opaque"-->
+                            <!--android:textColorHint="@color/white_opaque"-->
+                            <!--android:visibility="visible"-->
 
-                            />
-                    </LinearLayout>
+                            <!--/>-->
+                    <!--</LinearLayout>-->
 
 
-                </android.support.v7.widget.Toolbar>
+                <!--</android.support.v7.widget.Toolbar>-->
 
 
             </android.support.design.widget.AppBarLayout>

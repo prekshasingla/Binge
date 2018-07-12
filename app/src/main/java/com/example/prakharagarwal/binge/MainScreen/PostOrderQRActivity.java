@@ -91,7 +91,7 @@ public class PostOrderQRActivity extends AppCompatActivity {
                             String qr_code_text = barcodeSparseArray.valueAt(0).displayValue;
                             final String Restaurant_id[] = qr_code_text.split("@");
                             if (qr_code_text.contains("binge")) {
-                                text.setText(barcodeSparseArray.valueAt(0).displayValue);
+                               // text.setText(barcodeSparseArray.valueAt(0).displayValue);
                                 vibrator.vibrate(10);
                                 intent = new Intent(PostOrderQRActivity.this, DishInfoActivity.class);
                                 intent.putExtra("rest", Restaurant_id[1]);

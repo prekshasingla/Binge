@@ -9,6 +9,15 @@ public class Brand {
     Double longitude;
     String logo_url;
     String restaurant_name;
+    String restaurant_id;
+
+    public String getRestaurant_id() {
+        return restaurant_id;
+    }
+
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
+    }
 
     public Double getLatitude() {
         return latitude;

@@ -22,6 +22,7 @@ import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.example.prakharagarwal.binge.model_class.PlacedOrderCart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -93,6 +94,9 @@ public class NewCartActivity extends AppCompatActivity {
                 new MyTask().execute();
             }
         });
+
+        if(!menuList.isEmpty() && !integerList.isEmpty())
+            placed_order_btn.setVisibility(View.VISIBLE);
 
 
         if (!PassingCartItem.placed_order_hashmap.isEmpty()) {
@@ -207,23 +211,28 @@ public class NewCartActivity extends AppCompatActivity {
 
                 //Now save the order into the Firebase Firestore
                 PlacedOrderCart placedOrderCart=new PlacedOrderCart();
-                placedOrderCart.setDishesHashMap(stringHashMap);
-                placedOrderCart.setTotalCost(totalpricesum+gstprice);
-                placedOrderCart.setGst("18%");
-                placedOrderCart.setUserID("Rishabh");
+                placedOrderCart.setDishes(stringHashMap);
+                placedOrderCart.setCart_value(totalpricesum+gstprice);
+                //placedOrderCart.setGst("18%");
+                placedOrderCart.setUserId("Rishabh");
+
+                //DocumentReference reference=firebaseFirestore.collection("orders/"+PassingData.getResturant_Id()+"/order").document();
+                //String orderid=reference.getId();
+                placedOrderCart.setId("");
+                placedOrderCart.setLocation_lat(0.0);
+                placedOrderCart.setLocation_long(0.0);
 
                 //Log.d("RISHABHRAWAT",localmenu.getName()+"\n"+localmenu.getRestaurantName()+"\n"+localmenu.getRestaurant_id());
 
-                firebaseFirestore.collection("orders/"+PassingData.getResturant_Id()+"/order").document().set(placedOrderCart).addOnSuccessListener(new OnSuccessListener<Void>() {
+             //   Log.d("RISHABH RAWAT123456",orderid);
+                firebaseFirestore.collection("orders/"+PassingData.getResturant_Id()+"/order").add(placedOrderCart).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-
+                    public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(NewCartActivity.this,"Success to store in FireStore",Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
                         Toast.makeText(NewCartActivity.this,"Failed to store in FireStore",Toast.LENGTH_LONG).show();
                     }
                 });

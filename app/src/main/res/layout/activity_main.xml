@@ -87,6 +87,8 @@
                 android:layout_margin="15dp"
                 android:drawableLeft="@drawable/ic_search_black_24dp"
                 android:textSize="16sp"
+                android:singleLine="true"
+                android:windowSoftInputMode="stateAlwaysHidden"
                 android:drawablePadding="@dimen/drawable_padding"
                 android:paddingLeft="12dp"
                 android:hint="Search Dishes, Cuisines, Restaurant"
@@ -95,21 +97,20 @@
 
         </android.support.design.widget.AppBarLayout>
 
-<!--
+
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:background="#859"
             android:layout_height="match_parent">
--->
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/appbar"></android.support.v4.view.ViewPager>
-  <!--
+
+            <!--<android.support.v4.view.ViewPager-->
+                <!--android:id="@+id/viewpager"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_below="@+id/appbar"></android.support.v4.view.ViewPager>-->
+
         </FrameLayout>
--->
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,11 +78,15 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.BrandsAdap
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.brand_image);
             name = (TextView) itemView.findViewById(R.id.brand_name);
+            image.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             Toast.makeText(mContext, "Position "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(mContext,DishInfoActivity.class);
+            intent.putExtra("rest",brands.get(getAdapterPosition()).getRestaurant_id());
+            mContext.startActivity(intent);
         }
     }
 

@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="DATA IS HERE"
         android:textColor="#fff"
         android:textSize="18dp" />
 
