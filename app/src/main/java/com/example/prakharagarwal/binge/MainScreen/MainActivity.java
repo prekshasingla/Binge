@@ -24,6 +24,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity  {
     CardView cv;
     SharedPreferences sharedpreferences;
     //private ImageView searchIcon;
+    MainActivityFragment mainActivityFragment=new MainActivityFragment();
 
     private EditText search_edittext;
     @Override
@@ -243,11 +245,19 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void createUI() {
-        MainActivityFragment mainActivityFragment=new MainActivityFragment();
-        android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
-        transaction.add(R.id.fragment_container,mainActivityFragment);
-        transaction.commit();
+      //  MainActivityFragment mainActivityFragment=new MainActivityFragment();
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+        if(!mainActivityFragment.isAdded()) {
+            transaction.add(R.id.fragment_container, mainActivityFragment);
+            transaction.commit();
+        }
+        else
+        {
+            transaction.remove(mainActivityFragment);
+            transaction.add(R.id.fragment_container, new MainActivityFragment()).commit();
+
+        }
     }
 
     @Override
@@ -257,6 +267,8 @@ public class MainActivity extends AppCompatActivity  {
             if(resultCode == Activity.RESULT_OK){
                 latitude=data.getStringExtra("latitude");
                 longitude=data.getStringExtra("longitude");
+                Log.d("RISHABH LATITUDE 123",latitude+"");
+                Log.d("RISHABH LONGITUDE 123",longitude+"");
                 setAddress();
                 createUI();
             }
@@ -342,12 +354,20 @@ public class MainActivity extends AppCompatActivity  {
                     String locality = add.getLocality();
                     String sublocality = add.getSubLocality();
                     if (locality != null && sublocality != null)
+                    {
                         textViewLocation.setText(sublocality + " " + locality);
+//                        MainActivityFragment.currentlatitude=Double.parseDouble(latitude);
+//                        MainActivityFragment.currentlongitue=Double.parseDouble(longitude);
+                    }
                     else
                         Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
+//                    MainActivityFragment.currentlongitue=0.0;
+//                    MainActivityFragment.currentlatitude=0.0;
 
                 } else {
                     Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
+//                    MainActivityFragment.currentlongitue=0.0;
+//                    MainActivityFragment.currentlatitude=0.0;
                 }
 
             } catch (IOException e) {
@@ -405,6 +425,5 @@ public class MainActivity extends AppCompatActivity  {
         //update();
         updateMenuTitles();
     }
-
 
 }

@@ -7,6 +7,44 @@ public class PassingData {
 
     public static String resturant_Id;
 
+   public static Double latitude;
+   public static Double longitude;
+   public static String tableNo;
+
+    public static String getTableNo() {
+        return tableNo;
+    }
+
+    public static void setTableNo(String tableNo) {
+        PassingData.tableNo = tableNo;
+    }
+
+    public static Double getLatitude() {
+        return latitude;
+    }
+
+    public static void setLatitude(Double latitude) {
+        PassingData.latitude = latitude;
+    }
+
+    public static Double getLongitude() {
+        return longitude;
+    }
+
+    public static void setLongitude(Double longitude) {
+        PassingData.longitude = longitude;
+    }
+
+    public static String resturantName;
+
+    public static String getResturantName() {
+        return resturantName;
+    }
+
+    public static void setResturantName(String resturantName) {
+        PassingData.resturantName = resturantName;
+    }
+
     public static String getResturant_Id() {
         return resturant_Id;
     }

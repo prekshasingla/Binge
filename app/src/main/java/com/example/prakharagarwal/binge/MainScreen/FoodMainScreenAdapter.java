@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ import java.util.List;
 
 public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAdapter.FoodMainScreenAdapterViewHolder> {
 
-    private static final int ITEM_VIEW_TYPE_HEADER = 1;
-    private static final int ITEM_VIEW_TYPE_ITEM = 2;
     private List<Menu> mFood;
     final private Activity mContext;
 
@@ -120,6 +119,8 @@ public class FoodMainScreenAdapter extends RecyclerView.Adapter<FoodMainScreenAd
             PassingData.setMenu(mFood.get(getAdapterPosition()));
             intent.putExtra("rest",mFood.get(getAdapterPosition()).getRestaurant_id());
             intent.putExtra("dish",mFood.get(getAdapterPosition()).getName());
+            intent.putExtra("flag", "preOrder");
+            Log.d("RISHABH","FOOD MAIN SCREEN ADAPTER "+mFood.get(getAdapterPosition()).getRestaurant_id());
             PassingData.setResturant_Id(mFood.get(getAdapterPosition()).getRestaurant_id());
             mContext.startActivity(intent);
         }

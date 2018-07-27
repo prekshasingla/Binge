@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,10 +33,12 @@ import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+
 import com.example.prakharagarwal.binge.cart.NewCartActivity;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton;
+import com.example.prakharagarwal.binge.rishabhcutomview.CustomScrollView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -58,11 +61,12 @@ public class DishInfoActivity extends AppCompatActivity implements
         YouTubePlayer.OnInitializedListener {
 
 
+    String preOrder = null;
     Animation animationUtils;
     Animation animation;
 
     static SlidingUpPanelLayout slidingUpPanelLayout;
-    static TextView dish_name, dish_price, dish_trending, dish_rating, dish_time, dish_discription;
+    static TextView dish_name, dish_price, dish_trending, dish_time, dish_discription;
     static YouTubePlayerSupportFragment youTubePlayerFragment;
     static YouTubePlayer youTubePlayer1;
     Menu menu1;
@@ -70,7 +74,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     ViewPager pager;
     ViewPager pager2;
     static List<Menu> menuList;
-    ProgressBar progressBar;
+    //  ProgressBar progressBar;
     RestaurantPagerAdapter pagerAdapter;
     RestaurantPagerAdapter pagerAdapter1;
     Context context;
@@ -79,11 +83,22 @@ public class DishInfoActivity extends AppCompatActivity implements
     static FrameLayout frameLayout;
     static TextView pending_item;
     static TextView placed_item;
-    static CartNumberButton cartNumberButton;
+    static TextView timing_text;
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    ImageView backbtn;
+    CustomScrollView customScrollView;
+    // static CartNumberButton cartNumberButton;
 
+    String resturant_name;
     static List<Menu> course_meal1;
     static List<Menu> course_meal2;
+    static String timing;
 
+
+    final static List<String> foodcategory = new ArrayList<>();
+    final static List<List<Menu>> foodcategorywithoutvideo = new ArrayList<>();
+    static HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,17 +109,20 @@ public class DishInfoActivity extends AppCompatActivity implements
         dish_name = findViewById(R.id.dish_name);
         dish_price = findViewById(R.id.dish_price);
         dish_trending = findViewById(R.id.dish_trending);
-        dish_rating = findViewById(R.id.dish_rating);
         dish_time = findViewById(R.id.dish_time);
         dish_discription = findViewById(R.id.dish_discription);
         frameLayout = findViewById(R.id.cart_layout);
-        cartNumberButton = findViewById(R.id.elegantNumberButton);
+        backbtn = findViewById(R.id.back_btn);
+        //   cartNumberButton = findViewById(R.id.elegantNumberButton);
         pending_item = findViewById(R.id.pending_item_textview);
-        placed_item=findViewById(R.id.placed_item);
+        placed_item = findViewById(R.id.placed_item);
+        timing_text = findViewById(R.id.dish_time);
         youTubePlayerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_player_fragment);
         pager = findViewById(R.id.dish_viewpager);
         pager2 = findViewById(R.id.dish_viewpager_second);
-        progressBar=findViewById(R.id.progressBar);
+        customScrollView = findViewById(R.id.customScrollView);
+        expandableListView = findViewById(R.id.lvExp);
+        //   progressBar = findViewById(R.id.progressBar);
         pager.setPageMargin(20);
         pager2.setPageMargin(20);
 
@@ -112,35 +130,60 @@ public class DishInfoActivity extends AppCompatActivity implements
         dish_price.setVisibility(View.INVISIBLE);
         dish_trending.setVisibility(View.INVISIBLE);
         dish_discription.setVisibility(View.INVISIBLE);
-        dish_rating.setVisibility(View.INVISIBLE);
         dish_time.setVisibility(View.INVISIBLE);
-        cartNumberButton.setVisibility(View.INVISIBLE);
+        //  cartNumberButton.setVisibility(View.INVISIBLE);
         youTubePlayerFragment.setMenuVisibility(true);
         pager.setVisibility(View.INVISIBLE);
         pager2.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        timing_text.setVisibility(View.INVISIBLE);
+        customScrollView.setEnableScrolling(false);
 
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    customScrollView.setEnableScrolling(true);
+
+                }
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    customScrollView.setEnableScrolling(false);
+                    customScrollView.smoothScrollTo(0, -5000);
+                }
+
+            }
+        });
 
 
         animationUtils = AnimationUtils.loadAnimation(DishInfoActivity.this, R.anim.fade_in);
         animation = AnimationUtils.loadAnimation(DishInfoActivity.this, R.anim.fade_out);
         menuList = new ArrayList<>();
 
-        cartNumberButton.setViewVisibility(View.GONE);
-        cartNumberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
+//        cartNumberButton.setViewVisibility(View.GONE);
+//        cartNumberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
+//
+//                if (newValue != 0)
+//                    cartNumberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
+//                else
+//                    cartNumberButton.updateColors(getResources().getColor(R.color.sky_color), Color.WHITE);
+//                add_item_to_cart(menu1, newValue);
+//
+//            }
+//        });
+
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
-
-                if (newValue != 0)
-                    cartNumberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
-                else
-                    cartNumberButton.updateColors(getResources().getColor(R.color.sky_color), Color.WHITE);
-                add_item_to_cart(menu1, newValue);
-
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
-
-
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,29 +191,61 @@ public class DishInfoActivity extends AppCompatActivity implements
                 HashMap<Menu, Integer> cartitem = PassingCartItem.getMenuHashmap();
                 PassingCartItem.menuArrayList.clear();
                 PassingCartItem.integerArrayList.clear();
+                String photo_url = "Image URL";
                 for (Map.Entry<Menu, Integer> entry : cartitem.entrySet()) {
                     if (entry.getValue() != 0) {
                         PassingCartItem.addMenuArrayList(entry.getKey(), entry.getValue());
+                        photo_url = entry.getKey().getPoster_url();
                         System.out.println("Rishabh" + entry.getKey() + " = " + entry.getValue());
                     }
                 }
-                startActivity(new Intent(DishInfoActivity.this, NewCartActivity.class));
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                if (preOrder == null) {
+                    Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
+                    intent.putExtra("resturant_name", resturant_name);
+                    intent.putExtra("photo_url", photo_url);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
+                    intent.putExtra("flag", "preOrder");
+                    intent.putExtra("resturant_name", resturant_name);
+                    intent.putExtra("photo_url", photo_url);
+
+                    startActivity(intent);
+                }
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
+
+
         });
 
 
         Intent intent = getIntent();
         String resturant_id = intent.getStringExtra("rest");
         String dish = intent.getStringExtra("dish");
+        preOrder = intent.getStringExtra("flag");
         final String finalDish;
         if (dish == null) {
             finalDish = "Wrong";
         } else {
+            PassingData.setResturant_Id(resturant_id);
             finalDish = dish;
         }
 
+        timing = intent.getStringExtra("time");
+        if (timing != null) {
+            timing_text.setText(timing);
+        }
 
+
+        //seperate the data for the two view pager from the menulist and pass the half data to menu 1 and menu  2
+        course_meal1 = new ArrayList<>();
+        course_meal2 = new ArrayList<>();
+//        final List<String> foodcategory = new ArrayList<>();
+//        final List<List<Menu>> foodcategorywithoutvideo = new ArrayList<>();
+
+
+        menuHashMap.clear();
+        foodcategory.clear();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu/" + resturant_id);
         Log.d("RISHABH", "Calling listener DISH ");
@@ -178,28 +253,91 @@ public class DishInfoActivity extends AppCompatActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child1 : dataSnapshot.getChildren()) {
+                    if (child1.getKey().equals("latitude")) {
+                        PassingData.setLatitude((Double) child1.getValue());
+                        Log.d("RISHABH", "LATITUDE DISH INFO" + child1.getValue());
+                    }
+                    if (child1.getKey().equals("longitude"))
+                        PassingData.setLongitude((Double) child1.getValue());
+                    if (child1.getKey().equals("restaurant_name")) {
+                        resturant_name = String.valueOf(child1.getValue());
+                        PassingData.setResturantName(String.valueOf(child1.getValue()));
+                    }
+//                    if (child1.getKey().equals("restaurant_id"))
+//                        PassingData.setResturant_Id(String.valueOf(child1.getValue()));
+                    if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude") && !child1.getKey().equals("restaurant_name") && !child1.getKey().equals("restaurant_id")) {
+
+                        foodcategory.add(child1.getKey());
+                    }
+
+                    List<Menu> localmenu = new ArrayList<>();
                     for (DataSnapshot child2 : child1.getChildren()) {
                         Menu menu2 = child2.getValue(Menu.class);
                         if (finalDish.equals(menu2.getName())) {
+                            if (menu2.getCourse_meal() == 1) {
+                                if (preOrder != null) {
+                                    menu2.setTotalcartItem(1);
+                                    course_meal1.add(0, menu2);
+                                } else
+                                    course_meal1.add(0, menu2);
+                            } else {
+                                if (preOrder != null) {
+                                    menu2.setTotalcartItem(1);
+                                    course_meal2.add(0, menu2);
+                                } else
+                                    course_meal2.add(0, menu2);
+                            }
                             menu1 = menu2;
+                            //menuList.add(menu2);
                         } else {
                             Log.d("RISHABH", "DATA IS DISH " + menu2.getRestaurantName() + " " + menu2.getPrice() + " " + menu2.getDesc());
-                            if (menu2.getHas_video() == 0)
+                            if (menu2.getHas_video() == 0) {
                                 if (menu3 == null) {
                                     menu3 = menu2;
+                                    menuList.add(menu3);
+
                                 } else {
                                     menuList.add(menu2);
                                 }
+                            } else {
+                                localmenu.add(menu2);
+                            }
                         }
                     }
+
+                    foodcategorywithoutvideo.add(localmenu);
                 }
+//                HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
+                for (int i = 0; i <= foodcategory.size() - 1; i++) {
+                //     if (!foodcategorywithoutvideo.get(i).isEmpty())
+                        menuHashMap.put(foodcategory.get(i), foodcategorywithoutvideo.get(i));
+                   // else {
+                        //this code state that
+                  //      foodcategory.remove(i);
+                  //      foodcategorywithoutvideo.remove(i);
+                  //  }
+                }
+
+                expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory, menuHashMap);
+                expandableListView.setAdapter(expandableListAdapter);
+                setListViewHeight(expandableListView, 0);
+                expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v,
+                                                int groupPosition, long id) {
+                        setListViewHeight(parent, groupPosition);
+                        return false;
+                    }
+                });
 
                 if (finalDish.equals("Wrong")) {
                     menu3.getRestaurantName();
                     youtube_video_url = menu3.getVideo_url();
                     dish_name.setText(menu3.getName());
-                    dish_price.setText("₹ " + menu3.getPrice());
+                    dish_price.setText("₹" + menu3.getPrice());
                     dish_discription.setText(menu3.getDesc());
+                    dish_trending.setText(resturant_name);
                     play_youtube_video(menu3.getVideo_url());
                     visibleView();
                 } else {
@@ -208,16 +346,16 @@ public class DishInfoActivity extends AppCompatActivity implements
                     dish_name.setText(menu1.getName());
                     dish_price.setText("₹ " + menu1.getPrice());
                     dish_discription.setText(menu1.getDesc());
+                    dish_trending.setText(resturant_name);
                     play_youtube_video(menu1.getVideo_url());
                     visibleView();
                 }
 
+                if (preOrder != null) {
+                    add_item_to_cart(menu1, 1);
+                }
 
 
-
-                //seperate the data for the two view pager from the menulist and pass the half data to menu 1 and menu  2
-                 course_meal1 = new ArrayList<>();
-                 course_meal2 = new ArrayList<>();
                 for (int i = 0; i <= menuList.size() - 1; i++) {
                     if (menuList.get(i).getCourse_meal() == 1)
                         course_meal1.add(menuList.get(i));
@@ -225,10 +363,10 @@ public class DishInfoActivity extends AppCompatActivity implements
                         course_meal2.add(menuList.get(i));
                 }
                 Log.d("RISHABH", "GOING TO THE ADAPTER ");
-                pagerAdapter = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal1, getApplicationContext(),1);
+                pagerAdapter = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal1, getApplicationContext(), 1);
                 pager.setOffscreenPageLimit(10);
                 pager.setAdapter(pagerAdapter);
-                pagerAdapter1 = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal2, getApplicationContext(),2);
+                pagerAdapter1 = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal2, getApplicationContext(), 2);
                 pager.setOffscreenPageLimit(10);
                 pager2.setAdapter(pagerAdapter1);
 
@@ -243,21 +381,18 @@ public class DishInfoActivity extends AppCompatActivity implements
 
     }
 
-    private void visibleView()
-    {
+    private void visibleView() {
         dish_name.setVisibility(View.VISIBLE);
         dish_price.setVisibility(View.VISIBLE);
         dish_trending.setVisibility(View.VISIBLE);
         dish_discription.setVisibility(View.VISIBLE);
-        dish_rating.setVisibility(View.VISIBLE);
         dish_time.setVisibility(View.VISIBLE);
-        cartNumberButton.setVisibility(View.VISIBLE);
+        // cartNumberButton.setVisibility(View.VISIBLE);
         youTubePlayerFragment.setMenuVisibility(false);
         pager.setVisibility(View.VISIBLE);
         pager2.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
+        // progressBar.setVisibility(View.INVISIBLE);
     }
-
 
 
     public static void play_youtube_video(final String url) {
@@ -318,8 +453,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     }
 
 
-    private void updatehasmap()
-    {
+    private void updatehasmap() {
         HashMap<Menu, Integer> cartitem = PassingCartItem.getMenuHashmap();
 
         int temp[] = new int[100];
@@ -358,12 +492,12 @@ public class DishInfoActivity extends AppCompatActivity implements
         int coursemeal;
 
 
-        public RestaurantPagerAdapter(FragmentManager fm, List<Menu> mFood, Context context,int coursemeal) {
+        public RestaurantPagerAdapter(FragmentManager fm, List<Menu> mFood, Context context, int coursemeal) {
             super(fm);
             this.fragmentManager = fm;
             this.mFood = mFood;
             this.context = context;
-            this.coursemeal=coursemeal;
+            this.coursemeal = coursemeal;
         }
 
         @Override
@@ -371,9 +505,9 @@ public class DishInfoActivity extends AppCompatActivity implements
             Fragment fragment = new ResturantMenuFragment();
             Bundle args = new Bundle();
             // Our object is just an integer :-P
-            args.putInt("dishPosition", i );
+            args.putInt("dishPosition", i);
             args.putString("videoId", "1fwwqY9293s");
-            args.putInt("coursemeal",coursemeal);
+            args.putInt("coursemeal", coursemeal);
             Menu dish = mFood.get(i);
             args.putSerializable("dish", dish);
             fragment.setArguments(args);
@@ -425,7 +559,7 @@ public class DishInfoActivity extends AppCompatActivity implements
         public ImageView thumnail;
         public TextView textView;
         public TextView price_rest;
-        public TextView min_rest;
+        public TextView discription;
         public static CartNumberButton numberButton;
         public int coursemeal;
 
@@ -438,17 +572,18 @@ public class DishInfoActivity extends AppCompatActivity implements
             thumnail = view.findViewById(R.id.thumbnail);
             textView = view.findViewById(R.id.dish_name_menu);
             price_rest = view.findViewById(R.id.price_rest);
-            min_rest = view.findViewById(R.id.rating_rest_viewpager);
             numberButton = view.findViewById(R.id.element_btn_viewpager);
+            discription = view.findViewById(R.id.dish_discription_menu);
 
             Bundle args = getArguments();
             position = (int) args.getInt("dishPosition");
             dishes = (Menu) args.getSerializable("dish");
-            coursemeal=args.getInt("coursemeal");
+            coursemeal = args.getInt("coursemeal");
             textView.setText(dishes.getName());
             Picasso.with(getActivity().getApplicationContext()).load(dishes.getPoster_url()).into(thumnail);
-            price_rest.setText(dishes.getPrice());
-            min_rest.setText("5 Star");
+            price_rest.setText("₹" + dishes.getPrice());
+            discription.setText(dishes.getDesc());
+
 
             thumnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -460,25 +595,25 @@ public class DishInfoActivity extends AppCompatActivity implements
                     dish_name.setText(dishes.getName());
                     dish_price.setText("₹ " + dishes.getPrice());
                     dish_discription.setText(dishes.getDesc());
-                    cartNumberButton.setNumber(dishes.getTotalcartItem()+"");
+//                    cartNumberButton.setNumber(dishes.getTotalcartItem() + "");
+                    if (DishInfoActivity.timing != null)
+                        DishInfoActivity.timing_text.setText(DishInfoActivity.timing);
+
 
                 }
             });
 
-            numberButton.setNumber(dishes.getTotalcartItem()+"");
+            numberButton.setNumber(dishes.getTotalcartItem() + "");
 
             numberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
                 @Override
                 public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
 
-                        if(coursemeal==1)
-                        {
-                            course_meal1.get(position).setTotalcartItem(newValue);
-                        }
-                        else
-                        {
-                            course_meal2.get(position).setTotalcartItem(newValue);
-                        }
+                    if (coursemeal == 1) {
+                        course_meal1.get(position).setTotalcartItem(newValue);
+                    } else {
+                        course_meal2.get(position).setTotalcartItem(newValue);
+                    }
 
 
                     if (newValue != 0)
@@ -512,7 +647,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if(course_meal1!=null && course_meal2!=null) {
+        if (course_meal1 != null && course_meal2 != null) {
 
             pagerAdapter = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal1, getApplicationContext(), 1);
             pager.setOffscreenPageLimit(10);
@@ -522,17 +657,85 @@ public class DishInfoActivity extends AppCompatActivity implements
             pager2.setAdapter(pagerAdapter1);
             updatehasmap();
         }
-        if(!PassingCartItem.placed_order_hashmap.isEmpty())
-        {
+        if (!PassingCartItem.menuIntegerHashMap.isEmpty()) {
             frameLayout.setVisibility(View.VISIBLE);
-            int totalitems=0,totalprices = 0;
+            int totalitems = 0, totalprices = 0;
+            List<Menu> placedordermenu=new ArrayList<>();
+            List<Integer> placedordermenuItem =new ArrayList<>();
             for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
-                totalprices+=Integer.parseInt(entry.getKey().getPrice())*entry.getValue();
-                totalitems+=entry.getValue();
+                totalprices += Integer.parseInt(entry.getKey().getPrice()) * entry.getValue();
+                placedordermenu.add(entry.getKey());
+                placedordermenuItem.add(entry.getValue());
+                totalitems += entry.getValue();
             }
             placed_item.setText("Placed " + totalitems + " Item | ₹" + totalprices);
+
+            Log.d("RISHABH FOOD ITEMS","The loop has been started");
+            for (int i = 0; i <= foodcategorywithoutvideo.size() - 1; i++) {
+                Log.d("RISHABH FOOD ITEMS",foodcategorywithoutvideo.size()+"this is the size");
+                for (int j = 0; j <= foodcategorywithoutvideo.get(i).size() - 1; j++) {
+                    Log.d("RISHABH FOOD ITEMS",foodcategorywithoutvideo.get(i).size()+"this is the size of second");
+                    if (placedordermenu.contains(foodcategorywithoutvideo.get(i).get(j))) {
+                       foodcategorywithoutvideo.get(i).get(j).setTotalcartItem(placedordermenuItem.get(j));
+                    }
+                    else
+                    {
+                        Log.d("RISHABH FOOD ITEMS","NO item there");
+                    }
+
+                }
+            }
+            expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory, menuHashMap);
+            expandableListView.setAdapter(expandableListAdapter);
+
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        PassingCartItem.menuIntegerHashMap.clear();
+    }
+
+    private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }
+
+
+
 }
+
 
 

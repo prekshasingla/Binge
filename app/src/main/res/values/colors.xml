@@ -32,7 +32,9 @@
     <color name="transparent">#00000000</color>
     <color name="silver">#C0C0C0</color>
     <color name="white">#fff</color>
-
+<color name="location_color">#343F4B</color>
+    <color name="your_location_color">#8492A6</color>
+    <color name="loto_font_color">#47525E</color>
 <color name="colorText">#fff</color>
     <color name="background">#C0C0C0</color>
 </resources>

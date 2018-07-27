@@ -23,6 +23,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -31,7 +33,9 @@ import android.widget.TextView;
 import com.example.prakharagarwal.binge.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -39,8 +43,12 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,11 +60,16 @@ import java.util.List;
 public class LocationSearchActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener {
     private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private LocationRequest mLocationRequest;
     private final String LOG_TAG = LocationSearchActivity.class.getName();
     private int REQUEST_CHECK_SETTINGS = 88;
-
+    private AutoCompleteTextView mAutocompleteTextView;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     @Override
     public void onStop() {
@@ -85,6 +98,23 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RelativeLayout locationLayout = (RelativeLayout) findViewById(R.id.lin1);
+        mAutocompleteTextView =findViewById(R.id.autoCompleteTextView);
+        mAutocompleteTextView.setThreshold(3);
+
+        mGoogleApiClient1 = new GoogleApiClient.Builder(LocationSearchActivity.this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .build();
+        mGoogleApiClient1.connect();
+        checkLocationPermission1();
+
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
+
 
         locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +160,53 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
 //        });
 
     }
+
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            Log.i("RISHABH", "Selected: " + item.description);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient1, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+            Log.i("RISHABH", "Fetching details for ID: " + item.placeId);
+        }
+    };
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e("RISHABH", "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
+            CharSequence attributions = places.getAttributions();
+            LatLng latLng=place.getLatLng();
+            Log.d("RISHABH LATITUDE ",latLng.latitude+"");
+            Log.d("RISHABH LONGITUDE",latLng.longitude+"");
+
+            Intent returnIntent = new Intent(LocationSearchActivity.this, MainActivity.class);
+            returnIntent.putExtra("latitude", latLng.latitude + "");
+            returnIntent.putExtra("longitude", latLng.longitude + "");
+            returnIntent.putExtra("callingActivity", "LocationSearchActivity");
+
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+
+
+            //  mNameView.setText(Html.fromHtml(place.getAddress() + ""));
+
+
+        }
+    };
 public void returnLocation(View view){
         String lat="";
         String lon="";
@@ -260,6 +337,47 @@ public void returnLocation(View view){
         }
     }
 
+    public void checkLocationPermission1() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Location Permission Required")
+                        .setMessage("Please give permission to access your location")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(LocationSearchActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        } else {
+           // createLocationRequest();
+//            mGoogleApiClient.connect();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -293,20 +411,23 @@ public void returnLocation(View view){
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient1);
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(10000);
-        try {
 
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-        } catch (SecurityException e) {
-            Log.e(LOG_TAG, e.toString());
-        }
+//        try {
+//
+//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//
+//        } catch (SecurityException e) {
+//            Log.e(LOG_TAG, e.toString());
+//        }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
         Log.e(LOG_TAG, "google api client connection suspended");
 
     }

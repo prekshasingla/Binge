@@ -28,7 +28,7 @@ import java.util.List;
  */
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesAdapterViewHolder> {
-    
+
     private List<Category1> categories;
     final private Activity mContext;
     MainActivityFragment.FoodList mfood;
@@ -39,7 +39,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     int color[] = new int[]{Color.parseColor("#FF4500"), Color.parseColor("#00cccc"), Color.parseColor("#ff70a6"),
             Color.parseColor("#16b886"), Color.parseColor("#8A2BE2"), Color.parseColor("#DC143C"),
             Color.parseColor("#DA70D6"), Color.parseColor("#FF6347"), Color.parseColor("#DAA520"),
-            Color.parseColor("#1E90FF")};
+            Color.parseColor("#1E90FF"),Color.parseColor("#D2691E")};
 
     public CategoriesAdapter(List<Category1> categories, Activity mContext, MainActivityFragment.FoodList mfood) {
         this.categories = categories;

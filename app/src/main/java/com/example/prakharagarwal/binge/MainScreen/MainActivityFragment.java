@@ -1,19 +1,32 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -21,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -28,8 +42,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.VolleySingleton;
+import com.example.prakharagarwal.binge.cart.CartSuccess;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.gestures.GestureDetector;
@@ -38,6 +59,15 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeIntents;
@@ -48,12 +78,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.SetOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -79,6 +116,11 @@ public class MainActivityFragment extends Fragment {
     private int mFood2Counter = 0;
     private List<Category1> categories;
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 98;
+    static Double currentlatitude = 0.0;
+    static Double currentlongitue = 0.0;
+
+
     public static MainActivityFragment newInstance(String id) {
         Bundle args = new Bundle();
         args.putString("id", id);
@@ -91,7 +133,7 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("RISHABHRAWAT","On create ");
+        Log.d("RISHABHRAWAT", "On create ");
         mFood = new ArrayList<>();
         mFood2 = new ArrayList<>();
         brands = new ArrayList<>();
@@ -112,6 +154,9 @@ public class MainActivityFragment extends Fragment {
         progressBar.setIndeterminate(true);
         //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
+
+        checkLocationPermission();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
 
@@ -124,13 +169,7 @@ public class MainActivityFragment extends Fragment {
                 else
                     locationFlag = false;
 
-
                 new TrendingAsync().execute(dataSnapshot);
-                Log.d("RISHABHRAWAT","Async task call treanfing");
-                if(dataSnapshot==null)
-                    Log.d("RISHABHRAWAT","datasnapshot is null");
-                else
-                    Log.d("RISHABHRAWAT","datasnapshot is not the null");
 
             }
 
@@ -185,6 +224,50 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
+    public void checkLocationPermission() {
+
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(getActivity().getApplicationContext())
+                        .setTitle("Location Permission Required")
+                        .setMessage("Please give permission to access your location")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        } else {
+            Log.d("RISHABH", "CREATE LOCATION REQUEST 1");
+            //createLocationRequest();
+
+
+        }
+    }
+
+
     private class TrendingAsync extends AsyncTask<DataSnapshot, Void, Void> {
 
         protected Void doInBackground(DataSnapshot... dataSnapshot) {
@@ -192,14 +275,13 @@ public class MainActivityFragment extends Fragment {
 //            mFood2.clear();
             for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
 
-                Log.d("RISHABHRAWAT","Async task call inside the datasnapshot");
+                Log.d("RISHABHRAWAT", "Async task call inside the datasnapshot");
                 Double latitude = 0d;
                 Double longitude = 0d;
                 String restuarant_name = null;
                 String restuarant_id = null;
 
-                for (DataSnapshot child1 : child.getChildren())
-                { //starter, lat, long
+                for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
                     if (child1.getKey().equals("latitude"))
                         latitude = (Double) child1.getValue();
                     if (child1.getKey().equals("longitude"))
@@ -217,27 +299,30 @@ public class MainActivityFragment extends Fragment {
                                 Menu menu = child2.getValue(Menu.class);
                                 menu.setRestaurantName(restuarant_name);
                                 menu.setRestaurant_id(restuarant_id);
+                                menu.setLatitude(String.valueOf(latitude));
+                                menu.setLongitude(String.valueOf(longitude));
                                 if (menu.getHas_video() == 0)
-                                    Log.d("RISHABHRAWAT","Adding Food item");
-                                    mFood.add(menu);
+                                    Log.d("RISHABHRAWAT", "Adding Food item with Location");
+                                mFood.add(menu);
                             }
                         }
 
                     }
                     //pass the data for the category
                     PassingData.setMenuList(mFood);
-                }
-                else if (!flag && mFood2Counter < 50) {
+                } else if (!flag && mFood2Counter < 50) {
                     for (DataSnapshot child1 : child.getChildren()) {
                         if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
                             for (DataSnapshot child2 : child1.getChildren()) {
                                 Menu menu = child2.getValue(Menu.class);
                                 menu.setRestaurantName(restuarant_name);
                                 menu.setRestaurant_id(restuarant_id);
+                                menu.setLatitude(String.valueOf(latitude));
+                                menu.setLongitude(String.valueOf(longitude));
                                 if (menu.getHas_video() == 0) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
-                                    Log.d("RISHABHRAWAT","Adding Food item 2");
+                                    Log.d("RISHABHRAWAT", "Adding Food item without location");
                                 }
                             }
                         }
@@ -274,8 +359,8 @@ public class MainActivityFragment extends Fragment {
             emptyView.setVisibility(View.GONE);
             //   nearbyEmptyLayout.setVisibility(View.GONE);
             mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getChildFragmentManager(), mFood);
-//            trendingViewpager.removeAllViews();
+                    new DemoCollectionPagerAdapter(getFragmentManager(), mFood);
+            // trendingViewpager.removeAllViews();
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
 
         }
@@ -355,7 +440,7 @@ public class MainActivityFragment extends Fragment {
         return (rad * 180.0 / Math.PI);
     }
 
-    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class DemoCollectionPagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
         FragmentManager fragmentManager;
         private List<Menu> mFood;
 
@@ -424,12 +509,14 @@ public class MainActivityFragment extends Fragment {
         private ImageRequest imageRequest;
         private Uri uri;
         public SimpleDraweeView image;
-        public TextView title;
-        public TextView restaurantName;
+        public TextView title, time;
+        public TextView restaurantTrend;
         public FrameLayout videoContainer;
         public int position;
         private Button preOrder;
         private Button postOrder;
+
+        private String timing;
 
 
         @Override
@@ -443,21 +530,30 @@ public class MainActivityFragment extends Fragment {
             dish = (Menu) args.getSerializable("dish");
             image = (SimpleDraweeView) rootView.findViewById(R.id.image);
             title = (TextView) rootView.findViewById(R.id.title);
-            restaurantName = (TextView) rootView.findViewById(R.id.restaurant_name);
+            time = rootView.findViewById(R.id.restaurant_time);
             videoContainer = (FrameLayout) rootView.findViewById(R.id.video_container);
+            restaurantTrend = rootView.findViewById(R.id.restaurant_trent);
             preOrder = rootView.findViewById(R.id.pre_order);
             postOrder = rootView.findViewById(R.id.post_order);
             title.setText(dish.getName());
-            restaurantName.setText(dish.getRestaurantName());
+            restaurantTrend.setText(dish.getRestaurantName());
+            double timebetweentwolatlong = caldistance(Double.parseDouble(dish.getLatitude()), Double.parseDouble(dish.getLongitude()));
+            time.setText(String.valueOf(timebetweentwolatlong).substring(0, 4) + " km");
+            timing = String.valueOf(timebetweentwolatlong).substring(0, 4) + " km";
 
-//            preOrder.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent=new Intent(getContext(),RestaurantDetailsActivity.class);
-//                    intent.putExtra("restaurantID",dish.getRestaurantName());
-//                    startActivity(intent);
-//                }
-//            });
+            preOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), DishInfoActivity.class);
+                    intent.putExtra("rest", dish.getRestaurant_id());
+                    intent.putExtra("dish", dish.getName());
+                    intent.putExtra("flag", "preOrder");
+                    intent.putExtra("time", timing);
+                    // PassingData.setLatitude(dish.getLatitude());
+                    // PassingData.setLongitude(dish.getLongitude());
+                    startActivity(intent);
+                }
+            });
 
             postOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -483,6 +579,30 @@ public class MainActivityFragment extends Fragment {
             bind();
         }
 
+
+        private double caldistance(double lat2, double lon2) {
+            double lat1 = Double.parseDouble(((MainActivity) getActivity()).getLatitude());
+            double lon1 = Double.parseDouble(((MainActivity) getActivity()).getLongitude());
+            double theta = lon1 - lon2;
+            double dist = Math.sin(deg2rad(lat1))
+                    * Math.sin(deg2rad(lat2))
+                    + Math.cos(deg2rad(lat1))
+                    * Math.cos(deg2rad(lat2))
+                    * Math.cos(deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.1515;
+            return dist;
+        }
+
+        private double deg2rad(double deg) {
+            return (deg * Math.PI / 180.0);
+        }
+
+        private double rad2deg(double rad) {
+            return (rad * 180.0 / Math.PI);
+        }
+
         public void bind() {
             image.setAspectRatio(16f / 9f);
             if (imageRequest == null) {
@@ -495,9 +615,13 @@ public class MainActivityFragment extends Fragment {
                         } else {
                             builder = ImageRequestBuilder.newBuilderWithSource(uri);
                         }
-                        imageRequest = builder.setResizeOptions(new ResizeOptions(
-                                image.getWidth(), image.getHeight()
-                        )).build();
+                        try {
+                            imageRequest = builder.setResizeOptions(new ResizeOptions(
+                                    image.getWidth(), image.getHeight()
+                            )).build();
+                        } catch (Exception e) {
+                            Log.e("Rishabh", "Error is coming");
+                        }
                         DraweeController controller = Fresco.newDraweeControllerBuilder()
                                 .setImageRequest(imageRequest)
                                 .setOldController(image.getController())

@@ -39,9 +39,9 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
         holder.textViewname.setText(menuList.get(position).getName());
        holder.textViewprice.setText(integersList.get(position)+" X  ₹"+menuList.get(position).getPrice()+" = ₹"+Integer.parseInt(menuList.get(position).getPrice())*integersList.get(position));
        if(menuList.get(position).getVeg()==0)
-          holder.imageView.setBackgroundColor(context.getResources().getColor(R.color.veg_active));
+          holder.imageView.setBackgroundResource(R.mipmap.veg);
        else
-           holder.imageView.setBackgroundColor(context.getResources().getColor(R.color.nonveg_active));
+           holder.imageView.setBackgroundResource(R.mipmap.nonveg);
 
     }
 

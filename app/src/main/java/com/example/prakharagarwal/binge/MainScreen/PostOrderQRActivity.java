@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -89,7 +90,7 @@ public class PostOrderQRActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             String qr_code_text = barcodeSparseArray.valueAt(0).displayValue;
-                            final String Restaurant_id[] = qr_code_text.split("@");
+                            final String Restaurant_id[] = qr_code_text.split("~");
                             if (qr_code_text.contains("binge")) {
                                // text.setText(barcodeSparseArray.valueAt(0).displayValue);
                                 vibrator.vibrate(10);
@@ -97,6 +98,7 @@ public class PostOrderQRActivity extends AppCompatActivity {
                                 intent.putExtra("rest", Restaurant_id[1]);
                                 startActivity(intent);
                                 PassingData.setResturant_Id(Restaurant_id[1]);
+                                PassingData.setTableNo(Restaurant_id[2]);
                             } else {
                                 text.setText("Invalid code");
                             }

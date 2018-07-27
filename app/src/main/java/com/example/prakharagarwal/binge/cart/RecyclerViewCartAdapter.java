@@ -18,6 +18,7 @@ import com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCartAdapter.MyViewHolder> {
 
@@ -36,8 +37,8 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(context).inflate(R.layout.recyclerview_cart_item,parent,false);
-        return new MyViewHolder(view);
+        View myview= LayoutInflater.from(context).inflate(R.layout.recyclerview_cart_item,parent,false);
+        return new MyViewHolder(myview);
     }
 
     @Override
@@ -46,9 +47,9 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         holder.item_price.setText("₹ "+Integer.parseInt(menuList.get(position).getPrice())*integerList.get(position));
         holder.NumberButton.setNumber(integerList.get(position).toString());
         if(menuList.get(position).getVeg()==0)
-            holder.veg_nonveg.setBackgroundColor(context.getResources().getColor(R.color.veg_active));
+            holder.veg_nonveg.setImageResource(R.mipmap.veg);
         else
-            holder.veg_nonveg.setBackgroundColor(context.getResources().getColor(R.color.nonveg_active));
+            holder.veg_nonveg.setBackgroundResource(R.mipmap.nonveg);
 
         holder.NumberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
             @Override
@@ -63,6 +64,8 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
                 menuList.get(position).setTotalcartItem(newValue);
                 PassingCartItem.addmenu(menuList.get(position),newValue);
                 menuList.get(position).setTotalcartItem(newValue);
+
+               // addingToBill();
             }
         });
 
@@ -84,6 +87,27 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         });
 
     }
+
+//    public static void addingToBill() {
+//        int totalsum=0;
+//        int total_price=0;
+//        int gst_price=0;
+//        HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.getMenuHashmap();
+//        for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
+//            if (entry.getValue() != 0) {
+//                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+//            }
+//        }
+//        gst_price = (total_price * 4) / 100;
+//        totalsum=gst_price+total_price;
+//        if(NewCartActivity.gstpricetext!=null)
+//        {
+//            NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
+//            NewCartActivity.totalpricetext.setText("₹"+total_price+"");
+//            NewCartActivity.paypricetext.setText("₹"+totalsum+"");
+//        }
+//
+//    }
 
     @Override
     public int getItemCount() {

@@ -1,13 +1,19 @@
 package com.example.prakharagarwal.binge.cart;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
@@ -22,6 +29,7 @@ import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.example.prakharagarwal.binge.model_class.PlacedOrderCart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
@@ -44,16 +52,23 @@ public class NewCartActivity extends AppCompatActivity {
     private RecyclerView placed_order;
     private RecyclerViewPlacedOrderAdapter placedOrderAdapter;
     private Button placed_order_btn;
+    static TextView totalpricetext;
+    static TextView gstpricetext;
+    static TextView paypricetext;
 
-    TextView totalpricetext;
-    TextView gstpricetext;
-    TextView paypricetext;
+
+    TextView backbutton;
+    FirebaseFirestore firebaseFirestore;
+    private Intent intent;
+
+    TextView placed_Order_text;
+    View line1;
+    View line2;
+    RelativeLayout coupon;
     CardView cardView;
 
-    //hide the item
-    TextView pendingitem;
-    // View line1, line2;
-    FirebaseFirestore firebaseFirestore;
+    TextView pending_Item;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,42 +81,81 @@ public class NewCartActivity extends AppCompatActivity {
         totalpricetext = findViewById(R.id.total_item_price);
         gstpricetext = findViewById(R.id.gst_price);
         paypricetext = findViewById(R.id.to_pay_price);
-        menuList = PassingCartItem.getMenuArrayList();
-        integerList = PassingCartItem.getIntegerArrayList();
         placed_order_btn = findViewById(R.id.placed_order_btn);
         resturant_name = findViewById(R.id.resturatant_cart_name);
         dish_image = findViewById(R.id.resturant_cart_image);
+        backbutton = findViewById(R.id.back_btn);
+        placed_Order_text = findViewById(R.id.placed_order_text);
+        line1 = findViewById(R.id.line_1);
+        line2 = findViewById(R.id.line_2);
+        coupon = findViewById(R.id.cardView_cart);
+        pending_Item = findViewById(R.id.Pending_item);
 
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        placed_Order_text.setVisibility(View.GONE);
+        placed_order.setVisibility(View.GONE);
+        line1.setVisibility(View.GONE);
+        line2.setVisibility(View.GONE);
+        coupon.setVisibility(View.GONE);
+        cardView.setVisibility(View.GONE);
 
-//        if (menuList != null) {
-//            resturant_name.setText(menuList.get(0).getRestaurantName());
-//            Picasso.with(this).load(menuList.get(0).getPoster_url()).into(dish_image);
-//
-//        }
+        menuList = PassingCartItem.getMenuArrayList();
+        integerList = PassingCartItem.getIntegerArrayList();
+
+        intent = getIntent();
+        if (intent != null)
+            if (intent.getStringExtra("flag") != null)
+                if (intent.getStringExtra("flag").equals("preOrder"))
+                    placed_order_btn.setText("Checkout Item");
+
+        resturant_name.setText(intent.getStringExtra("resturant_name"));
+        Picasso.with(this).load(intent.getStringExtra("photo_url")).into(dish_image);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
         adapter = new RecyclerViewCartAdapter(menuList, integerList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        cardView.setVisibility(View.INVISIBLE);
-        pendingitem = findViewById(R.id.Pending_item);
-        //   line1 = findViewById(R.id.line_1);
-        //   line2 = findViewById(R.id.line_2);
+
 
         placed_order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyTask().execute();
+                SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                String uID = prefs.getString("username", null);
+                if (uID != null)
+                    new MyTask().execute();
+                else {
+                    startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
+                }
             }
         });
 
-        if(!menuList.isEmpty() && !integerList.isEmpty())
+        //   RecyclerViewCartAdapter.addingToBill();
+
+        showplacedItem();
+
+        if (!menuList.isEmpty() && !integerList.isEmpty())
             placed_order_btn.setVisibility(View.VISIBLE);
 
+    }
 
+    public void showplacedItem() {
         if (!PassingCartItem.placed_order_hashmap.isEmpty()) {
-            placed_order_btn.setVisibility(View.INVISIBLE);
-            pendingitem.setVisibility(View.INVISIBLE);
+            //  placed_order_btn.setVisibility(View.INVISIBLE);
+            //  pendingitem.setVisibility(View.INVISIBLE);
+
+            placed_Order_text.setVisibility(View.VISIBLE);
+            placed_order.setVisibility(View.VISIBLE);
+            line1.setVisibility(View.VISIBLE);
+            line2.setVisibility(View.VISIBLE);
+            coupon.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
 
             List<Menu> localmenu = new ArrayList<>();
             List<Integer> localinterger = new ArrayList<>();
@@ -114,26 +168,22 @@ public class NewCartActivity extends AppCompatActivity {
                 localinterger.add(hashmap.getValue());
                 totalprice += Integer.parseInt(hashmap.getKey().getPrice()) * hashmap.getValue();
             }
-            gstpri = (totalprice * 18) / 100;
+            gstpri = (totalprice * 4) / 100;
 
             totalpricetext.setText("₹" + totalprice);
             gstpricetext.setText("₹" + gstpri);
             int total = gstpri + totalprice;
             paypricetext.setText("₹" + total);
-            cardView.setVisibility(View.VISIBLE);
+            resturant_name.setText(localmenu.get(0).getRestaurant_id());
+            Picasso.with(this).load(localmenu.get(0).getPoster_url()).into(dish_image);
 
             placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, localmenu, localinterger);
             placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
             placed_order.setAdapter(placedOrderAdapter);
-//
-//            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) pendingitem.getLayoutParams();
-//            lp.addRule(RelativeLayout.BELOW, pendingitem.getId());
-
-
 
         }
-
     }
+
 
     class MyTask extends AsyncTask<Void, Void, Void> {
         HashMap<Menu, Integer> cartitem;
@@ -142,15 +192,15 @@ public class NewCartActivity extends AppCompatActivity {
         List<Integer> integerListsec;
         int totalpricesum;
         int gstprice;
-        Menu localmenu=new Menu();
-        HashMap<String,String> stringHashMap;
+        Menu localmenu = new Menu();
+        HashMap<String, String> stringHashMap;
 
         @Override
         protected Void doInBackground(Void... voids) {
             Log.d("RISHABH RAWAT", "onbackground method");
             size = menuList.size();
-            menuList.clear();
-            integerList.clear();
+//            menuList.clear();
+//            integerList.clear();
 
             cartitem = PassingCartItem.getMenuHashmap();
             if (cartitem.isEmpty())
@@ -160,22 +210,47 @@ public class NewCartActivity extends AppCompatActivity {
             //PassingCartItem.integerArrayList.clear();
             menuListsec = new ArrayList<>();
             integerListsec = new ArrayList<>();
-            stringHashMap=new HashMap<>();
-           // Menu localmenu=new Menu();
-            for (Map.Entry<Menu, Integer> entry : cartitem.entrySet()) {
-                if (entry.getValue() != 0) {
-                    PassingCartItem.addMenuArrayList(entry.getKey(), entry.getValue());
-                    localmenu = entry.getKey();
-                    menuListsec.add(entry.getKey());
-                    integerListsec.add(entry.getValue());
-                    totalpricesum += Integer.parseInt(localmenu.getPrice()) * entry.getValue();
-                    PassingCartItem.placed_order_hashmap.put(entry.getKey(), entry.getValue());
-                    stringHashMap.put(entry.getKey().getName(),entry.getValue().toString());
-                    System.out.println("Rishabh Rawat" + entry.getKey() + " = " + entry.getValue());
-                }
-            }
-            gstprice = (totalpricesum * 18) / 100;
+            stringHashMap = new HashMap<>();
+            // Menu localmenu=new Menu();
 
+            if (PassingCartItem.placed_order_hashmap.isEmpty()) {
+                for (Map.Entry<Menu, Integer> entry : PassingCartItem.getMenuHashmap().entrySet()) {
+                    if (entry.getValue() != 0) {
+                        PassingCartItem.addMenuArrayList(entry.getKey(), entry.getValue());
+                        localmenu = entry.getKey();
+                        menuListsec.add(entry.getKey());
+                        integerListsec.add(entry.getValue());
+                        totalpricesum += Integer.parseInt(localmenu.getPrice()) * entry.getValue();
+                        // PassingCartItem.placed_order_hashmap.put(entry.getKey(), entry.getValue());
+                        PassingCartItem.addplacedorder_item(entry.getKey(), entry.getValue());
+                        stringHashMap.put(entry.getKey().getName(), entry.getValue().toString());
+                        System.out.println("Rishabh Rawat123456789" + entry.getKey() + " = " + entry.getValue());
+                    }
+                }
+            } else {
+                for (Map.Entry<Menu, Integer> entry : PassingCartItem.getMenuHashmap().entrySet()) {
+                    if (entry.getValue() != 0) {
+                        PassingCartItem.addplacedorder_item(entry.getKey(), entry.getValue());
+                    }
+                }
+
+                for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
+                    if (entry.getValue() != 0) {
+                        PassingCartItem.addMenuArrayList(entry.getKey(), entry.getValue());
+                        localmenu = entry.getKey();
+                        menuListsec.add(entry.getKey());
+                        integerListsec.add(entry.getValue());
+                        totalpricesum += Integer.parseInt(localmenu.getPrice()) * entry.getValue();
+                        // PassingCartItem.placed_order_hashmap.put(entry.getKey(), entry.getValue());
+                        //       PassingCartItem.addplacedorder_item(entry.getKey(), entry.getValue());
+                        stringHashMap.put(entry.getKey().getName(), entry.getValue().toString());
+                        System.out.println("Rishabh Rawat123456789" + entry.getKey() + " = " + entry.getValue());
+                    }
+                }
+
+
+            }
+            gstprice = (totalpricesum * 4) / 100;
             Log.d("RISHABH RAWAT", "onbackground method complete");
             return null;
         }
@@ -184,6 +259,12 @@ public class NewCartActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d("RISHABH RAWAT", "onpost method");
+
+
+            placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, menuListsec, integerListsec);
+            placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
+            placed_order.setAdapter(placedOrderAdapter);
+
             if (cartitem != null) {
                 int size = menuList.size();
                 for (int i = 0; i <= size - 1; i++) {
@@ -191,59 +272,120 @@ public class NewCartActivity extends AppCompatActivity {
                     menuList.get(i).setTotalcartItem(0);
                 }
 
-                menuList.clear();
-                integerList.clear();
-                adapter.notifyDataSetChanged();
+//                menuList.clear();
+//                integerList.clear();
+//                adapter.notifyDataSetChanged();
 
-                placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, menuListsec, integerListsec);
-                placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
-                placed_order.setAdapter(placedOrderAdapter);
+//                placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, menuListsec, integerListsec);
+//                placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
+//                placed_order.setAdapter(placedOrderAdapter);
+
 
                 totalpricetext.setText("₹" + totalpricesum);
                 gstpricetext.setText("₹" + gstprice);
                 int total = gstprice + totalpricesum;
                 paypricetext.setText("₹" + total);
-                cardView.setVisibility(View.VISIBLE);
-                pendingitem.setVisibility(View.INVISIBLE);
-                placed_order_btn.setVisibility(View.INVISIBLE);
+//                pendingitem.setVisibility(View.INVISIBLE);
+//                placed_order_btn.setVisibility(View.INVISIBLE);
 
 
+                if (intent.getStringExtra("flag") == null) {
+                    //Now save the order into the Firebase Firestore
+                    PlacedOrderCart placedOrderCart = new PlacedOrderCart();
+                    placedOrderCart.setDishes(stringHashMap);
+                    placedOrderCart.setCart_value(totalpricesum + gstprice);
+                    placedOrderCart.setTableNo(PassingData.getTableNo());
+                    //placedOrderCart.setGst("18%");
+                    SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    String uID = prefs.getString("username", null);
+                    placedOrderCart.setUserId(uID);
+                    placedOrderCart.setLocation_lat(0.0);
+                    placedOrderCart.setLocation_long(0.0);
+                    DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document();
+                    String orderID = "";
 
-                //Now save the order into the Firebase Firestore
-                PlacedOrderCart placedOrderCart=new PlacedOrderCart();
-                placedOrderCart.setDishes(stringHashMap);
-                placedOrderCart.setCart_value(totalpricesum+gstprice);
-                //placedOrderCart.setGst("18%");
-                placedOrderCart.setUserId("Rishabh");
+//                    SharedPreferences preferences = getSharedPreferences("ORDERDATA", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    if (preferences.getString("order", null) == null) {
+//                        orderID = reference.getId();
+//                        editor.putString("order", reference.getId());
+//                        editor.commit();
+//                        Log.d("RISHABH ORDER if part", orderID);
+//                    } else {
+//                        orderID = preferences.getString("order", "ERROR");
+//                        Log.d("RISHABH ORDER else part", orderID);
+//                    }
 
-                //DocumentReference reference=firebaseFirestore.collection("orders/"+PassingData.getResturant_Id()+"/order").document();
-                //String orderid=reference.getId();
-                placedOrderCart.setId("");
-                placedOrderCart.setLocation_lat(0.0);
-                placedOrderCart.setLocation_long(0.0);
-
-                //Log.d("RISHABHRAWAT",localmenu.getName()+"\n"+localmenu.getRestaurantName()+"\n"+localmenu.getRestaurant_id());
-
-             //   Log.d("RISHABH RAWAT123456",orderid);
-                firebaseFirestore.collection("orders/"+PassingData.getResturant_Id()+"/order").add(placedOrderCart).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(NewCartActivity.this,"Success to store in FireStore",Toast.LENGTH_LONG).show();
+                    if (PassingCartItem.getOrderID() == null) {
+                        orderID = reference.getId();
+                        PassingCartItem.setOrderID(reference.getId());
+                        Log.d("RISHABH ORDER if part", orderID);
+                        placedOrderCart.setId(orderID);
+                    } else {
+                        orderID = PassingCartItem.getOrderID();
+                        Log.d("RISHABH ORDER else part", orderID);
+                        placedOrderCart.setId(orderID);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(NewCartActivity.this,"Failed to store in FireStore",Toast.LENGTH_LONG).show();
-                    }
-                });
 
-                Log.d("RISHABH RAWAT", "onpost method finish");
-            } else {
-                //Toast.makeText(NewCartActivity.this, "Your Pending have no more item", Toast.LENGTH_SHORT).show();
+                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document(orderID).set(placedOrderCart).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(NewCartActivity.this, "Success to store in FireStore 1", Toast.LENGTH_LONG).show();
+                            placed_Order_text.setVisibility(View.VISIBLE);
+                            placed_order.setVisibility(View.VISIBLE);
+                            line1.setVisibility(View.VISIBLE);
+                            line2.setVisibility(View.VISIBLE);
+                            coupon.setVisibility(View.VISIBLE);
+                            cardView.setVisibility(View.VISIBLE);
+                            pending_Item.setVisibility(View.GONE);
+                            placed_order_btn.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
+//                            NewCartActivity newCartActivity=new NewCartActivity();
+//                            newCartActivity.showplacedItem();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(NewCartActivity.this, "Failed to store in FireStore 1", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+
+                    HashMap<String, Object> placedOrderHashmap = new HashMap<>();
+                    placedOrderHashmap.put("dishes", stringHashMap);
+                    placedOrderHashmap.put("cart_value", totalpricesum + gstprice);
+                    SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    String uID = prefs.getString("username", null);
+                    placedOrderHashmap.put("userId", uID);
+                    placedOrderHashmap.put("location_lat", 0.0);
+                    placedOrderHashmap.put("location_long", 0.0);
+                    placedOrderHashmap.put("status", "PreOder Recived");
+                    Log.d("RISHABH", "RESTURANT IS THE " + PassingData.getResturant_Id());
+                    final DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document();
+                    placedOrderHashmap.put("id", reference.getId());
+                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document(reference.getId()).set(placedOrderHashmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(NewCartActivity.this, "Success to store in FireStore", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(NewCartActivity.this, CartSuccess.class);
+                            intent.putExtra("orderId", reference.getId());
+                            intent.putExtra("latitude", PassingData.getLatitude());
+                            intent.putExtra("longitude", PassingData.getLongitude());
+                            intent.putExtra("resturant_id", PassingData.getResturant_Id());
+                            startActivity(intent);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(NewCartActivity.this, "Failed to store in FireStore", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
+
             }
-
         }
     }
+
 }
-
-

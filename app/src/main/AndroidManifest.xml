@@ -58,6 +58,9 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <!-- <activity -->
         <!-- android:name=".StoriesMenu.StoriesActivity" -->
@@ -122,12 +125,14 @@
             android:label="@string/title_activity_cart_success" />
         <activity
             android:name=".MainScreen.DishInfoActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".MainScreen.PostOrderQRActivity"
+            android:noHistory="true" />
+        <activity android:name=".cart.NewCartActivity" />
+        <activity android:name=".cart.CartMapTracking" />
 
-        <activity android:name=".MainScreen.PostOrderQRActivity"
-            android:noHistory="true"/>
-
-        <activity android:name=".cart.NewCartActivity"></activity>
+        <activity android:name=".cart.PlacedOrderItem"></activity>
     </application>
 
 </manifest>

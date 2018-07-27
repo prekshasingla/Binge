@@ -18,7 +18,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:background="#ffffff"
                 app:title="Order Placed">
 
@@ -35,24 +35,63 @@
             android:layout_height="300dp"
             android:layout_below="@+id/appbar"
             tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+
         <TextView
             android:id="@+id/time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Estimated Time To Reach"
             android:layout_below="@+id/map"
-            android:textSize="16sp"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:text="Estimated Time To Reach"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/eta_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12m"
             android:layout_below="@+id/map"
-            android:layout_toRightOf="@+id/time_text"
             android:layout_margin="10dp"
-            android:textSize="16sp"
+            android:layout_toRightOf="@+id/time_text"
+            android:text="12m"
             android:textColor="#279028"
-            />
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time_text">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/recived_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recived"
+                    android:background="@drawable/background_box_grey" />
+
+
+                <Button
+                    android:id="@+id/cooking_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cooking"
+                    android:background="@drawable/background_box_grey" />
+
+                <Button
+                    android:id="@+id/served_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Served"
+                    android:background="@drawable/background_box_grey" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

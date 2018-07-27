@@ -14,6 +14,16 @@ public class PlacedOrderCart {
     public double location_long;
     public String id;
 
+    public String getTableNo() {
+        return tableNo;
+    }
+
+    public void setTableNo(String tableNo) {
+        this.tableNo = tableNo;
+    }
+
+    public String tableNo;
+
     public HashMap<String, String> getDishes() {
         return dishes;
     }
