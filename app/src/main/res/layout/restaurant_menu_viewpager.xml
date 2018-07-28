@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="5dp"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/dish_name_menu"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/thumbnail"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/roboto"
+        android:text="Shai Panner Kabab khvhvjbkj"
+        android:textColor="#1F2D3D"
+        android:maxLines="2"
+        android:textSize="23dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/price_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/dish_name_menu"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/roboto"
+        android:layout_below="@+id/thumbnail"
+        android:text="₹ 625"
+        android:textColor="#1F2D3D"
+        android:textSize="23dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dish_discription_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dish_name_menu"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="10dp"
+        android:maxLines="4"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/roboto"
+        android:text="Our Chocolate  We prepare each small batch right in our restaurants, all throughout the day, using real Wisconsin dairy, so it’s ever so rich and it is good for the health"
+        android:textColor="#8492A6"
+        android:textSize="15dp" />
+
+    <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton
+        android:id="@+id/element_btn_viewpager"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dish_discription_menu"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        app:initialNumber="0"
+        app:finalNumber="20"
+        app:backGroundColor="#8492A6"
+        app:textSize="5dp">
+    </com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
+
+</RelativeLayout>

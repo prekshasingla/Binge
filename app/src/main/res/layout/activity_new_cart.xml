@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cart.NewCartActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="⫷"
+                android:layout_marginLeft="10dp"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/resturant_cart_image"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:layout_toRightOf="@+id/back_btn"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="2dp"
+                android:src="@mipmap/bingeicon" />
+
+            <TextView
+                android:id="@+id/resturatant_cart_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/resturant_cart_image"
+                android:fontFamily="@font/quicksand"
+                android:text="Resturant Name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/resturant_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resturatant_cart_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/resturant_cart_image"
+                android:fontFamily="@font/quicksand"
+                android:text="New Delhi" />
+
+            <View
+                android:id="@+id/topline"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/resturant_place"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="15dp"
+                android:background="#EFF2F7"></View>
+
+            <TextView
+                android:id="@+id/Pending_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topline"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/lato"
+                android:text="Pending Item"
+                android:textColor="@color/loto_font_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/add_item_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Pending_item"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/lato"
+                android:text="Please Add More Item"
+                android:gravity="center"
+                android:textColor="@color/loto_font_color"
+                android:textSize="18sp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/add_item_text"
+                android:layout_marginTop="10dp"></android.support.v7.widget.RecyclerView>
+
+            <!--<View-->
+                <!--android:id="@+id/line_1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="10dp"-->
+                <!--android:layout_below="@id/recyclerview_cart"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:background="#EFF2F7"></View>-->
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/cardView_cart"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_below="@+id/line_1"-->
+                <!--android:layout_marginTop="10dp">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/coupon_text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginTop="7dp"-->
+                        <!--android:drawableLeft="@drawable/ic_filter_tilt_shift_black_24dp"-->
+                        <!--android:drawablePadding="15dp"-->
+                        <!--android:fontFamily="@font/quicksand"-->
+                        <!--android:text="Apply Coupon"-->
+                        <!--android:textAllCaps="true"-->
+                        <!--android:textColor="@color/location_color"-->
+                        <!--android:textSize="20dp"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="36dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_marginLeft="114dp"-->
+                        <!--android:layout_toRightOf="@+id/coupon_text"-->
+                        <!--android:text=">"-->
+                        <!--android:textColor="@color/location_color"-->
+                        <!--android:textSize="30dp" />-->
+                <!--</RelativeLayout>-->
+            <!--</RelativeLayout>-->
+
+            <!--<View-->
+                <!--android:id="@+id/line_2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="10dp"-->
+                <!--android:layout_below="@+id/cardView_cart"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="#EFF2F7"></View>-->
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:id="@+id/cardView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/line_2"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--app:cardElevation="3dp">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/resturant_bill"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="5dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="Resturant Bill"-->
+                        <!--android:textSize="17dp"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/item_total"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/resturant_bill"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginTop="15dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="Item Total" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/total_item_price"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_alignTop="@+id/item_total"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:fontFamily="@font/roboto"-->
+                        <!--android:text="Total item price" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/gst_text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@id/item_total"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="GST"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/gst_price"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_alignTop="@+id/gst_text"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="GST price" />-->
+
+                    <!--<View-->
+                        <!--android:id="@+id/line_5"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:layout_alignParentLeft="true"-->
+                        <!--android:layout_alignParentStart="true"-->
+                        <!--android:layout_below="@+id/gst_text"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:background="#000"></View>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/topay_text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="31dp"-->
+                        <!--android:layout_alignParentBottom="true"-->
+                        <!--android:layout_below="@+id/gst_text"-->
+                        <!--android:layout_marginBottom="8dp"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginTop="8dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="To Pay"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/to_pay_price"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_alignTop="@+id/topay_text"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:fontFamily="@font/lato"-->
+                        <!--android:text="To Pay price"-->
+                        <!--android:textStyle="bold" />-->
+
+                <!--</RelativeLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
+
+            <Button
+                android:id="@+id/placed_order_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerview_cart"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="25dp"
+                android:background="@color/fpi_default_indicator_active_color"
+                android:fontFamily="@font/quicksand"
+                android:text="Placed to Kitchen"
+                android:textColor="@color/white"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/placed_order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/placed_order_btn"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato"
+                android:text="Your Previous Placed Item"
+                android:textColor="@color/loto_font_color"
+                android:textSize="18sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_cart_placedorder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/placed_order_text"
+                android:layout_marginTop="15dp">
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+            android:id="@+id/line_1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/recyclerview_cart_placedorder"
+            android:layout_marginTop="5dp"
+            android:background="#EFF2F7"></View>
+
+            <RelativeLayout
+            android:id="@+id/cardView_cart"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/line_1"
+            android:layout_marginTop="10dp">
+
+            <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+            android:id="@+id/coupon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@drawable/ic_filter_tilt_shift_black_24dp"
+            android:drawablePadding="15dp"
+            android:fontFamily="@font/quicksand"
+            android:text="Apply Coupon"
+            android:textAllCaps="true"
+            android:textColor="@color/location_color"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+            <TextView
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="114dp"
+            android:layout_toRightOf="@+id/coupon_text"
+            android:text=">"
+            android:textColor="@color/location_color"
+            android:textSize="30dp" />
+            </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+            android:id="@+id/line_2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@+id/cardView_cart"
+            android:layout_marginTop="10dp"
+            android:background="#EFF2F7"></View>
+
+            <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line_2"
+            android:layout_marginBottom="5dp"
+            app:cardElevation="3dp">
+
+            <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+            android:id="@+id/resturant_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lato"
+            android:text="Resturant Bill"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+            <TextView
+            android:id="@+id/item_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resturant_bill"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/lato"
+            android:text="Item Total" />
+
+            <TextView
+            android:id="@+id/total_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/item_total"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/roboto"
+            android:text="Total item price" />
+
+            <TextView
+            android:id="@+id/gst_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_total"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lato"
+            android:text="GST"
+            android:textStyle="bold" />
+
+            <TextView
+            android:id="@+id/gst_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/gst_text"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/lato"
+            android:text="GST price" />
+
+            <View
+            android:id="@+id/line_5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/gst_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="#000"></View>
+
+            <TextView
+            android:id="@+id/topay_text"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/gst_text"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/lato"
+            android:text="To Pay"
+            android:textStyle="bold" />
+
+            <TextView
+            android:id="@+id/to_pay_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/topay_text"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lato"
+            android:text="To Pay price"
+            android:textStyle="bold" />
+
+            </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/pay_now_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardView"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="25dp"
+                android:background="@color/lime_green"
+                android:fontFamily="@font/quicksand"
+                android:text="Pay Now"
+                android:textColor="@color/white"
+                android:layout_marginBottom="50dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

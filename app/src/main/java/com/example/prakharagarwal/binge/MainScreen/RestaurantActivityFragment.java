@@ -12,13 +12,20 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.prakharagarwal.binge.Manifest;
+import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingData;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.nio.LongBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +38,9 @@ public class RestaurantActivityFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     FoodMainScreenAdapter mFoodAdapter;
-    List<Food_MainScreen> mFood;
-    List<Food_MainScreen> mFoodData;
-
+    List<Menu> mFood;
+    List<Menu> mFoodData;
+    List<Menu> category_food;
     TextView emptyView;
     ProgressBar progressBar;
 
@@ -47,13 +54,12 @@ public class RestaurantActivityFragment extends Fragment {
 
         mFood = new ArrayList<>();
         mFoodData = new ArrayList<>();
-
-
+        category_food=new ArrayList<>();
     }
 
-    public static RestaurantActivityFragment newInstance(String id) {
+    public static RestaurantActivityFragment newInstance(String category_id) {
         Bundle args = new Bundle();
-        args.putString("id", id);
+        args.putString("category_id", category_id);
         RestaurantActivityFragment fragment = new RestaurantActivityFragment();
         fragment.setArguments(args);
         return fragment;
@@ -65,71 +71,32 @@ public class RestaurantActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        //return inflater.inflate(R.layout.fragment_restaurant, container, false);
-
         View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main_recycler_view);
         emptyView = (TextView) rootView.findViewById(R.id.text_menu_empty);
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("mainscreen");
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        String category_id=getArguments().getString("category_id");
+        List<Menu> menuList=PassingData.getMenuList();
 
-                getData(dataSnapshot);
-
+        for(int a=0;a<=menuList.size()-1;a++)
+        {
+            if(category_id.equals(menuList.get(a).getCategory()))
+            {
+              category_food.add(menuList.get(a));
             }
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-//        update();
-        mFoodAdapter = new FoodMainScreenAdapter(mFood, getContext(), mRecyclerView, getFragmentManager());
+        mFoodAdapter = new FoodMainScreenAdapter(category_food, getActivity(), mRecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mFoodAdapter);
 
+        progressBar.setVisibility(View.INVISIBLE);
         return rootView;
-    }
-
-    public void getData(DataSnapshot dataSnapshot) {
-        mFood.clear();
-        int flag=0;
-        progressBar.setVisibility(View.GONE);
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-//            if (child.getKey().equals(getArguments().getString("id"))) {
-            for (DataSnapshot child1 : child.getChildren()) {
-                flag = 0;
-                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
-                    mFoodData.add(food);
-//                    }
-
-//            }
-            }
-        }
-
-        for(int i=0; i<mFoodData.size();i++){
-                    if(mFoodData.get(i).getRestaurant_id().equals(getArguments().getString("id"))){
-                        mFood.add(mFoodData.get(i));
-                    }
-        }
-        if (mFood.size() == 0) {
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
-            emptyView.setVisibility(View.GONE);
-        }
-        mFoodAdapter.addAll(mFood);
-        mFoodAdapter.notifyDataSetChanged();
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.prakharagarwal.binge">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -7,6 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -27,7 +30,12 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
-        android:windowSoftInputMode="stateHidden">
+        android:windowSoftInputMode="stateHidden"
+        tools:replace="android:icon,android:theme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".MainScreen.MainActivity"
             android:screenOrientation="portrait">
@@ -47,23 +55,29 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
-        <activity
-            android:name=".StoriesMenu.StoriesActivity"
-            android:label="@string/title_activity_stories"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Review.ReviewActivity"
-            android:label="@string/title_activity_review"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Review.WriteReviewActivity"
-            android:label="@string/title_activity_write_review"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Review.UploadReviewStoryActivity"
-            android:label="@string/title_activity_upload_review_story"
-            android:screenOrientation="portrait" />
+        <!-- <activity -->
+        <!-- android:name=".StoriesMenu.StoriesActivity" -->
+        <!-- android:label="@string/title_activity_stories" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".Review.ReviewActivity" -->
+        <!-- android:label="@string/title_activity_review" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".Review.WriteReviewActivity" -->
+        <!-- android:label="@string/title_activity_write_review" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".Review.UploadReviewStoryActivity" -->
+        <!-- android:label="@string/title_activity_upload_review_story" -->
+        <!-- android:screenOrientation="portrait" /> -->
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -105,7 +119,20 @@
         <activity android:name=".DishRecommend" />
         <activity
             android:name=".cart.CartActivity"
-            android:label="@string/title_activity_cart"></activity>
+            android:label="@string/title_activity_cart" />
+        <activity
+            android:name=".cart.CartSuccess"
+            android:label="@string/title_activity_cart_success" />
+        <activity
+            android:name=".MainScreen.DishInfoActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".MainScreen.PostOrderQRActivity"
+            android:noHistory="true" />
+        <activity android:name=".cart.NewCartActivity" />
+        <activity android:name=".cart.CartMapTracking" />
+
+        <activity android:name=".cart.PlacedOrderItem"></activity>
     </application>
 
 </manifest>

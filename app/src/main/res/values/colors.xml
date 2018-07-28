@@ -16,6 +16,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white_opaque">#FFFFFFFF</color>
     <color name="pitch_black">#FF000000</color>
+    <color name="lime_green">#32CD32</color>
+    <color name="yellow">#ffd700</color>
+    <color name="sky_color">#00bfff</color>
 
     <color name="veg_active">#279028</color>
     <color name="nonveg_active">#ff111c</color>
@@ -27,6 +30,11 @@
     <color name="fpi_default_indicator_inactive_color">#FFFFFFFF</color>
     <color name="fpi_default_indicator_active_color">#ff5500</color>
     <color name="transparent">#00000000</color>
-
-
+    <color name="silver">#C0C0C0</color>
+    <color name="white">#fff</color>
+<color name="location_color">#343F4B</color>
+    <color name="your_location_color">#8492A6</color>
+    <color name="loto_font_color">#47525E</color>
+<color name="colorText">#fff</color>
+    <color name="background">#C0C0C0</color>
 </resources>

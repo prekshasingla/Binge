@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+   <ImageView
+       android:id="@+id/veg_nonveg_placed_order_cart"
+       android:layout_width="15dp"
+       android:layout_height="15dp"
+       android:layout_margin="10dp"
+       android:background="@color/veg_active"/>
+
+    <TextView
+        android:id="@+id/dish_name_placed_order_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/veg_nonveg_placed_order_cart"
+        android:text="Dish Name"
+        android:layout_margin="5dp"
+        android:fontFamily="@font/quicksand"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/dish_price_order_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Dish price"
+        android:layout_margin="5dp"
+        android:layout_marginRight="15dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/quicksand"/>
+</RelativeLayout>

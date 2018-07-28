@@ -1,6 +1,6 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
-import com.example.prakharagarwal.binge.StoriesMenu.Menu;
+import com.example.prakharagarwal.binge.Menu.Menu;
 
 import java.util.ArrayList;
 import java.util.List;

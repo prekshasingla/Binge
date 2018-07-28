@@ -2,6 +2,8 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,9 +22,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +44,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
+import com.example.prakharagarwal.binge.cart.CartSuccess;
+import com.example.prakharagarwal.binge.cart.NewCartActivity;
+import com.example.prakharagarwal.binge.model_class.PassingData;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,11 +60,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity  {
 
     private TabLayout tabLayout;
 
-    private ViewPager viewPager;
+   // private ViewPager viewPager;
+    public FrameLayout fragment_container;
 
     TextView textViewLocation;
 
@@ -59,13 +73,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     String longitude = null;
     private Menu menu;
     private FusedLocationProviderClient mFusedLocationClient;
+    SearchActivity searchActivity;
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     CardView cv;
     SharedPreferences sharedpreferences;
-    private ImageView searchIcon;
+    //private ImageView searchIcon;
+    MainActivityFragment mainActivityFragment=new MainActivityFragment();
 
+    private EditText search_edittext;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
@@ -135,21 +152,77 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Fresco.initialize(this);
+
         setContentView(R.layout.activity_main);
         textViewLocation = (TextView) findViewById(R.id.user_location);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Initializing the tablayout
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        searchIcon = (ImageView) findViewById(R.id.search_icon);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
+
+        //hide the soft keyboard
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
+//        Log.v("RishabhSharedPreference","Starting shared prefernce");
+//        //get data from the shared preference because if user already placed the preorder then we directly switch to the map activity
+//        MySharedPreference sharedPreference=new MySharedPreference(MainActivity.this);
+//        if(sharedPreference.savedmapactivity_get_flag()==true)
+//        {
+//            Log.v("RishabhSharedPreference","Inside shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+//            Intent intent = new Intent(MainActivity.this, CartSuccess.class);
+//            intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
+//            intent.putExtra("latitude", sharedPreference.savedmapactivity_get_latitude());
+//            intent.putExtra("longitude", sharedPreference.savedmapactivity_get_longitude());
+//            intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
+//            startActivity(intent);
+//        }
+//        Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+
+        fragment_container=findViewById(R.id.fragment_container);
+        search_edittext=findViewById(R.id.search_edit_text);
+        search_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+               // search_edittext.setFocusable(true);
+               // search_edittext.setFocusableInTouchMode(true);
+                searchActivity=new SearchActivity();
+                SearchActivity.activity=MainActivity.this;
+                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+                transaction.replace(R.id.fragment_container,searchActivity);
+                transaction.addToBackStack("search");
+                transaction.commit();
             }
         });
+
+
+//        search_edittext.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.setFocusable(true);
+//                v.setFocusableInTouchMode(true);
+//                searchActivity=new SearchActivity();
+//                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+//                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+//                transaction.replace(R.id.fragment_container,searchActivity);
+//                transaction.addToBackStack("search");
+//                transaction.commit();
+//                return false;
+//
+//
+//            }
+//        });
+
+
+
+
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (getIntent().getStringExtra("callingActivity") != null) {
             latitude=getIntent().getStringExtra("latitude");
@@ -158,7 +231,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             checkLocationPermission();
         }
-
+//        latitude=""+LocationConstants.LAT_CP;
+//        longitude=""+LocationConstants.LON_CP;
         createUI();
 
         LinearLayout locationLayout = (LinearLayout) findViewById(R.id.location_layout);
@@ -176,18 +250,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
+    public EditText getSearch_edittext() {
+        return search_edittext;
+    }
+
     private void createUI() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+      //  MainActivityFragment mainActivityFragment=new MainActivityFragment();
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+        if(!mainActivityFragment.isAdded()) {
+            transaction.add(R.id.fragment_container, mainActivityFragment);
+            transaction.commit();
+        }
+        else
+        {
+            transaction.remove(mainActivityFragment);
+            transaction.add(R.id.fragment_container, new MainActivityFragment()).commit();
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Fine Dining"), "Fine Dining");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cafes & more"), "Cafes & More");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Drinks & nightlife"), "Drinks & Nightlife");
-        viewPagerAdapter.addFragment(MainActivityFragment.newInstance("Cakes & Bakes"), "Cakes & Bakes");
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-        tabLayout.setupWithViewPager(viewPager);
+        }
     }
 
     @Override
@@ -197,6 +277,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             if(resultCode == Activity.RESULT_OK){
                 latitude=data.getStringExtra("latitude");
                 longitude=data.getStringExtra("longitude");
+                Log.d("RISHABH LATITUDE 123",latitude+"");
+                Log.d("RISHABH LONGITUDE 123",longitude+"");
                 setAddress();
                 createUI();
             }
@@ -282,12 +364,17 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     String locality = add.getLocality();
                     String sublocality = add.getSubLocality();
                     if (locality != null && sublocality != null)
+                    {
                         textViewLocation.setText(sublocality + " " + locality);
+//
+                    }
                     else
                         Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
+//
 
                 } else {
                     Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
+//
                 }
 
             } catch (IOException e) {
@@ -347,18 +434,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-        //cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        // cv.setCardBackgroundColor(getResources().getColor(R.color.white_opaque));
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-        // cv.setCardBackgroundColor(getResources().getColor(R.color.orange10));
+    public void onBackPressed() {
+       // super.onBackPressed();
+        finishAffinity();
     }
 }

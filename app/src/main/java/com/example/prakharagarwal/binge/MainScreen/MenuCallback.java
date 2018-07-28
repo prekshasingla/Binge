@@ -2,7 +2,7 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 
-import com.example.prakharagarwal.binge.StoriesMenu.Menu;
+import com.example.prakharagarwal.binge.Menu.Menu;
 
 /**
  * Created by prakharagarwal on 03/09/17.
