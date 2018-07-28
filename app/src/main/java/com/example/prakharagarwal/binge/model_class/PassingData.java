@@ -1,15 +1,28 @@
 package com.example.prakharagarwal.binge.model_class;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class PassingData {
 
     public static String resturant_Id;
+    public static HashMap<String, Integer> totalcategoryitem;
+    public static Double latitude;
+    public static Double longitude;
+    public static String tableNo;
+    public static List<Menu> menuList;
+    public static Menu menu;
 
-   public static Double latitude;
-   public static Double longitude;
-   public static String tableNo;
+    public static HashMap<String, Integer> getTotalcategoryitem() {
+        return totalcategoryitem;
+    }
+
+    public static void setTotalcategoryitem(HashMap<String, Integer> totalcategoryitem) {
+        PassingData.totalcategoryitem = totalcategoryitem;
+    }
+
 
     public static String getTableNo() {
         return tableNo;
@@ -61,9 +74,6 @@ public class PassingData {
         PassingData.menuList = menuList;
     }
 
-    public static List<Menu> menuList;
-
-    public static Menu menu;
 
     public static Menu getMenu() {
         return menu;

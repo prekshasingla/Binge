@@ -68,6 +68,9 @@ public class NewCartActivity extends AppCompatActivity {
     CardView cardView;
 
     TextView pending_Item;
+    Button payNowbtn;
+    TextView add_item_text;
+    Boolean preOrderStatus=false;
 
 
     @Override
@@ -90,6 +93,8 @@ public class NewCartActivity extends AppCompatActivity {
         line2 = findViewById(R.id.line_2);
         coupon = findViewById(R.id.cardView_cart);
         pending_Item = findViewById(R.id.Pending_item);
+        payNowbtn=findViewById(R.id.pay_now_btn);
+        add_item_text=findViewById(R.id.add_item_text);
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +108,8 @@ public class NewCartActivity extends AppCompatActivity {
         line2.setVisibility(View.GONE);
         coupon.setVisibility(View.GONE);
         cardView.setVisibility(View.GONE);
+        payNowbtn.setVisibility(View.GONE);
+        add_item_text.setVisibility(View.GONE);
 
         menuList = PassingCartItem.getMenuArrayList();
         integerList = PassingCartItem.getIntegerArrayList();
@@ -111,7 +118,15 @@ public class NewCartActivity extends AppCompatActivity {
         if (intent != null)
             if (intent.getStringExtra("flag") != null)
                 if (intent.getStringExtra("flag").equals("preOrder"))
-                    placed_order_btn.setText("Checkout Item");
+                {
+                    preOrderStatus=true;
+                    placed_order_btn.setText("Pay Now");
+                    placed_order_btn.setVisibility(View.GONE);
+                    payNowbtn.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.VISIBLE);
+                    RecyclerViewCartAdapter.addingToBill();
+                }
+
 
         resturant_name.setText(intent.getStringExtra("resturant_name"));
         Picasso.with(this).load(intent.getStringExtra("photo_url")).into(dish_image);
@@ -136,12 +151,32 @@ public class NewCartActivity extends AppCompatActivity {
             }
         });
 
-        //   RecyclerViewCartAdapter.addingToBill();
+        payNowbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (preOrderStatus) {
+                    SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    String uID = prefs.getString("username", null);
+                    if (uID != null)
+                        new MyTask().execute();
+                    else {
+                        startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
+                    }
+                }
+                else
+                {
+                    Toast.makeText(NewCartActivity.this, "open the payment mode", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+         // RecyclerViewCartAdapter.addingToBill();
 
         showplacedItem();
 
-        if (!menuList.isEmpty() && !integerList.isEmpty())
-            placed_order_btn.setVisibility(View.VISIBLE);
+        if (!menuList.isEmpty() && !integerList.isEmpty()){}
+            //placed_order_btn.setVisibility(View.VISIBLE);
 
     }
 
@@ -152,6 +187,7 @@ public class NewCartActivity extends AppCompatActivity {
 
             placed_Order_text.setVisibility(View.VISIBLE);
             placed_order.setVisibility(View.VISIBLE);
+            payNowbtn.setVisibility(View.VISIBLE);
             line1.setVisibility(View.VISIBLE);
             line2.setVisibility(View.VISIBLE);
             coupon.setVisibility(View.VISIBLE);
@@ -272,22 +308,11 @@ public class NewCartActivity extends AppCompatActivity {
                     menuList.get(i).setTotalcartItem(0);
                 }
 
-//                menuList.clear();
-//                integerList.clear();
-//                adapter.notifyDataSetChanged();
-
-//                placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, menuListsec, integerListsec);
-//                placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
-//                placed_order.setAdapter(placedOrderAdapter);
-
 
                 totalpricetext.setText("₹" + totalpricesum);
                 gstpricetext.setText("₹" + gstprice);
                 int total = gstprice + totalpricesum;
                 paypricetext.setText("₹" + total);
-//                pendingitem.setVisibility(View.INVISIBLE);
-//                placed_order_btn.setVisibility(View.INVISIBLE);
-
 
                 if (intent.getStringExtra("flag") == null) {
                     //Now save the order into the Firebase Firestore
@@ -301,20 +326,8 @@ public class NewCartActivity extends AppCompatActivity {
                     placedOrderCart.setUserId(uID);
                     placedOrderCart.setLocation_lat(0.0);
                     placedOrderCart.setLocation_long(0.0);
-                    DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document();
+                    DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/InsideOrder").document();
                     String orderID = "";
-
-//                    SharedPreferences preferences = getSharedPreferences("ORDERDATA", MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = preferences.edit();
-//                    if (preferences.getString("order", null) == null) {
-//                        orderID = reference.getId();
-//                        editor.putString("order", reference.getId());
-//                        editor.commit();
-//                        Log.d("RISHABH ORDER if part", orderID);
-//                    } else {
-//                        orderID = preferences.getString("order", "ERROR");
-//                        Log.d("RISHABH ORDER else part", orderID);
-//                    }
 
                     if (PassingCartItem.getOrderID() == null) {
                         orderID = reference.getId();
@@ -327,7 +340,7 @@ public class NewCartActivity extends AppCompatActivity {
                         placedOrderCart.setId(orderID);
                     }
 
-                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document(orderID).set(placedOrderCart).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/InsideOrder").document(orderID).set(placedOrderCart).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(NewCartActivity.this, "Success to store in FireStore 1", Toast.LENGTH_LONG).show();
@@ -337,9 +350,11 @@ public class NewCartActivity extends AppCompatActivity {
                             line2.setVisibility(View.VISIBLE);
                             coupon.setVisibility(View.VISIBLE);
                             cardView.setVisibility(View.VISIBLE);
-                            pending_Item.setVisibility(View.GONE);
+                            pending_Item.setVisibility(View.VISIBLE);
                             placed_order_btn.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.GONE);
+                            add_item_text.setVisibility(View.VISIBLE);
+                            payNowbtn.setVisibility(View.VISIBLE);
 //                            NewCartActivity newCartActivity=new NewCartActivity();
 //                            newCartActivity.showplacedItem();
 
@@ -362,9 +377,9 @@ public class NewCartActivity extends AppCompatActivity {
                     placedOrderHashmap.put("location_long", 0.0);
                     placedOrderHashmap.put("status", "PreOder Recived");
                     Log.d("RISHABH", "RESTURANT IS THE " + PassingData.getResturant_Id());
-                    final DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document();
+                    final DocumentReference reference = firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/PreOrder").document();
                     placedOrderHashmap.put("id", reference.getId());
-                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/order").document(reference.getId()).set(placedOrderHashmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    firebaseFirestore.collection("orders/" + PassingData.getResturant_Id() + "/PreOrder").document(reference.getId()).set(placedOrderHashmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(NewCartActivity.this, "Success to store in FireStore", Toast.LENGTH_LONG).show();

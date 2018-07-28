@@ -51,6 +51,7 @@ import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
 import com.example.prakharagarwal.binge.cart.CartSuccess;
+import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.gestures.GestureDetector;
@@ -132,12 +133,13 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("RISHABHRAWAT", "On create ");
         mFood = new ArrayList<>();
         mFood2 = new ArrayList<>();
         brands = new ArrayList<>();
         categories = new ArrayList<>();
+
+        PassingCartItem.placed_order_hashmap.clear();
+        PassingCartItem.menuIntegerHashMap.clear();
 
     }
 
@@ -154,8 +156,27 @@ public class MainActivityFragment extends Fragment {
         progressBar.setIndeterminate(true);
         //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
-
         checkLocationPermission();
+
+
+
+        Log.v("RishabhSharedPreference","Starting shared prefernce");
+        //get data from the shared preference because if user already placed the preorder then we directly switch to the map activity
+        MySharedPreference sharedPreference=new MySharedPreference(getActivity());
+        if(sharedPreference.savedmapactivity_get_flag()==true)
+        {
+            Log.v("RishabhSharedPreference","Inside shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+            Intent intent = new Intent(getActivity(), CartSuccess.class);
+            intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
+            intent.putExtra("latitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_latitude()).toString()));
+            intent.putExtra("longitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_longitude()).toString()));
+            intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
+            startActivity(intent);
+        }
+        Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+
+
+
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu");
@@ -199,28 +220,21 @@ public class MainActivityFragment extends Fragment {
         mBrandRecyclerView.setLayoutManager(gridLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
 
-        DatabaseReference ref2 = database.getReference("categories");
+//        DatabaseReference ref2 = database.getReference("categories");
+//
+//        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                new CategoriesAsync().execute(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                new CategoriesAsync().execute(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        FoodList foodList = new FoodList();
-        foodList.mfood = mFood2;
-        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(), foodList);
-        final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
-        mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
-
-
         return rootView;
     }
 
@@ -260,9 +274,6 @@ public class MainActivityFragment extends Fragment {
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
         } else {
-            Log.d("RISHABH", "CREATE LOCATION REQUEST 1");
-            //createLocationRequest();
-
 
         }
     }
@@ -270,12 +281,13 @@ public class MainActivityFragment extends Fragment {
 
     private class TrendingAsync extends AsyncTask<DataSnapshot, Void, Void> {
 
+        HashMap<String, Integer> totalcategory = new HashMap<>();
+
         protected Void doInBackground(DataSnapshot... dataSnapshot) {
 //            mFood.clear();
 //            mFood2.clear();
             for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
 
-                Log.d("RISHABHRAWAT", "Async task call inside the datasnapshot");
                 Double latitude = 0d;
                 Double longitude = 0d;
                 String restuarant_name = null;
@@ -301,15 +313,25 @@ public class MainActivityFragment extends Fragment {
                                 menu.setRestaurant_id(restuarant_id);
                                 menu.setLatitude(String.valueOf(latitude));
                                 menu.setLongitude(String.valueOf(longitude));
-                                if (menu.getHas_video() == 0)
-                                    Log.d("RISHABHRAWAT", "Adding Food item with Location");
-                                mFood.add(menu);
+                                if (menu.getHas_video() == 0) {
+                                    mFood.add(menu);
+
+                                    if (totalcategory.containsKey(menu.getCategory())) {
+                                        int total = totalcategory.get(menu.getCategory());
+                                        totalcategory.put(menu.getCategory(), total + 1);
+                                        Log.v("RISHABH", "ToTal Category " + menu.getCategory() + " " + total);
+                                    } else {
+                                        totalcategory.put(menu.getCategory(), 1);
+                                        Log.v("RISHABH", "ToTal Category " + menu.getCategory() + "1");
+                                    }
+                                }
                             }
                         }
 
                     }
                     //pass the data for the category
                     PassingData.setMenuList(mFood);
+                    PassingData.setTotalcategoryitem(totalcategory);
                 } else if (!flag && mFood2Counter < 50) {
                     for (DataSnapshot child1 : child.getChildren()) {
                         if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
@@ -322,13 +344,22 @@ public class MainActivityFragment extends Fragment {
                                 if (menu.getHas_video() == 0) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
-                                    Log.d("RISHABHRAWAT", "Adding Food item without location");
+                                    if (totalcategory.containsKey(menu.getCategory())) {
+                                        int total = totalcategory.get(menu.getCategory());
+                                        totalcategory.put(menu.getCategory(), total+1);
+                                        Log.v("RISHABH","ToTal Category "+menu.getCategory()+" "+total);
+                                    } else {
+                                        totalcategory.put(menu.getCategory(), 1);
+                                        Log.v("RISHABH","ToTal Category "+menu.getCategory()+ "1 no");
+                                    }
                                 }
+
                             }
                         }
 
                     }
                     PassingData.setMenuList(mFood2);
+                    PassingData.setTotalcategoryitem(totalcategory);
                 }
 
             }
@@ -339,6 +370,20 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(Void d) {
 
             UpdateTrendingView();
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref2 = database.getReference("categories");
+
+            ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    new CategoriesAsync().execute(dataSnapshot);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -409,8 +454,21 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void UpdateCategoriesView() {
-        mCategoriesAdapter.addAll(categories);
-        mCategoriesAdapter.notifyDataSetChanged();
+        List<String> category_string=new ArrayList<>();
+        List<Integer> category_integer=new ArrayList<>();
+        HashMap<String,Integer> categoryhashmap=PassingData.getTotalcategoryitem();
+        for(Map.Entry<String,Integer> category:categoryhashmap.entrySet())
+        {
+            category_string.add(category.getKey());
+            category_integer.add(category.getValue());
+
+            Log.v("RISHABHRAWAT","category is the "+category.getKey()+" "+category.getValue());
+        }
+
+        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(),category_string,category_integer);
+        final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
+        mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
     }
 
 
@@ -739,10 +797,6 @@ public class MainActivityFragment extends Fragment {
                 }
             });
         }
-    }
-
-    class FoodList implements Serializable {
-        List<Menu> mfood;
     }
 
 }

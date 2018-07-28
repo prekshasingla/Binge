@@ -65,7 +65,7 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
                 PassingCartItem.addmenu(menuList.get(position),newValue);
                 menuList.get(position).setTotalcartItem(newValue);
 
-               // addingToBill();
+                addingToBill();
             }
         });
 
@@ -83,31 +83,32 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
                 integerList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, menuList.size());
+                addingToBill();
             }
         });
 
     }
 
-//    public static void addingToBill() {
-//        int totalsum=0;
-//        int total_price=0;
-//        int gst_price=0;
-//        HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.getMenuHashmap();
-//        for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
-//            if (entry.getValue() != 0) {
-//                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
-//            }
-//        }
-//        gst_price = (total_price * 4) / 100;
-//        totalsum=gst_price+total_price;
-//        if(NewCartActivity.gstpricetext!=null)
-//        {
-//            NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
-//            NewCartActivity.totalpricetext.setText("₹"+total_price+"");
-//            NewCartActivity.paypricetext.setText("₹"+totalsum+"");
-//        }
-//
-//    }
+    public static void addingToBill() {
+        int totalsum=0;
+        int total_price=0;
+        int gst_price=0;
+        HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.getMenuHashmap();
+        for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
+            if (entry.getValue() != 0) {
+                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+            }
+        }
+        gst_price = (total_price * 4) / 100;
+        totalsum=gst_price+total_price;
+        if(NewCartActivity.gstpricetext!=null)
+        {
+            NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
+            NewCartActivity.totalpricetext.setText("₹"+total_price+"");
+            NewCartActivity.paypricetext.setText("₹"+totalsum+"");
+        }
+
+    }
 
     @Override
     public int getItemCount() {

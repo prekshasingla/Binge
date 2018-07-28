@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesAdapterViewHolder> {
 
+    public List<Integer> category_number;
+    public List<String> category_string;
     private List<Category1> categories;
     final private Activity mContext;
-    MainActivityFragment.FoodList mfood;
+
 
     CategoriesAdapter.CategoriesAdapterViewHolder holder;
     private boolean headerEnabled;
@@ -39,12 +42,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     int color[] = new int[]{Color.parseColor("#FF4500"), Color.parseColor("#00cccc"), Color.parseColor("#ff70a6"),
             Color.parseColor("#16b886"), Color.parseColor("#8A2BE2"), Color.parseColor("#DC143C"),
             Color.parseColor("#DA70D6"), Color.parseColor("#FF6347"), Color.parseColor("#DAA520"),
+            Color.parseColor("#1E90FF"),Color.parseColor("#D2691E"),Color.parseColor("#FF4500"), Color.parseColor("#00cccc"), Color.parseColor("#ff70a6"),
+            Color.parseColor("#16b886"), Color.parseColor("#8A2BE2"), Color.parseColor("#DC143C"),
+            Color.parseColor("#DA70D6"), Color.parseColor("#FF6347"), Color.parseColor("#DAA520"),
             Color.parseColor("#1E90FF"),Color.parseColor("#D2691E")};
 
-    public CategoriesAdapter(List<Category1> categories, Activity mContext, MainActivityFragment.FoodList mfood) {
+    public CategoriesAdapter(List<Category1> categories, Activity mContext,List<String> category_string,List<Integer> category_number) {
         this.categories = categories;
         this.mContext = mContext;
-        this.mfood = mfood;
+        this.category_string=category_string;
+        this.category_number=category_number;
+
     }
 
 
@@ -60,13 +68,27 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     @Override
     public void onBindViewHolder(CategoriesAdapter.CategoriesAdapterViewHolder holder, int position) {
-        Category1 category1 = categories.get(position);
-        Picasso.with(mContext)
-                .load(category1.getLogo_url())
-                .into(holder.image);
-        holder.name.setText(category1.getCategory_name());
+
+//        String categoryId=category_string.get(position);
+//        Category1 category1 = categories.get(position);
+       // holder.name.setText(category1.getCategory_name());
         holder.carditem.setBackgroundColor(color[position]);
-        holder.totalItem.setText(String.valueOf(category1.getItem()));
+
+     //  holder.totalItem.setText(String.valueOf(category1.getItem()));
+
+
+        holder.totalItem.setText(category_number.get(position)+"");
+
+        for(int i=0;i<=categories.size()-1;i++)
+        {
+            if(categories.get(i).getCategory_id().equals(category_string.get(position)) && category_string.get(position)!=null && !category_string.get(position).equals(""))
+            {
+                holder.name.setText(categories.get(i).getCategory_name());
+                Picasso.with(mContext).load(categories.get(i).getLogo_url()).into(holder.image);
+
+            }
+        }
+
 
 
     }
@@ -75,7 +97,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     @Override
     public int getItemCount() {
 
-        return categories.size();
+        return category_string.size();
     }
 
     public class CategoriesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -99,7 +121,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         public void onClick(View v) {
             Category1 category1 = categories.get(getAdapterPosition());
             Intent intent = new Intent(mContext, RestaurantActivity.class);
-            intent.putExtra("category", category1.getCategory_id());
+            intent.putExtra("category", category_string.get(getAdapterPosition()));
             // intent.putExtra("mfood",mfood);
             mContext.startActivity(intent);
         }
@@ -108,5 +130,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     public void addAll(List<Category1> categories) {
         this.categories = categories;
+
     }
 }

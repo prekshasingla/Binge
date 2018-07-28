@@ -28,6 +28,7 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +96,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     static List<Menu> course_meal2;
     static String timing;
 
+    RelativeLayout main_relative_layout;
 
     final static List<String> foodcategory = new ArrayList<>();
     final static List<List<Menu>> foodcategorywithoutvideo = new ArrayList<>();
@@ -105,6 +107,8 @@ public class DishInfoActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_dish_info);
 
         context = this;
+        main_relative_layout=findViewById(R.id.main_relative_layout);
+        main_relative_layout.setVisibility(View.GONE);
         slidingUpPanelLayout = findViewById(R.id.slide_panel);
         dish_name = findViewById(R.id.dish_name);
         dish_price = findViewById(R.id.dish_price);
@@ -164,19 +168,7 @@ public class DishInfoActivity extends AppCompatActivity implements
         animation = AnimationUtils.loadAnimation(DishInfoActivity.this, R.anim.fade_out);
         menuList = new ArrayList<>();
 
-//        cartNumberButton.setViewVisibility(View.GONE);
-//        cartNumberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
-//            @Override
-//            public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
-//
-//                if (newValue != 0)
-//                    cartNumberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
-//                else
-//                    cartNumberButton.updateColors(getResources().getColor(R.color.sky_color), Color.WHITE);
-//                add_item_to_cart(menu1, newValue);
-//
-//            }
-//        });
+
 
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,6 +361,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                 pagerAdapter1 = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal2, getApplicationContext(), 2);
                 pager.setOffscreenPageLimit(10);
                 pager2.setAdapter(pagerAdapter1);
+                main_relative_layout.setVisibility(View.VISIBLE);
 
             }
 

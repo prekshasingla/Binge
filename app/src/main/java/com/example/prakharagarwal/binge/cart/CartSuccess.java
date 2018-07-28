@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -33,12 +35,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.prakharagarwal.binge.MainScreen.LocationSearchActivity;
 import com.example.prakharagarwal.binge.MainScreen.MainActivity;
+import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -107,6 +111,10 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
     Double rest_latitude;
     Double rest_longitude;
     String resturant_id;
+    Boolean dialogflag=false;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,13 +127,22 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         cooking = findViewById(R.id.cooking_status);
         served = findViewById(R.id.served_status);
 
+
         db = FirebaseFirestore.getInstance();
+        com.google.android.gms.location.LocationListener locationListener=(com.google.android.gms.location.LocationListener)this;
 
         eta_time = (TextView) findViewById(R.id.eta_time);
         orderID = getIntent().getStringExtra("orderId");
         rest_latitude=getIntent().getDoubleExtra("latitude",0.0);
         rest_longitude=getIntent().getDoubleExtra("longitude",0.0);
         resturant_id=getIntent().getStringExtra("resturant_id");
+
+        //save the data to shared preference
+        final MySharedPreference sharedPreference=new MySharedPreference(CartSuccess.this);
+        sharedPreference.savedmapactivity_set_latitude_longitude_flag(rest_latitude,rest_longitude);
+        sharedPreference.savedmapactivity_set_orderID_restaurant_id(orderID,resturant_id);
+        sharedPreference.savedmapactivity_set_flag(true);
+
         Log.d("RISHABH", "ORDER ID IS THE " + orderID);
         Log.d("RISHABH", "LATITUDE IS THE " + String.valueOf(getIntent().getDoubleExtra("latitude",0.0)) + " LONGITUDE IS THE " + String.valueOf(getIntent().getDoubleExtra("longitude",0.0)));
 
@@ -140,7 +157,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         mapFragment.getMapAsync(this);
 
 
-        final DocumentReference docRef = db.collection("orders/" + resturant_id + "/order").document(orderID);
+        final DocumentReference docRef = db.collection("orders/" + resturant_id + "/PreOrder").document(orderID);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -172,18 +189,27 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 //                            received.setBackgroundColor(Color.GREEN);
 //                            cooking.setBackgroundColor(Color.GREEN);
 //                            served.setBackgroundColor(Color.GREEN);
-                            final Dialog dialog=new Dialog(CartSuccess.this);
-                            dialog.setContentView(R.layout.thankyou_layout);
-                            dialog.setCancelable(false);
-                            dialog.show();
-                            Button button=dialog.findViewById(R.id.thankyou_btn);
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.cancel();
-                                    startActivity(new Intent(CartSuccess.this,MainActivity.class));
-                                }
-                            });
+                            if(!dialogflag) {
+                                dialogflag=true;
+                                final Dialog dialog = new Dialog(CartSuccess.this);
+                                dialog.setContentView(R.layout.thankyou_layout);
+                                dialog.setCancelable(false);
+                                dialog.show();
+                                Button button = dialog.findViewById(R.id.thankyou_btn);
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        dialog.cancel();
+                                        startActivity(new Intent(CartSuccess.this, MainActivity.class));
+                                        //MySharedPreference sharedPreference1=new MySharedPreference(CartSuccess.this);
+                                        sharedPreference.savedmapactivity_set_flag(false);
+                                        finish();
+
+
+                                    }
+                                });
+                            }
                         }
                         else
                         {
@@ -340,13 +366,13 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.e(LOG_TAG, "google api client connection suspended");
+        Log.d(LOG_TAG, "google api client connection suspended");
 
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "google api client connection failed");
+        Log.d(LOG_TAG, "google api client connection failed");
 
     }
 
@@ -356,7 +382,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         Map<String, Object> locationMap = new HashMap<>();
         locationMap.put("location_long", location.getLongitude());
         locationMap.put("location_lat", location.getLatitude());
-        db.collection("orders/" + resturant_id + "/order").document(orderID)
+        db.collection("orders/" + resturant_id + "/PreOrder").document(orderID)
                 .set(locationMap, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -387,6 +413,8 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
+
+
     private void calculateTime() {
         // Get a RequestQueue
         RequestQueue queue = VolleySingleton.getInstance(this.getApplicationContext()).
@@ -412,7 +440,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
                                     Map<String, Object> durationMap = new HashMap<>();
                                     durationMap.put("time_to_reach", duration.get("text"));
-                                    db.collection("orders/" + resturant_id + "/PreOrder").document(orderID)
+                                    db.collection("orders/" + resturant_id + "/preOrder").document(orderID)
                                             .set(durationMap, SetOptions.merge())
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
@@ -527,7 +555,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+                Log.d("Rishabh Background", e.toString());
             }
             return data;
         }
@@ -664,6 +692,10 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+        Toast.makeText(this, "Sorry you cannot back until your food will be served in the restaurant", Toast.LENGTH_SHORT).show();
+    }
 }
 //recived(1) cooking(2) served(3)

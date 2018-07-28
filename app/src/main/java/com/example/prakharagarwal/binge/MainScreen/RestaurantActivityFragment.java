@@ -71,9 +71,6 @@ public class RestaurantActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        //return inflater.inflate(R.layout.fragment_restaurant, container, false);
-
         View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main_recycler_view);
         emptyView = (TextView) rootView.findViewById(R.id.text_menu_empty);
@@ -100,36 +97,6 @@ public class RestaurantActivityFragment extends Fragment {
 
         progressBar.setVisibility(View.INVISIBLE);
         return rootView;
-    }
-
-    public void getData(DataSnapshot dataSnapshot) {
-        mFood.clear();
-        int flag=0;
-        progressBar.setVisibility(View.GONE);
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-//            if (child.getKey().equals(getArguments().getString("id"))) {
-            for (DataSnapshot child1 : child.getChildren()) {
-                flag = 0;
-//                    Food_MainScreen food = child1.getValue(Food_MainScreen.class);
-//                    mFoodData.add(food);
-//                    }
-
-//            }
-            }
-        }
-
-        for(int i=0; i<mFoodData.size();i++){
-//                    if(mFoodData.get(i).getRestaurant_id().equals(getArguments().getString("id"))){
-//                        mFood.add(mFoodData.get(i));
-//                    }
-        }
-        if (mFood.size() == 0) {
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
-            emptyView.setVisibility(View.GONE);
-        }
-        mFoodAdapter.addAll(mFood);
-        mFoodAdapter.notifyDataSetChanged();
     }
 
 }

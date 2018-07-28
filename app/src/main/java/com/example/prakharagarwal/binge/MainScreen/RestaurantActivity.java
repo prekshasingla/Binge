@@ -26,14 +26,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     TextView textViewLocation;
-
-    String latitude = null;
-    String longitude = null;
-    private Menu menu;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
-    CardView cv;
-    SharedPreferences sharedpreferences;
     private ImageView searchIcon;
 
     @Override

@@ -44,6 +44,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
+import com.example.prakharagarwal.binge.cart.CartSuccess;
+import com.example.prakharagarwal.binge.cart.NewCartActivity;
+import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -162,14 +165,21 @@ public class MainActivity extends AppCompatActivity  {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
- //       searchIcon = (ImageView) findViewById(R.id.search_icon);
-//        searchIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+
+//        Log.v("RishabhSharedPreference","Starting shared prefernce");
+//        //get data from the shared preference because if user already placed the preorder then we directly switch to the map activity
+//        MySharedPreference sharedPreference=new MySharedPreference(MainActivity.this);
+//        if(sharedPreference.savedmapactivity_get_flag()==true)
+//        {
+//            Log.v("RishabhSharedPreference","Inside shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+//            Intent intent = new Intent(MainActivity.this, CartSuccess.class);
+//            intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
+//            intent.putExtra("latitude", sharedPreference.savedmapactivity_get_latitude());
+//            intent.putExtra("longitude", sharedPreference.savedmapactivity_get_longitude());
+//            intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
+//            startActivity(intent);
+//        }
+//        Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
 
         fragment_container=findViewById(R.id.fragment_container);
         search_edittext=findViewById(R.id.search_edit_text);
@@ -356,18 +366,15 @@ public class MainActivity extends AppCompatActivity  {
                     if (locality != null && sublocality != null)
                     {
                         textViewLocation.setText(sublocality + " " + locality);
-//                        MainActivityFragment.currentlatitude=Double.parseDouble(latitude);
-//                        MainActivityFragment.currentlongitue=Double.parseDouble(longitude);
+//
                     }
                     else
                         Toast.makeText(this, "No Location Available", Toast.LENGTH_LONG).show();
-//                    MainActivityFragment.currentlongitue=0.0;
-//                    MainActivityFragment.currentlatitude=0.0;
+//
 
                 } else {
                     Toast.makeText(this, "No Location", Toast.LENGTH_LONG).show();
-//                    MainActivityFragment.currentlongitue=0.0;
-//                    MainActivityFragment.currentlatitude=0.0;
+//
                 }
 
             } catch (IOException e) {
@@ -426,4 +433,9 @@ public class MainActivity extends AppCompatActivity  {
         updateMenuTitles();
     }
 
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+        finishAffinity();
+    }
 }
