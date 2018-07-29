@@ -37,4 +37,5 @@
     <color name="loto_font_color">#47525E</color>
 <color name="colorText">#fff</color>
     <color name="background">#C0C0C0</color>
+    <color name="red">#ff0000</color>
 </resources>

@@ -128,9 +128,9 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         served = findViewById(R.id.served_status);
 
 
-        db = FirebaseFirestore.getInstance();
-        com.google.android.gms.location.LocationListener locationListener=(com.google.android.gms.location.LocationListener)this;
 
+        db = FirebaseFirestore.getInstance();
+      
         eta_time = (TextView) findViewById(R.id.eta_time);
         orderID = getIntent().getStringExtra("orderId");
         rest_latitude=getIntent().getDoubleExtra("latitude",0.0);

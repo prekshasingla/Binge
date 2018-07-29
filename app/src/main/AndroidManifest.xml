@@ -131,8 +131,8 @@
             android:noHistory="true" />
         <activity android:name=".cart.NewCartActivity" />
         <activity android:name=".cart.CartMapTracking" />
-
-        <activity android:name=".cart.PlacedOrderItem"></activity>
+        <activity android:name=".cart.PlacedOrderItem" />
+        <activity android:name=".cart.ReviewOrderActivity"></activity>
     </application>
 
 </manifest>

@@ -109,17 +109,16 @@ public class MainActivityFragment extends Fragment {
     List<Brand> brands;
     TextView emptyView;
     ProgressBar progressBar;
-    boolean locationFlag;
+    static boolean locationFlag;
     boolean flag = false;
     // LinearLayout nearbyEmptyLayout;
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private int mFood2Counter = 0;
     private List<Category1> categories;
+    Button inside_order_button;
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 98;
-    static Double currentlatitude = 0.0;
-    static Double currentlongitue = 0.0;
 
 
     public static MainActivityFragment newInstance(String id) {
@@ -154,6 +153,7 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
+        inside_order_button=rootView.findViewById(R.id.Order_Inside_button);
         //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
         checkLocationPermission();
@@ -175,6 +175,12 @@ public class MainActivityFragment extends Fragment {
         }
         Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
 
+        inside_order_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),PostOrderQRActivity.class));
+            }
+        });
 
 
 
@@ -219,20 +225,6 @@ public class MainActivityFragment extends Fragment {
         gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mBrandRecyclerView.setLayoutManager(gridLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
-
-//        DatabaseReference ref2 = database.getReference("categories");
-//
-//        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                new CategoriesAsync().execute(dataSnapshot);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
         return rootView;
@@ -287,9 +279,8 @@ public class MainActivityFragment extends Fragment {
 //            mFood.clear();
 //            mFood2.clear();
             for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
-
-                Double latitude = 0d;
-                Double longitude = 0d;
+                Double latitude = 0.0;
+                Double longitude = 0.0;
                 String restuarant_name = null;
                 String restuarant_id = null;
 
@@ -595,10 +586,16 @@ public class MainActivityFragment extends Fragment {
             postOrder = rootView.findViewById(R.id.post_order);
             title.setText(dish.getName());
             restaurantTrend.setText(dish.getRestaurantName());
-            double timebetweentwolatlong = caldistance(Double.parseDouble(dish.getLatitude()), Double.parseDouble(dish.getLongitude()));
-            time.setText(String.valueOf(timebetweentwolatlong).substring(0, 4) + " km");
-            timing = String.valueOf(timebetweentwolatlong).substring(0, 4) + " km";
-
+            if(MainActivityFragment.locationFlag) {
+                double timebetweentwolatlong = caldistance(Double.parseDouble(dish.getLatitude()), Double.parseDouble(dish.getLongitude()));
+                time.setText(String.valueOf(timebetweentwolatlong).substring(0, 4) + " km");
+                timing = String.valueOf(timebetweentwolatlong).substring(0, 4) + " km";
+            }
+            else
+            {
+                time.setText("");
+                timing="";
+            }
             preOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.example.prakharagarwal.binge.cart;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -70,7 +71,10 @@ public class NewCartActivity extends AppCompatActivity {
     TextView pending_Item;
     Button payNowbtn;
     TextView add_item_text;
-    Boolean preOrderStatus=false;
+    static Boolean preOrderStatus=false;
+
+
+    static Float payAmount;
 
 
     @Override
@@ -137,6 +141,7 @@ public class NewCartActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        showplacedItem();
 
         placed_order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +149,8 @@ public class NewCartActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
                 String uID = prefs.getString("username", null);
                 if (uID != null)
-                    new MyTask().execute();
+
+                    new MyTask(NewCartActivity.this).execute();
                 else {
                     startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
                 }
@@ -154,17 +160,24 @@ public class NewCartActivity extends AppCompatActivity {
         payNowbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (preOrderStatus) {
-                    SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                    String uID = prefs.getString("username", null);
-                    if (uID != null)
-                        new MyTask().execute();
-                    else {
-                        startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
-                    }
+                if (!preOrderStatus) {
+//                    SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
+//                    String uID = prefs.getString("username", null);
+//                    if (uID != null)
+//                        new MyTask(NewCartActivity.this).execute();
+//                    else {
+//                        startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
+//                    }
+                    Toast.makeText(NewCartActivity.this, "Open the Payment GateWay..", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
+                    Intent intent=new Intent(NewCartActivity.this,ReviewOrderActivity.class);
+                    intent.putExtra("payamount",payAmount);
+                    intent.putExtra("restaurant",PassingData.getResturantName());
+                    startActivityForResult(intent,25);
+                    overridePendingTransition(R.anim.enter,R.anim.exit);
+
                     Toast.makeText(NewCartActivity.this, "open the payment mode", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -173,7 +186,7 @@ public class NewCartActivity extends AppCompatActivity {
 
          // RecyclerViewCartAdapter.addingToBill();
 
-        showplacedItem();
+
 
         if (!menuList.isEmpty() && !integerList.isEmpty()){}
             //placed_order_btn.setVisibility(View.VISIBLE);
@@ -195,8 +208,8 @@ public class NewCartActivity extends AppCompatActivity {
 
             List<Menu> localmenu = new ArrayList<>();
             List<Integer> localinterger = new ArrayList<>();
-            int totalprice = 0;
-            int gstpri = 0;
+            float totalprice = 0;
+            float gstpri = 0;
 
             for (Map.Entry<Menu, Integer> hashmap : PassingCartItem.placed_order_hashmap.entrySet()) {
 
@@ -208,7 +221,8 @@ public class NewCartActivity extends AppCompatActivity {
 
             totalpricetext.setText("₹" + totalprice);
             gstpricetext.setText("₹" + gstpri);
-            int total = gstpri + totalprice;
+            float total = gstpri + totalprice;
+
             paypricetext.setText("₹" + total);
             resturant_name.setText(localmenu.get(0).getRestaurant_id());
             Picasso.with(this).load(localmenu.get(0).getPoster_url()).into(dish_image);
@@ -230,6 +244,28 @@ public class NewCartActivity extends AppCompatActivity {
         int gstprice;
         Menu localmenu = new Menu();
         HashMap<String, String> stringHashMap;
+        Context context;
+        ProgressDialog dialog;
+
+        MyTask(Context context)
+        {
+            this.context=context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog=new ProgressDialog(context);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setTitle("Please Wait");
+            if(!preOrderStatus)
+                 dialog.setMessage("Your Items Placed to Kitchen....");
+            else
+                dialog.setMessage("Opening Payment Gateway....");
+
+            dialog.setCancelable(false);
+            dialog.show();
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -357,6 +393,7 @@ public class NewCartActivity extends AppCompatActivity {
                             payNowbtn.setVisibility(View.VISIBLE);
 //                            NewCartActivity newCartActivity=new NewCartActivity();
 //                            newCartActivity.showplacedItem();
+                            dialog.dismiss();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -389,6 +426,7 @@ public class NewCartActivity extends AppCompatActivity {
                             intent.putExtra("longitude", PassingData.getLongitude());
                             intent.putExtra("resturant_id", PassingData.getResturant_Id());
                             startActivity(intent);
+                            dialog.dismiss();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

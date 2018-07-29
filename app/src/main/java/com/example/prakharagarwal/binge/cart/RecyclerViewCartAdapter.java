@@ -90,9 +90,9 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
     }
 
     public static void addingToBill() {
-        int totalsum=0;
-        int total_price=0;
-        int gst_price=0;
+        float totalsum=0;
+        float total_price=0;
+        float gst_price=0;
         HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.getMenuHashmap();
         for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
             if (entry.getValue() != 0) {
@@ -101,6 +101,7 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
         }
         gst_price = (total_price * 4) / 100;
         totalsum=gst_price+total_price;
+        NewCartActivity.payAmount=totalsum;
         if(NewCartActivity.gstpricetext!=null)
         {
             NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
