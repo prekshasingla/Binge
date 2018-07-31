@@ -130,7 +130,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
 
         db = FirebaseFirestore.getInstance();
-      
+
         eta_time = (TextView) findViewById(R.id.eta_time);
         orderID = getIntent().getStringExtra("orderId");
         rest_latitude=getIntent().getDoubleExtra("latitude",0.0);

@@ -51,6 +51,7 @@ import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.VolleySingleton;
 import com.example.prakharagarwal.binge.cart.CartSuccess;
+import com.example.prakharagarwal.binge.cart.NewCartActivity;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -174,6 +175,13 @@ public class MainActivityFragment extends Fragment {
             startActivity(intent);
         }
         Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
+
+        if(sharedPreference.get_insideorderpayment())
+        {
+            Intent intent = new Intent(getActivity(), NewCartActivity.class);
+            startActivity(intent);
+        }
+
 
         inside_order_button.setOnClickListener(new View.OnClickListener() {
             @Override
