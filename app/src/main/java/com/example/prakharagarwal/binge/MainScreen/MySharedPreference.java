@@ -2,14 +2,17 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class MySharedPreference {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    Context context;
 
    public MySharedPreference(Context context) {
         preferences = context.getSharedPreferences("AppData", Context.MODE_PRIVATE);
         editor = preferences.edit();
+        this.context=context;
     }
 
     public void savedmapactivity_set_latitude_longitude_flag(Double latitude, Double longitude) {
@@ -50,4 +53,56 @@ public class MySharedPreference {
         return preferences.getString("resturant_id", "");
     }
 
+    public void set_insideorderpayment(boolean payment)
+    {
+        editor.putBoolean("insidepayment",payment);
+        editor.commit();
+    }
+
+    public boolean get_insideorderpayment()
+    {
+        return preferences.getBoolean("insidepayment",false);
+    }
+
+    public void set_insideorderID(String orderID)
+    {
+        editor.putString("insideorderID",orderID);
+        editor.commit();
+    }
+    public String get_insideorderID()
+    {
+        return preferences.getString("insideorderID",null);
+    }
+
+    public void set_inside_order_restaurant_id(String id)
+    {
+        editor.putString("inside_restaurant_id",id).commit();
+    }
+
+    public String get_inside_order_restaurant_id()
+    {
+        return preferences.getString("inside_restaurant_id",null);
+    }
+
+    public  void set_saveplacedordermap(String map)
+    {
+        editor.putString("placedorderhashmap",map);
+        editor.commit();
+    }
+
+    public String get_saveplacedordermap()
+    {
+        return preferences.getString("placedorderhashmap",null);
+    }
+
+    public void set_menu_image(String url)
+    {
+        editor.putString("photo",url);
+        editor.commit();
+    }
+
+    public String get_menu_image()
+    {
+        return preferences.getString("photo",null);
+    }
 }

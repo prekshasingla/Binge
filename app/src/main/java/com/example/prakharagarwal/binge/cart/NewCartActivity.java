@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.LoginActivity;
+import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
@@ -39,6 +40,10 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +81,7 @@ public class NewCartActivity extends AppCompatActivity {
     TextView pending_Item;
     Button payNowbtn;
     TextView add_item_text;
-    static Boolean preOrderStatus=false;
+    static Boolean preOrderStatus = false;
 
 
     static Float payAmount;
@@ -102,61 +107,86 @@ public class NewCartActivity extends AppCompatActivity {
         line2 = findViewById(R.id.line_2);
         coupon = findViewById(R.id.cardView_cart);
         pending_Item = findViewById(R.id.Pending_item);
-        payNowbtn=findViewById(R.id.pay_now_btn);
-        add_item_text=findViewById(R.id.add_item_text);
+        payNowbtn = findViewById(R.id.pay_now_btn);
+        add_item_text = findViewById(R.id.add_item_text);
 
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        placed_Order_text.setVisibility(View.GONE);
-        placed_order.setVisibility(View.GONE);
-        line1.setVisibility(View.GONE);
-        line2.setVisibility(View.GONE);
-        coupon.setVisibility(View.GONE);
-        cardView.setVisibility(View.GONE);
-        payNowbtn.setVisibility(View.GONE);
-        add_item_text.setVisibility(View.GONE);
+        //now check whether if user placed item in restaurant but not pay the bill
+        MySharedPreference sharedPreference = new MySharedPreference(NewCartActivity.this);
+        if (sharedPreference.get_insideorderpayment()) {
+            MySharedPreference savedata = new MySharedPreference(NewCartActivity.this);
+            resturant_name.setText(savedata.get_inside_order_restaurant_id());
+            Picasso.with(this).load(savedata.get_menu_image()).into(dish_image);
 
-        menuList = PassingCartItem.getMenuArrayList();
-        integerList = PassingCartItem.getIntegerArrayList();
+            placed_Order_text.setVisibility(View.VISIBLE);
+            placed_order.setVisibility(View.VISIBLE);
+            line1.setVisibility(View.VISIBLE);
+            line2.setVisibility(View.VISIBLE);
+            coupon.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
+            pending_Item.setVisibility(View.VISIBLE);
+            placed_order_btn.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            add_item_text.setVisibility(View.VISIBLE);
+            payNowbtn.setVisibility(View.VISIBLE);
+            showitem();
 
-        intent = getIntent();
-        if (intent != null)
-            if (intent.getStringExtra("flag") != null)
-                if (intent.getStringExtra("flag").equals("preOrder"))
-                {
-                    preOrderStatus=true;
-                    placed_order_btn.setText("Pay Now");
-                    placed_order_btn.setVisibility(View.GONE);
-                    payNowbtn.setVisibility(View.VISIBLE);
-                    cardView.setVisibility(View.VISIBLE);
-                    RecyclerViewCartAdapter.addingToBill();
+
+        } else {
+
+            backbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
                 }
+            });
+            placed_Order_text.setVisibility(View.GONE);
+            placed_order.setVisibility(View.GONE);
+            line1.setVisibility(View.GONE);
+            line2.setVisibility(View.GONE);
+            coupon.setVisibility(View.GONE);
+            cardView.setVisibility(View.GONE);
+            payNowbtn.setVisibility(View.GONE);
+            add_item_text.setVisibility(View.GONE);
+
+            menuList = PassingCartItem.getMenuArrayList();
+            integerList = PassingCartItem.getIntegerArrayList();
+
+            intent = getIntent();
+            if (intent != null)
+                if (intent.getStringExtra("flag") != null)
+                    if (intent.getStringExtra("flag").equals("preOrder")) {
+                        preOrderStatus = true;
+                        placed_order_btn.setText("Pay Now");
+                        placed_order_btn.setVisibility(View.GONE);
+                        payNowbtn.setVisibility(View.VISIBLE);
+                        cardView.setVisibility(View.VISIBLE);
+                        RecyclerViewCartAdapter.addingToBill();
+                    }
 
 
-        resturant_name.setText(intent.getStringExtra("resturant_name"));
-        Picasso.with(this).load(intent.getStringExtra("photo_url")).into(dish_image);
+            resturant_name.setText(intent.getStringExtra("resturant_name"));
+            Picasso.with(this).load(intent.getStringExtra("photo_url")).into(dish_image);
+            MySharedPreference savedata = new MySharedPreference(NewCartActivity.this);
+            savedata.set_inside_order_restaurant_id(intent.getStringExtra("resturant_name"));
+            savedata.set_menu_image(intent.getStringExtra("photo_url"));
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        adapter = new RecyclerViewCartAdapter(menuList, integerList, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            adapter = new RecyclerViewCartAdapter(menuList, integerList, this);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
 
-        showplacedItem();
-
+            showplacedItem();
+        }
         placed_order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
                 String uID = prefs.getString("username", null);
-                if (uID != null)
-
+                if (uID != null) {
                     new MyTask(NewCartActivity.this).execute();
-                else {
+
+                } else {
                     startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
                 }
             }
@@ -174,14 +204,12 @@ public class NewCartActivity extends AppCompatActivity {
 //                        startActivity(new Intent(NewCartActivity.this, LoginActivity.class));
 //                    }
                     Toast.makeText(NewCartActivity.this, "Open the Payment GateWay..", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent intent=new Intent(NewCartActivity.this,ReviewOrderActivity.class);
-                    intent.putExtra("payamount",payAmount);
-                    intent.putExtra("restaurant",PassingData.getResturantName());
-                    startActivityForResult(intent,25);
-                    overridePendingTransition(R.anim.enter,R.anim.exit);
+                } else {
+                    Intent intent = new Intent(NewCartActivity.this, ReviewOrderActivity.class);
+                    intent.putExtra("payamount", payAmount);
+                    intent.putExtra("restaurant", PassingData.getResturantName());
+                    startActivityForResult(intent, 25);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
 
                     Toast.makeText(NewCartActivity.this, "open the payment mode", Toast.LENGTH_SHORT).show();
                 }
@@ -189,12 +217,8 @@ public class NewCartActivity extends AppCompatActivity {
 
         });
 
-         // RecyclerViewCartAdapter.addingToBill();
+        // RecyclerViewCartAdapter.addingToBill();
 
-
-
-        if (!menuList.isEmpty() && !integerList.isEmpty()){}
-            //placed_order_btn.setVisibility(View.VISIBLE);
 
     }
 
@@ -239,6 +263,55 @@ public class NewCartActivity extends AppCompatActivity {
         }
     }
 
+    public void showitem() {
+        MySharedPreference sharedPreference = new MySharedPreference(NewCartActivity.this);
+        //  if (sharedPreference.get_insideorderpayment()) {
+
+        HashMap<Menu, Integer> savedplacedorder = new HashMap<>();
+        String json = sharedPreference.get_saveplacedordermap();
+        try {
+            JSONObject placedorder = new JSONObject(json);
+            JSONArray orderarray = placedorder.getJSONArray("Order");
+            for (int i = 0; i <= orderarray.length() - 1; i++) {
+                Menu menu = new Menu();
+                JSONObject object = orderarray.getJSONObject(i);
+              //  menu.setVideo_url(object.getString("video_url"));
+                menu.setName(object.getString("name"));
+             //   menu.setDesc(object.getString("desc"));
+                menu.setPrice(object.getString("price"));
+                menu.setVeg(object.getLong("veg"));
+             //   menu.setHas_video(object.getLong("has_video"));
+             //   menu.setCart_quantity(object.getInt("cart_quantity"));
+             //   menu.setRestaurantName(object.getString("restaurantName"));
+             //   menu.setPoster_url(object.getString("poster_url"));
+            //    menu.setCategory(object.getString("category"));
+            //    menu.setRestaurant_id(object.getString("restaurant_id"));
+            //    menu.setCourse_meal(object.getLong("course_meal"));
+            //    menu.setTotalcartItem(object.getInt("totalcartItem"));
+            //    menu.setLatitude(object.getString("latitude"));
+            //    menu.setLongitude(object.getString("longitude"));
+                savedplacedorder.put(menu, object.getInt("quantity"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        List<Menu> savedmenulist = new ArrayList<>();
+        List<Integer> savedintegerlist = new ArrayList<>();
+
+        for (Map.Entry<Menu, Integer> tempmap : savedplacedorder.entrySet()) {
+            savedmenulist.add(tempmap.getKey());
+            savedintegerlist.add(tempmap.getValue());
+        }
+        PassingCartItem.placed_order_hashmap = savedplacedorder;
+        placedOrderAdapter = new RecyclerViewPlacedOrderAdapter(NewCartActivity.this, savedmenulist, savedintegerlist);
+        placed_order.setLayoutManager(new LinearLayoutManager(NewCartActivity.this));
+        placed_order.setAdapter(placedOrderAdapter);
+        Toast.makeText(this, "Showing item from the preference", Toast.LENGTH_SHORT).show();
+        // }
+
+        RecyclerViewPlacedOrderAdapter.addingToBill();
+    }
+
 
     class MyTask extends AsyncTask<Void, Void, Void> {
         HashMap<Menu, Integer> cartitem;
@@ -252,19 +325,18 @@ public class NewCartActivity extends AppCompatActivity {
         Context context;
         ProgressDialog dialog;
 
-        MyTask(Context context)
-        {
-            this.context=context;
+        MyTask(Context context) {
+            this.context = context;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog=new ProgressDialog(context);
+            dialog = new ProgressDialog(context);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             dialog.setTitle("Please Wait");
-            if(!preOrderStatus)
-                 dialog.setMessage("Your Items Placed to Kitchen....");
+            if (!preOrderStatus)
+                dialog.setMessage("Your Items Placed to Kitchen....");
             else
                 dialog.setMessage("Opening Payment Gateway....");
 
@@ -283,8 +355,7 @@ public class NewCartActivity extends AppCompatActivity {
             if (cartitem.isEmpty())
                 return null;
 
-            //PassingCartItem.menuArrayList.clear();
-            //PassingCartItem.integerArrayList.clear();
+
             menuListsec = new ArrayList<>();
             integerListsec = new ArrayList<>();
             stringHashMap = new HashMap<>();
@@ -304,12 +375,90 @@ public class NewCartActivity extends AppCompatActivity {
                         System.out.println("Rishabh Rawat123456789" + entry.getKey() + " = " + entry.getValue());
                     }
                 }
+
+                //saved the hashmap if user kill the app then we directly retrive the data from the sharedpreference
+                JSONArray menuArray = new JSONArray();
+                for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
+                    JSONObject menuObject = new JSONObject();
+                    Menu menu = entry.getKey();
+                    try {
+                        menuObject.put("video_url", menu.getVideo_url());
+                        menuObject.put("name", menu.getName());
+                        menuObject.put("desc", menu.getDesc());
+                        menuObject.put("price", menu.getPrice());
+                        menuObject.put("veg", menu.getVeg());
+                        menuObject.put("cart_quantity", menu.getCart_quantity());
+                        menuObject.put("restaurantName", menu.getRestaurantName());
+                        menuObject.put("poster_url", menu.getPoster_url());
+                        menuObject.put("category", menu.getCategory());
+                        menuObject.put("restaurant_id", menu.getRestaurant_id());
+                        menuObject.put("course_meal", menu.getCourse_meal());
+                        menuObject.put("totalcartItem", menu.getTotalcartItem());
+                        menuObject.put("latitude", menu.getLatitude());
+                        menuObject.put("longitude", menu.getLongitude());
+                        menuObject.put("quantity", entry.getValue());
+                        menuArray.put(menuObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("Order", menuArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                MySharedPreference sharedPreference = new MySharedPreference(NewCartActivity.this);
+                sharedPreference.set_saveplacedordermap(jsonObject.toString());
+                sharedPreference.set_insideorderpayment(true);
+
+
             } else {
                 for (Map.Entry<Menu, Integer> entry : PassingCartItem.getMenuHashmap().entrySet()) {
                     if (entry.getValue() != 0) {
                         PassingCartItem.addplacedorder_item(entry.getKey(), entry.getValue());
                     }
                 }
+
+                //saved the hashmap if user kill the app then we directly retrive the data from the sharedpreference
+                JSONArray menuArray = new JSONArray();
+                for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
+                    JSONObject menuObject = new JSONObject();
+                    Menu menu = entry.getKey();
+                    try {
+                        menuObject.put("video_url", menu.getVideo_url());
+                        menuObject.put("name", menu.getName());
+                        menuObject.put("desc", menu.getDesc());
+                        menuObject.put("price", menu.getPrice());
+                        menuObject.put("veg", menu.getVeg());
+                        menuObject.put("cart_quantity", menu.getCart_quantity());
+                        menuObject.put("restaurantName", menu.getRestaurantName());
+                        menuObject.put("poster_url", menu.getPoster_url());
+                        menuObject.put("category", menu.getCategory());
+                        menuObject.put("restaurant_id", menu.getRestaurant_id());
+                        menuObject.put("course_meal", menu.getCourse_meal());
+                        menuObject.put("totalcartItem", menu.getTotalcartItem());
+                        menuObject.put("latitude", menu.getLatitude());
+                        menuObject.put("longitude", menu.getLongitude());
+                        menuObject.put("quantity", entry.getValue());
+                        menuArray.put(menuObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("Order", menuArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                MySharedPreference sharedPreference = new MySharedPreference(NewCartActivity.this);
+                sharedPreference.set_saveplacedordermap(jsonObject.toString());
+                sharedPreference.set_insideorderpayment(true);
 
                 for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
                     if (entry.getValue() != 0) {

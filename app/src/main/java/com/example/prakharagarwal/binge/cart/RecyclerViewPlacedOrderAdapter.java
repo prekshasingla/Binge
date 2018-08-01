@@ -12,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<RecyclerViewPlacedOrderAdapter.MyViewHolder> {
 
@@ -48,6 +51,28 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public int getItemCount() {
         return menuList.size();
+    }
+
+    public static void addingToBill() {
+        float totalsum=0;
+        float total_price=0;
+        float gst_price=0;
+        HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.placed_order_hashmap;
+        for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
+            if (entry.getValue() != 0) {
+                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+            }
+        }
+        gst_price = (total_price * 4) / 100;
+        totalsum=gst_price+total_price;
+        NewCartActivity.payAmount=totalsum;
+        if(NewCartActivity.gstpricetext!=null)
+        {
+            NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
+            NewCartActivity.totalpricetext.setText("₹"+total_price+"");
+            NewCartActivity.paypricetext.setText("₹"+totalsum+"");
+        }
+
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
