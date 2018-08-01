@@ -23,6 +23,7 @@
         android:xlargeScreens="true" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/bingeicon"
@@ -31,7 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="stateHidden"
-        tools:replace="android:icon,android:theme">
+        tools:replace="android:icon,android:theme,android:allowBackup,android:windowSoftInputMode">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -105,7 +106,6 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".MainScreen.SearchActivity" />
         <activity
             android:name=".MainScreen.RestaurantActivity"
             android:label="@string/title_activity_restaurant" />

@@ -1,7 +1,9 @@
 package com.example.prakharagarwal.binge.cart;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -33,6 +35,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -440,5 +445,49 @@ public class NewCartActivity extends AppCompatActivity {
             }
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result Code is -1 send from Payumoney activity
+        Log.d("MainActivity", "request code " + requestCode + " resultcode " + resultCode);
+        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                null) {
+            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+            // Check which object is non-null
+            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                    //Success Transaction
+                } else {
+                    //Failure Transaction
+                }
+
+                // Response from Payumoney
+                String payuResponse = transactionResponse.getPayuResponse();
+
+                // Response from SURl and FURL
+                String merchantResponse = transactionResponse.getTransactionDetails();
+
+                new AlertDialog.Builder(this)
+                        .setCancelable(false)
+                        .setMessage("Payu's Data : " + payuResponse + "\n\n\n Merchant's Data: " + merchantResponse)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+
+            } else if (resultModel != null && resultModel.getError() != null) {
+                Log.d("Review Order Activity", "Error response : " + resultModel.getError().getTransactionResponse());
+            } else {
+                Log.d("Review Order Activity", "Both objects are null!");
+            }
+        }
+    }
+
 
 }

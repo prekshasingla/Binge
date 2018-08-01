@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.prakharagarwal.binge"
-        minSdkVersion 16
+        minSdkVersion 20
         targetSdkVersion 26
         versionCode 7
         versionName "2.1"
@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
     implementation 'com.google.android.gms:play-services:11.8.0'
+    compile 'com.payumoney.sdkui:plug-n-play:1.4.1'
 
     implementation 'com.android.support:multidex:1.0.3'
 
