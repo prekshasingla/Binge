@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.BaseApplication;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 
@@ -101,11 +102,17 @@ public class DishInfoActivity extends AppCompatActivity implements
     final static List<String> foodcategory = new ArrayList<>();
     final static List<List<Menu>> foodcategorywithoutvideo = new ArrayList<>();
     static HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish_info);
-
+        MySharedPreference sharedPreference=new MySharedPreference(this);
+        if(sharedPreference.get_insideorderpayment() && ((BaseApplication) getApplication()).isCartFlag())
+        {
+            Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
+            startActivity(intent);
+        }
         context = this;
         main_relative_layout=findViewById(R.id.main_relative_layout);
         main_relative_layout.setVisibility(View.GONE);
@@ -238,6 +245,7 @@ public class DishInfoActivity extends AppCompatActivity implements
 
         menuHashMap.clear();
         foodcategory.clear();
+        foodcategorywithoutvideo.clear();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("menu/" + resturant_id);
         Log.d("RISHABH", "Calling listener DISH ");
@@ -309,8 +317,17 @@ public class DishInfoActivity extends AppCompatActivity implements
                   //      foodcategorywithoutvideo.remove(i);
                   //  }
                 }
+                List <String> foodcategory2=new ArrayList<>();
+                HashMap<String, List<Menu>> menuHashMap2 = new HashMap<>();
+                for (Map.Entry<String, List<Menu>> entry : menuHashMap.entrySet()) {
+                    List<Menu> menu=  entry.getValue();
+                    if (menu.size()>0) {
+                        foodcategory2.add(entry.getKey());
+                        menuHashMap2.put(entry.getKey(),menu);
+                    }
+                }
 
-                expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory, menuHashMap);
+                expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory2, menuHashMap2);
                 expandableListView.setAdapter(expandableListAdapter);
                 setListViewHeight(expandableListView, 0);
                 expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -352,6 +369,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                     if (menuList.get(i).getCourse_meal() == 1)
                         course_meal1.add(menuList.get(i));
                     else
+                    if (menuList.get(i).getCourse_meal() == 2)
                         course_meal2.add(menuList.get(i));
                 }
                 Log.d("RISHABH", "GOING TO THE ADAPTER ");
@@ -650,7 +668,7 @@ public class DishInfoActivity extends AppCompatActivity implements
             pager2.setAdapter(pagerAdapter1);
             updatehasmap();
         }
-        if (!PassingCartItem.menuIntegerHashMap.isEmpty()) {
+      //  if (!PassingCartItem.menuIntegerHashMap.isEmpty()) {
             frameLayout.setVisibility(View.VISIBLE);
             int totalitems = 0, totalprices = 0;
             List<Menu> placedordermenu=new ArrayList<>();
@@ -678,16 +696,30 @@ public class DishInfoActivity extends AppCompatActivity implements
 
                 }
             }
-            expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory, menuHashMap);
+        List <String> foodcategory2=new ArrayList<>();
+        HashMap<String, List<Menu>> menuHashMap2 = new HashMap<>();
+        for (Map.Entry<String, List<Menu>> entry : menuHashMap.entrySet()) {
+            List<Menu> menu=  entry.getValue();
+            if (menu.size()>0) {
+                foodcategory2.add(entry.getKey());
+                menuHashMap2.put(entry.getKey(),menu);
+            }
+        }
+
+        expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory2, menuHashMap2);
             expandableListView.setAdapter(expandableListAdapter);
 
-        }
+       // }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        PassingCartItem.menuIntegerHashMap.clear();
+        if(new MySharedPreference(this).get_insideorderpayment())
+            Toast.makeText(this, "There are placed items in your cart. Kindly pay the bill.", Toast.LENGTH_LONG).show();
+        else {
+            super.onBackPressed();
+            PassingCartItem.menuIntegerHashMap.clear();
+        }
     }
 
     private void setListViewHeight(ExpandableListView listView,

@@ -1,20 +1,16 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,13 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class SearchActivity extends Fragment {
+public class SearchFragment extends Fragment {
 
     private List<Menu> mFood;
     private List<Restaurant> mRestaurants;
@@ -56,10 +49,10 @@ public class SearchActivity extends Fragment {
     public static Activity activity;
 
 
-    public static SearchActivity newInstance(String id) {
+    public static SearchFragment newInstance(String id) {
         Bundle args = new Bundle();
         args.putString("id", id);
-        SearchActivity fragment = new SearchActivity();
+        SearchFragment fragment = new SearchFragment();
         fragment.setArguments(args);
         return fragment;
     }

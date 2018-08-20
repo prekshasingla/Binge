@@ -23,10 +23,19 @@ public class Menu implements Serializable{
     String poster_url="https://www.soomska.com/wp-content/uploads/2017/12/5.jpg";
     String category;
     String restaurant_id;
-    Long course_meal;
+    Long course_meal=0l;
     int totalcartItem=0;
     String latitude;
     String longitude;
+    long gst=5;
+
+    public long getGst() {
+        return gst;
+    }
+
+    public void setGst(long gst) {
+        this.gst = gst;
+    }
 
     public String getLatitude() {
         return latitude;

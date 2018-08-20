@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 
 import com.example.prakharagarwal.binge.BaseApplication;
+import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
@@ -79,7 +81,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
             }
         });
 
-         intent = getIntent();
+        intent = getIntent();
         pay_amount.setText("Payment Amount  =" + intent.getFloatExtra("payamount", 0) + "");
         restaurant_name.setText("Restaurant Name - " + intent.getStringExtra("restaurant"));
         paymentAmount = intent.getFloatExtra("payamount", 0);
@@ -122,7 +124,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                             editor.putString("userphone", phone.getText().toString()).commit();
                         }
                         payButton.setEnabled(false);
-                            launchPayUMoneyFlow(phone.getText().toString(),uID,name.getText().toString());
+                        launchPayUMoneyFlow(phone.getText().toString(), uID, name.getText().toString());
                         Toast.makeText(ReviewOrderActivity.this, "Opening the Payment GateWay...", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -131,7 +133,8 @@ public class ReviewOrderActivity extends AppCompatActivity {
         });
 
     }
-    private void launchPayUMoneyFlow(String phone1,String email1,String firstname1) {
+
+    private void launchPayUMoneyFlow(String phone1, String email1, String firstname1) {
 
         PayUmoneyConfig payUmoneyConfig = PayUmoneyConfig.getInstance();
 
@@ -217,6 +220,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
             payButton.setEnabled(true);
         }
     }
+
     public void generateHashFromServer(PayUmoneySdkInitializer.PaymentParam paymentParam) {
         //nextButton.setEnabled(false); // lets not allow the user to click the button again and again.
 
@@ -242,9 +246,11 @@ public class ReviewOrderActivity extends AppCompatActivity {
         GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
         getHashesFromServerTask.execute(postParams);
     }
+
     protected String concatParams(String key, String value) {
         return key + "=" + value + "&";
     }
+
     private class GetHashesFromServerTask extends AsyncTask<String, String, String> {
         private ProgressDialog progressDialog;
 
@@ -261,7 +267,6 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
             String merchantHash = "";
             try {
-                //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
                 URL url = new URL("http://13.126.117.141/test.php");
 
                 String postParam = postParams[0];
@@ -292,7 +297,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                          * This hash is mandatory and needs to be generated from merchant's server side
                          *
                          */
-                        case "payment_hash":
+                        case "result":
                             merchantHash = response.getString(key);
                             break;
                         default:
@@ -329,34 +334,43 @@ public class ReviewOrderActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        this.setResult(resultCode,data);
-//        // Result Code is -1 send from Payumoney activity
-//        Log.d("MainActivity", "request code " + requestCode + " resultcode " + resultCode);
-//        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
-//                null) {
-//            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
-//                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
-//
-//            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
-//
-//            // Check which object is non-null
-//            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
-//                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-//                    //Success Transaction
-//                } else {
-//                    //Failure Transaction
-//                }
-//
-//                // Response from Payumoney
-//                String payuResponse = transactionResponse.getPayuResponse();
-//
-//                // Response from SURl and FURL
-//                String merchantResponse = transactionResponse.getTransactionDetails();
-//
+        // Result Code is -1 send from Payumoney activity
+        Log.d("MainActivity", "request code " + requestCode + " resultcode " + resultCode);
+        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                null) {
+            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+            // Check which object is non-null
+            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                    //Success Transaction
+                    Toast.makeText(this, "success transaction", Toast.LENGTH_SHORT).show();
+
+                   FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+                    firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/InsideOrder").document( intent.getStringExtra("orderID")).update("payment", "done");
+                    new MySharedPreference(ReviewOrderActivity.this).set_insideorderpayment(false);
+
+                } else {
+                    Toast.makeText(this, "fail transaction", Toast.LENGTH_SHORT).show();
+
+                    //Failure Transaction
+                }
+
+                // Response from Payumoney
+                String payuResponse = transactionResponse.getPayuResponse();
+
+                // Response from SURl and FURL
+                String merchantResponse = transactionResponse.getTransactionDetails();
+
 //                new AlertDialog.Builder(this)
 //                        .setCancelable(false)
 //                        .setMessage("Payu's Data : " + payuResponse + "\n\n\n Merchant's Data: " + merchantResponse)
@@ -365,13 +379,13 @@ public class ReviewOrderActivity extends AppCompatActivity {
 //                                dialog.dismiss();
 //                            }
 //                        }).show();
-//
-//            } else if (resultModel != null && resultModel.getError() != null) {
-//                Log.d("Review Order Activity", "Error response : " + resultModel.getError().getTransactionResponse());
-//            } else {
-//                Log.d("Review Order Activity", "Both objects are null!");
-//            }
-//        }
+
+            } else if (resultModel != null && resultModel.getError() != null) {
+                Log.d("Review Order Activity", "Error response : " + resultModel.getError().getTransactionResponse());
+            } else {
+                Log.d("Review Order Activity", "Both objects are null!");
+            }
+        }
     }
 
 

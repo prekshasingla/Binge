@@ -56,14 +56,20 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
     public static void addingToBill() {
         float totalsum=0;
         float total_price=0;
+        float total_priceGST5=0;
+        float total_priceGST18=0;
         float gst_price=0;
         HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.placed_order_hashmap;
         for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
             if (entry.getValue() != 0) {
+                if(entry.getKey().getGst()==5)
+                    total_priceGST5+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+                if(entry.getKey().getGst()==18)
+                    total_priceGST18+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
                 total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
             }
         }
-        gst_price = (total_price * 4) / 100;
+        gst_price = ((total_priceGST5 * 5) / 100) + ((total_priceGST18 * 18) / 100);
         totalsum=gst_price+total_price;
         NewCartActivity.payAmount=totalsum;
         if(NewCartActivity.gstpricetext!=null)

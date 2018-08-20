@@ -11,11 +11,22 @@ import com.example.prakharagarwal.binge.cart.AppEnvironment;
 public class BaseApplication extends Application {
 
     AppEnvironment appEnvironment;
+    boolean cartFlag=true;
+
+    public boolean isCartFlag() {
+        return cartFlag;
+    }
+
+    public void setCartFlag(boolean cartFlag) {
+        this.cartFlag = cartFlag;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         appEnvironment = AppEnvironment.SANDBOX;
+
+
     }
 
     public AppEnvironment getAppEnvironment() {

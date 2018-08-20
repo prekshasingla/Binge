@@ -2,8 +2,6 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,49 +10,31 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.prakharagarwal.binge.LoginActivity;
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.VolleySingleton;
-import com.example.prakharagarwal.binge.cart.CartSuccess;
-import com.example.prakharagarwal.binge.cart.NewCartActivity;
-import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,7 +53,7 @@ public class MainActivity extends AppCompatActivity  {
     String longitude = null;
     private Menu menu;
     private FusedLocationProviderClient mFusedLocationClient;
-    SearchActivity searchActivity;
+    SearchFragment searchActivity;
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -186,13 +166,13 @@ public class MainActivity extends AppCompatActivity  {
         search_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//                Intent intent = new Intent(MainActivity.this, SearchFragment.class);
 //                startActivity(intent);
 //                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
                // search_edittext.setFocusable(true);
                // search_edittext.setFocusableInTouchMode(true);
-                searchActivity=new SearchActivity();
-                SearchActivity.activity=MainActivity.this;
+                searchActivity=new SearchFragment();
+                SearchFragment.activity=MainActivity.this;
                 android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
                 transaction.replace(R.id.fragment_container,searchActivity);
@@ -207,7 +187,7 @@ public class MainActivity extends AppCompatActivity  {
 //            public boolean onTouch(View v, MotionEvent event) {
 //                v.setFocusable(true);
 //                v.setFocusableInTouchMode(true);
-//                searchActivity=new SearchActivity();
+//                searchActivity=new SearchFragment();
 //                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
 //                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
 //                transaction.replace(R.id.fragment_container,searchActivity);
@@ -264,8 +244,9 @@ public class MainActivity extends AppCompatActivity  {
         }
         else
         {
-            transaction.remove(mainActivityFragment);
-            transaction.add(R.id.fragment_container, new MainActivityFragment()).commit();
+            transaction.replace(R.id.fragment_container, new MainActivityFragment()).commit();
+//            transaction.remove(mainActivityFragment);
+//            transaction.add(R.id.fragment_container, new MainActivityFragment()).commit();
 
         }
     }

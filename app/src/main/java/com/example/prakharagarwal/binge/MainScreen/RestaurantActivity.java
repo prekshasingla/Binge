@@ -1,24 +1,16 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
-
-import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -60,7 +52,7 @@ public class RestaurantActivity extends AppCompatActivity {
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RestaurantActivity.this, SearchActivity.class);
+                Intent intent = new Intent(RestaurantActivity.this, SearchFragment.class);
                 startActivity(intent);
             }
         });

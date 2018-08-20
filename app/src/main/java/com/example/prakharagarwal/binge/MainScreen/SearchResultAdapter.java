@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.R;
@@ -20,8 +18,8 @@ import java.util.List;
 public class SearchResultAdapter extends BaseAdapter {
 
   private final Context context;
-  List<SearchActivity.RestCuisineListItem> names;
-  public SearchResultAdapter(Context context, List<SearchActivity.RestCuisineListItem> names){
+  List<SearchFragment.RestCuisineListItem> names;
+  public SearchResultAdapter(Context context, List<SearchFragment.RestCuisineListItem> names){
     this.names=names;
     this.context =context;
   }
@@ -43,7 +41,7 @@ public class SearchResultAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     SearchResultAdapter.ViewHolder holder;
-    final String name = ((SearchActivity.RestCuisineListItem)getItem(position)).getDisplayName();
+    final String name = ((SearchFragment.RestCuisineListItem)getItem(position)).getDisplayName();
 
     if (convertView == null) {
       holder = new SearchResultAdapter.ViewHolder();

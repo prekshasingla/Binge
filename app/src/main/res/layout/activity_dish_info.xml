@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoDragView="@id/full_layout"
-        sothree:umanoPanelHeight="420dp"
+        sothree:umanoPanelHeight="360dp"
         sothree:umanoShadowHeight="2dp">
 
         <android.support.constraint.ConstraintLayout

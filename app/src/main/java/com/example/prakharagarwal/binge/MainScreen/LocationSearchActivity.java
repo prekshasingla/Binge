@@ -60,7 +60,6 @@ import java.util.List;
 public class LocationSearchActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener {
     private GoogleApiClient mGoogleApiClient;
-    private GoogleApiClient mGoogleApiClient1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private LocationRequest mLocationRequest;
     private final String LOG_TAG = LocationSearchActivity.class.getName();
@@ -77,6 +76,7 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -89,6 +89,7 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,16 +99,19 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RelativeLayout locationLayout = (RelativeLayout) findViewById(R.id.lin1);
-        mAutocompleteTextView =findViewById(R.id.autoCompleteTextView);
+        mAutocompleteTextView = findViewById(R.id.autoCompleteTextView);
         mAutocompleteTextView.setThreshold(3);
 
-        mGoogleApiClient1 = new GoogleApiClient.Builder(LocationSearchActivity.this)
+
+        mGoogleApiClient = new GoogleApiClient.Builder(LocationSearchActivity.this)
+                .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addConnectionCallbacks(this)
+                .addConnectionCallbacks(LocationSearchActivity.this)
+                .addOnConnectionFailedListener(LocationSearchActivity.this)
                 .build();
-        mGoogleApiClient1.connect();
-        checkLocationPermission1();
+        mGoogleApiClient.connect();
+        checkLocationPermission();
+
 
         mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
         mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
@@ -115,49 +119,14 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
 
-
         locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGoogleApiClient = new GoogleApiClient.Builder(LocationSearchActivity.this)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(LocationSearchActivity.this)
-                        .addOnConnectionFailedListener(LocationSearchActivity.this)
-                        .build();
-                checkLocationPermission();
+            createLocationRequest();
             }
 
         });
-//        findViewById(R.id.location_cp).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent returnIntent = new Intent();
-//                returnIntent.putExtra("latitude", LocationConstants.LAT_CP + "");
-//                returnIntent.putExtra("longitude", LocationConstants.LON_CP + "");
-//                returnIntent.putExtra("callingActivity", "LocationSearchActivity");
-//                setResult(Activity.RESULT_OK, returnIntent);
-//                finish();
-//            }
-//        });
 
-//        EditText search=(EditText)findViewById(R.id.search_location);
-//        search.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                getPLaces(s.toString());
-//
-//            }
-//        });
 
     }
 
@@ -171,7 +140,7 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
             final String placeId = String.valueOf(item.placeId);
             Log.i("RISHABH", "Selected: " + item.description);
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient1, placeId);
+                    .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
             Log.i("RISHABH", "Fetching details for ID: " + item.placeId);
         }
@@ -189,9 +158,9 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
             // Selecting the first object buffer.
             final Place place = places.get(0);
             CharSequence attributions = places.getAttributions();
-            LatLng latLng=place.getLatLng();
-            Log.d("RISHABH LATITUDE ",latLng.latitude+"");
-            Log.d("RISHABH LONGITUDE",latLng.longitude+"");
+            LatLng latLng = place.getLatLng();
+            Log.d("RISHABH LATITUDE ", latLng.latitude + "");
+            Log.d("RISHABH LONGITUDE", latLng.longitude + "");
 
             Intent returnIntent = new Intent(LocationSearchActivity.this, MainActivity.class);
             returnIntent.putExtra("latitude", latLng.latitude + "");
@@ -207,35 +176,37 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
 
         }
     };
-public void returnLocation(View view){
-        String lat="";
-        String lon="";
-    if(view.getId()==R.id.location_cp) {
-         lat = LocationConstants.LAT_CP+"";
-         lon =LocationConstants.LON_CP+"";
-    }else if(view.getId()==R.id.location_hz) {
-        lat = LocationConstants.LAT_HZ+"";
-        lon =LocationConstants.LON_HZ+"";
-    }else if(view.getId()==R.id.location_gur) {
-        lat = LocationConstants.LAT_GUR+"";
-        lon =LocationConstants.LON_GUR+"";
-    }else if(view.getId()==R.id.location_sd) {
-        lat = LocationConstants.LAT_SD+"";
-        lon =LocationConstants.LON_SD+"";
-    }else if(view.getId()==R.id.location_raj) {
-        lat = LocationConstants.LAT_RAJ+"";
-        lon =LocationConstants.LON_RAJ+"";
-    } else if(view.getId()==R.id.location_ncr) {
-        lat = LocationConstants.LAT_NCR+"";
-        lon =LocationConstants.LON_NCR+"";
+
+    public void returnLocation(View view) {
+        String lat = "";
+        String lon = "";
+        if (view.getId() == R.id.location_cp) {
+            lat = LocationConstants.LAT_CP + "";
+            lon = LocationConstants.LON_CP + "";
+        } else if (view.getId() == R.id.location_hz) {
+            lat = LocationConstants.LAT_HZ + "";
+            lon = LocationConstants.LON_HZ + "";
+        } else if (view.getId() == R.id.location_gur) {
+            lat = LocationConstants.LAT_GUR + "";
+            lon = LocationConstants.LON_GUR + "";
+        } else if (view.getId() == R.id.location_sd) {
+            lat = LocationConstants.LAT_SD + "";
+            lon = LocationConstants.LON_SD + "";
+        } else if (view.getId() == R.id.location_raj) {
+            lat = LocationConstants.LAT_RAJ + "";
+            lon = LocationConstants.LON_RAJ + "";
+        } else if (view.getId() == R.id.location_ncr) {
+            lat = LocationConstants.LAT_NCR + "";
+            lon = LocationConstants.LON_NCR + "";
+        }
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("latitude", lat);
+        returnIntent.putExtra("longitude", lon);
+        returnIntent.putExtra("callingActivity", "LocationSearchActivity");
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
-    Intent returnIntent = new Intent();
-    returnIntent.putExtra("latitude", lat);
-    returnIntent.putExtra("longitude", lon);
-    returnIntent.putExtra("callingActivity", "LocationSearchActivity");
-    setResult(Activity.RESULT_OK, returnIntent);
-    finish();
-}
+
     //    private void getPLaces(String search) {
 //        Geocoder geocoder=new Geocoder(LocationSearchActivity.this);
 //        List<Address> results=new ArrayList<>();
@@ -263,7 +234,18 @@ public void returnLocation(View view){
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
                 // ...
-                mGoogleApiClient.connect();
+                //  mGoogleApiClient.connect();
+                mLocationRequest = LocationRequest.create();
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                mLocationRequest.setInterval(10000);
+
+        try {
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, LocationSearchActivity.this);
+
+        } catch (SecurityException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
             }
         });
 
@@ -291,8 +273,19 @@ public void returnLocation(View view){
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == -1)
-                mGoogleApiClient.connect();
+            if (resultCode == -1) {
+                mLocationRequest = LocationRequest.create();
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                mLocationRequest.setInterval(10000);
+
+        try {
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
+        } catch (SecurityException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+            }
         }
     }
 
@@ -332,51 +325,11 @@ public void returnLocation(View view){
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
         } else {
-            createLocationRequest();
-//            mGoogleApiClient.connect();
+//            createLocationRequest();
+            mGoogleApiClient.connect();
         }
     }
 
-    public void checkLocationPermission1() {
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
-                        .setTitle("Location Permission Required")
-                        .setMessage("Please give permission to access your location")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(LocationSearchActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-        } else {
-           // createLocationRequest();
-//            mGoogleApiClient.connect();
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -393,6 +346,7 @@ public void returnLocation(View view){
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
                         mGoogleApiClient.connect();
+//                        createLocationRequest();
 
                     }
 
@@ -411,18 +365,8 @@ public void returnLocation(View view){
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient1);
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(10000);
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
 
-//        try {
-//
-//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//
-//        } catch (SecurityException e) {
-//            Log.e(LOG_TAG, e.toString());
-//        }
     }
 
     @Override

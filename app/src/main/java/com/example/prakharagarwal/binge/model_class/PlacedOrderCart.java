@@ -7,9 +7,10 @@ import java.util.HashMap;
 public class PlacedOrderCart {
 
     public HashMap<String,String> dishes;
-    public int cart_value;
+    public float cart_value;
     public String userId;
     public String status="recived";
+    public String payment="notPaid";
     public double location_lat;
     public double location_long;
     public String id;
@@ -32,11 +33,11 @@ public class PlacedOrderCart {
         this.dishes = dishes;
     }
 
-    public int getCart_value() {
+    public float getCart_value() {
         return cart_value;
     }
 
-    public void setCart_value(int cart_value) {
+    public void setCart_value(float cart_value) {
         this.cart_value = cart_value;
     }
 

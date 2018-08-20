@@ -2,74 +2,47 @@ package com.example.prakharagarwal.binge.MainScreen;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.example.prakharagarwal.binge.BaseApplication;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.VolleySingleton;
 import com.example.prakharagarwal.binge.cart.CartSuccess;
 import com.example.prakharagarwal.binge.cart.NewCartActivity;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.gestures.GestureDetector;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeIntents;
@@ -80,16 +53,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.SetOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +123,10 @@ public class MainActivityFragment extends Fragment {
         //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
         flag = false;
         checkLocationPermission();
+        trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
 
+        mDemoCollectionPagerAdapter =
+                new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
 
 
         Log.v("RishabhSharedPreference","Starting shared prefernce");
@@ -176,9 +144,10 @@ public class MainActivityFragment extends Fragment {
         }
         Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
 
-        if(sharedPreference.get_insideorderpayment())
+        if(sharedPreference.get_insideorderpayment() && ((BaseApplication) getActivity().getApplication()).isCartFlag())
         {
-            Intent intent = new Intent(getActivity(), NewCartActivity.class);
+            Intent intent = new Intent(getActivity(), DishInfoActivity.class);
+            intent.putExtra("rest", sharedPreference.get_inside_order_restaurant_id());
             startActivity(intent);
         }
 
@@ -234,7 +203,6 @@ public class MainActivityFragment extends Fragment {
         mBrandRecyclerView.setLayoutManager(gridLayoutManager);
         mBrandRecyclerView.setAdapter(mBrandsAdapter);
 
-        trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
         return rootView;
     }
 
@@ -397,14 +365,16 @@ public class MainActivityFragment extends Fragment {
             emptyView.setVisibility(View.GONE);
             //   nearbyEmptyLayout.setVisibility(View.VISIBLE);
             mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getChildFragmentManager(), mFood2);
+                    new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
         } else {
             emptyView.setVisibility(View.GONE);
             //   nearbyEmptyLayout.setVisibility(View.GONE);
-            mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getFragmentManager(), mFood);
-            // trendingViewpager.removeAllViews();
+
+
+            mDemoCollectionPagerAdapter.addAll(mFood);
+            mDemoCollectionPagerAdapter.notifyDataSetChanged();
+             trendingViewpager.removeAllViews();
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
 
         }
@@ -508,6 +478,9 @@ public class MainActivityFragment extends Fragment {
             this.mFood = mFood;
         }
 
+        public void addAll(List<Menu> mFood){
+            this.mFood=mFood;
+        }
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = new DemoObjectFragment();
