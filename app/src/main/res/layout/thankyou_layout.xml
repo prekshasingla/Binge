@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/success"
+        android:layout_margin="10dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -18,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="156dp"
         android:fontFamily="@font/quicksand"
-        android:text="Thank you happy to serve you.It was pleasure serving you"
+        android:text="Thank you for dining in with Binge."
         android:textAllCaps="false"
         android:textSize="15dp"
         android:textStyle="bold" />
@@ -29,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_box_green"
-        android:text="Thank you"
+        android:text="Continue"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:textAllCaps="false"/>

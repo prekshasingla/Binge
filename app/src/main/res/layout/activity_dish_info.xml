@@ -17,7 +17,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <fragment
                 android:id="@+id/youtube_player_fragment"
@@ -104,7 +105,18 @@
                     android:fontFamily="@font/roboto"
                     android:text="Treanding"
                     android:textColor="#464646" />
-
+                <TextView
+                    android:id="@+id/dish_offer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dish_trending"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/ic_discount"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="10% OFF On Food Bill"
+                    android:textColor="#464646" />
 
                 <TextView
                     android:id="@+id/dish_time"
@@ -124,7 +136,7 @@
                     android:id="@+id/dish_discription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dish_trending"
+                    android:layout_below="@+id/dish_offer"
                     android:layout_marginEnd="10dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"

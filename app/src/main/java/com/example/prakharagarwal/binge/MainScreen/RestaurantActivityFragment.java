@@ -1,31 +1,20 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.prakharagarwal.binge.Manifest;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.model_class.PassingData;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import java.nio.LongBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

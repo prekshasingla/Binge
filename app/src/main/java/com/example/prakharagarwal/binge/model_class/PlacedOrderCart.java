@@ -2,18 +2,38 @@ package com.example.prakharagarwal.binge.model_class;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PlacedOrderCart {
 
-    public HashMap<String,String> dishes;
+    public List<HashMap<String,String>> dishes=new ArrayList<>();
     public float cart_value;
     public String userId;
-    public String status="recived";
+    public String status="pending";
     public String payment="notPaid";
     public double location_lat;
     public double location_long;
     public String id;
+    String timestamp="";
+    String ordertype="";
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getOrdertype() {
+        return ordertype;
+    }
+
+    public void setOrdertype(String ordertype) {
+        this.ordertype = ordertype;
+    }
 
     public String getTableNo() {
         return tableNo;
@@ -25,12 +45,12 @@ public class PlacedOrderCart {
 
     public String tableNo;
 
-    public HashMap<String, String> getDishes() {
+    public List<HashMap<String,String>> getDishes() {
         return dishes;
     }
 
     public void setDishes(HashMap<String, String> dishes) {
-        this.dishes = dishes;
+        this.dishes.add(dishes);
     }
 
     public float getCart_value() {

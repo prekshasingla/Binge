@@ -120,6 +120,25 @@
             fresco:layout_constraintStart_toStartOf="parent"
             fresco:layout_constraintTop_toBottomOf="@+id/restaurant_trent"
             fresco:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/restaurant_offer"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_discount"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/roboto"
+            android:text="15 % OFF"
+            android:textColor="@color/your_location_color"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintEnd_toEndOf="parent"
+            fresco:layout_constraintHorizontal_bias="0.0"
+            fresco:layout_constraintStart_toStartOf="parent"
+            fresco:layout_constraintTop_toBottomOf="@+id/restaurant_time"
+            fresco:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/pre_order"

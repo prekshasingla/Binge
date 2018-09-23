@@ -28,6 +28,33 @@ public class Menu implements Serializable{
     String latitude;
     String longitude;
     long gst=5;
+    long discount=0;
+    long whole_discount=0;
+    long preorder_switch=0;
+
+    public long getPreorder_switch() {
+        return preorder_switch;
+    }
+
+    public void setPreorder_switch(long preorder_switch) {
+        this.preorder_switch = preorder_switch;
+    }
+
+    public long getWhole_discount() {
+        return whole_discount;
+    }
+
+    public void setWhole_discount(long whole_discount) {
+        this.whole_discount = whole_discount;
+    }
+
+    public long getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(long discount) {
+        this.discount = discount;
+    }
 
     public long getGst() {
         return gst;

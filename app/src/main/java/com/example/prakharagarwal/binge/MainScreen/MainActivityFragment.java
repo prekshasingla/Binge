@@ -83,6 +83,7 @@ public class MainActivityFragment extends Fragment {
     private int mFood2Counter = 0;
     private List<Category1> categories;
     Button inside_order_button;
+    Button preorder_button;
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 98;
 
@@ -119,8 +120,20 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        inside_order_button=rootView.findViewById(R.id.Order_Inside_button);
-        //   nearbyEmptyLayout = rootView.findViewById(R.id.nearby_empty_layout_lin);
+        inside_order_button=rootView.findViewById(R.id.order_inside_button);
+        preorder_button=rootView.findViewById(R.id.pre_order_button);
+
+        preorder_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchFragment.activity=getActivity();
+                android.support.v4.app.FragmentManager manager=getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
+                transaction.replace(R.id.fragment_container,new SearchFragment());
+                transaction.addToBackStack("search");
+                transaction.commit();
+            }
+        });
         flag = false;
         checkLocationPermission();
         trendingViewpager = rootView.findViewById(R.id.trending_viewpager);
@@ -134,21 +147,22 @@ public class MainActivityFragment extends Fragment {
         MySharedPreference sharedPreference=new MySharedPreference(getActivity());
         if(sharedPreference.savedmapactivity_get_flag()==true)
         {
-            Log.v("RishabhSharedPreference","Inside shared prefernce "+sharedPreference.savedmapactivity_get_flag());
             Intent intent = new Intent(getActivity(), CartSuccess.class);
             intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
             intent.putExtra("latitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_latitude()).toString()));
             intent.putExtra("longitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_longitude()).toString()));
             intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
             startActivity(intent);
+            onDestroy();
         }
-        Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
 
         if(sharedPreference.get_insideorderpayment() && ((BaseApplication) getActivity().getApplication()).isCartFlag())
         {
             Intent intent = new Intent(getActivity(), DishInfoActivity.class);
+            intent.putExtra("flag", "insideOrder");
             intent.putExtra("rest", sharedPreference.get_inside_order_restaurant_id());
             startActivity(intent);
+            onDestroy();
         }
 
 
@@ -168,11 +182,12 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (((MainActivity) getActivity()).getLatitude() != null && ((MainActivity) getActivity()).getLongitude() != null)
-                    locationFlag = true;
-                else
-                    locationFlag = false;
-
+                if(getActivity()!=null) {
+                    if (((MainActivity) getActivity()).getLatitude() != null && ((MainActivity) getActivity()).getLongitude() != null)
+                        locationFlag = true;
+                    else
+                        locationFlag = false;
+                }
                 new TrendingAsync().execute(dataSnapshot);
 
             }
@@ -259,6 +274,8 @@ public class MainActivityFragment extends Fragment {
                 Double longitude = 0.0;
                 String restuarant_name = null;
                 String restuarant_id = null;
+                long whole_discount=0;
+                long preorder_switch=0;
 
                 for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
                     if (child1.getKey().equals("latitude"))
@@ -269,6 +286,11 @@ public class MainActivityFragment extends Fragment {
                         restuarant_name = (String) child1.getValue();
                     if (child1.getKey().equals("restaurant_id"))
                         restuarant_id = (String) child1.getValue();
+                    if (child1.getKey().equals("discount"))
+                        whole_discount = (long) child1.getValue();
+                    if (child1.getKey().equals("preorder_switch"))
+                        preorder_switch = (long) child1.getValue();
+
                 }
                 if (locationFlag && calRadius(latitude, longitude)) {
                     flag = true;
@@ -280,6 +302,8 @@ public class MainActivityFragment extends Fragment {
                                 menu.setRestaurant_id(restuarant_id);
                                 menu.setLatitude(String.valueOf(latitude));
                                 menu.setLongitude(String.valueOf(longitude));
+                                menu.setWhole_discount(whole_discount);
+                                menu.setPreorder_switch(preorder_switch);
                                 if (menu.getHas_video() == 0) {
                                     mFood.add(menu);
 
@@ -308,6 +332,9 @@ public class MainActivityFragment extends Fragment {
                                 menu.setRestaurant_id(restuarant_id);
                                 menu.setLatitude(String.valueOf(latitude));
                                 menu.setLongitude(String.valueOf(longitude));
+                                menu.setWhole_discount(whole_discount);
+                                menu.setPreorder_switch(preorder_switch);
+
                                 if (menu.getHas_video() == 0) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
@@ -585,6 +612,7 @@ public class MainActivityFragment extends Fragment {
                     intent.putExtra("dish", dish.getName());
                     intent.putExtra("flag", "preOrder");
                     intent.putExtra("time", timing);
+                    intent.putExtra("whole_discount",dish.getWhole_discount());
                     // PassingData.setLatitude(dish.getLatitude());
                     // PassingData.setLongitude(dish.getLongitude());
                     startActivity(intent);
@@ -599,7 +627,13 @@ public class MainActivityFragment extends Fragment {
                 }
             });
 
-
+            TextView discount= rootView.findViewById(R.id.restaurant_offer);
+            if(dish.getDiscount()!=0){
+                discount.setVisibility(View.VISIBLE);
+                discount.setText(dish.getDiscount() + " % OFF");
+            }else{
+                discount.setVisibility(View.GONE);
+            }
             prepare();
             return rootView;
         }

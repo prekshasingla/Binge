@@ -60,22 +60,22 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_search,container,false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
 
 //        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        cuisineList=new ArrayList<>();
-        restaurantList=new ArrayList<>();
+        cuisineList = new ArrayList<>();
+        restaurantList = new ArrayList<>();
         cuisinesHeader = (TextView) view.findViewById(R.id.cuisinesHeader);
         restrHeader = (TextView) view.findViewById(R.id.restaurantsHeader);
         cuisineListView = (ListView) view.findViewById(R.id.cuisinesList);
-        restaurantListView = (ListView)view.findViewById(R.id.restaurantsList);
+        restaurantListView = (ListView) view.findViewById(R.id.restaurantsList);
         cuisineResultAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), cuisineList);
         restaurantResultAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), restaurantList);
-        final EditText searchedit=((MainActivity)getActivity()).getSearch_edittext();
+        final EditText searchedit = ((MainActivity) getActivity()).getSearch_edittext();
 
 
 //        searchField = (EditText)view.findViewById(R.id.search_edit_text);
@@ -116,7 +116,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        DatabaseReference ref1 = database.getReference("table");
+        DatabaseReference ref1 = database.getReference("menu");
         mRestaurants = new ArrayList<>();
         ref1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -141,10 +141,11 @@ public class SearchFragment extends Fragment {
 //                intent.putExtra("posi", 1);
 //                startActivity(intent);
 
-                Intent intent=new Intent(getActivity(),DishInfoActivity.class);
-                intent.putExtra("rest",cuisineList.get(position).getRestaurantID());
-                intent.putExtra("dish",cuisineList.get(position).getDisplayName());
-                Log.d("RishabhBinge","Dish name is "+cuisineList.get(position).getDisplayName());
+                Intent intent = new Intent(getActivity(), DishInfoActivity.class);
+                intent.putExtra("rest", cuisineList.get(position).getRestaurantID());
+                intent.putExtra("dish", cuisineList.get(position).getDisplayName());
+                intent.putExtra("flag", "preOrder");
+                intent.putExtra("whole_discount",cuisineList.get(position).getDiscount());
                 startActivity(intent);
 
             }
@@ -159,8 +160,10 @@ public class SearchFragment extends Fragment {
 //                intent.putExtra("posi", 1);
 //                startActivity(intent);
 
-                Intent intent=new Intent(getActivity(),DishInfoActivity.class);
-                intent.putExtra("rest",restaurantList.get(position).getRestaurantID());
+                Intent intent = new Intent(getActivity(), DishInfoActivity.class);
+                intent.putExtra("rest", restaurantList.get(position).getRestaurantID());
+//                intent.putExtra("time", timing);
+                intent.putExtra("whole_discount", restaurantList.get(position).getDiscount());
                 startActivity(intent);
 
             }
@@ -171,19 +174,19 @@ public class SearchFragment extends Fragment {
     private void setCuisineList(String searchTerm) {
         int i = 0;
         int j = 0;
-        if(cuisineList!=null)
-        cuisineList.clear();
+        if (cuisineList != null)
+            cuisineList.clear();
         cuisineResultAdapter.notifyDataSetChanged();
         while (j < 10) {
             if (searchTerm == null) {
-                RestCuisineListItem cuisine=new RestCuisineListItem();
+                RestCuisineListItem cuisine = new RestCuisineListItem();
                 cuisine.setDisplayName(mFood.get(i).getName());
                 cuisine.setRestaurantID(mFood.get(i).getRestaurant_id());
                 cuisine.setRestaurantName(mFood.get(i).getRestaurantName());
                 cuisineList.add(cuisine);
                 j++;
             } else if (mFood.get(i).getName().toLowerCase().contains(searchTerm.toLowerCase())) {
-                RestCuisineListItem cuisine=new RestCuisineListItem();
+                RestCuisineListItem cuisine = new RestCuisineListItem();
                 cuisine.setDisplayName(mFood.get(i).getName());
                 cuisine.setRestaurantID(mFood.get(i).getRestaurant_id());
                 cuisine.setRestaurantName(mFood.get(i).getRestaurantName());
@@ -209,25 +212,26 @@ public class SearchFragment extends Fragment {
     private void setRestaurantList(String searchTerm) {
         int i = 0;
         int j = 0;
-        if(restaurantList!=null)
-        restaurantList.clear();
+        if (restaurantList != null)
+            restaurantList.clear();
         restaurantResultAdapter.notifyDataSetChanged();
         while (j < 10) {
             if (searchTerm == null) {
-                RestCuisineListItem rest=new RestCuisineListItem();
+                RestCuisineListItem rest = new RestCuisineListItem();
                 rest.setDisplayName(mRestaurants.get(i).getRestaurantName());
                 rest.setRestaurantID(mRestaurants.get(i).getRestaurantID());
                 rest.setRestaurantName(mRestaurants.get(i).getRestaurantName());
+                rest.setDiscount(mRestaurants.get(i).getDiscount());
                 restaurantList.add(rest);
                 j++;
-            } else
-                if ((mRestaurants.get(i).getRestaurantName()).toLowerCase().contains(searchTerm.toLowerCase())) {
-                    RestCuisineListItem rest=new RestCuisineListItem();
-                    rest.setDisplayName(mRestaurants.get(i).getRestaurantName());
-                    rest.setRestaurantID(mRestaurants.get(i).getRestaurantID());
-                    rest.setRestaurantName(mRestaurants.get(i).getRestaurantName());
-                    restaurantList.add(rest);
-                    j++;
+            } else if ((mRestaurants.get(i).getRestaurantName()).toLowerCase().contains(searchTerm.toLowerCase())) {
+                RestCuisineListItem rest = new RestCuisineListItem();
+                rest.setDisplayName(mRestaurants.get(i).getRestaurantName());
+                rest.setRestaurantID(mRestaurants.get(i).getRestaurantID());
+                rest.setRestaurantName(mRestaurants.get(i).getRestaurantName());
+                rest.setDiscount(mRestaurants.get(i).getDiscount());
+                restaurantList.add(rest);
+                j++;
             }
             i++;
             if (i == mRestaurants.size())
@@ -259,7 +263,7 @@ public class SearchFragment extends Fragment {
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             DisplayMetrics metrics = new DisplayMetrics();
-            WindowManager windowManager=activity.getWindowManager();
+            WindowManager windowManager = activity.getWindowManager();
             windowManager.getDefaultDisplay().getMetrics(metrics);
 
             int px = metrics.widthPixels;
@@ -280,11 +284,15 @@ public class SearchFragment extends Fragment {
 
                 String id = null;
                 String name = null;
-                if (child1.getKey().equals("hid")) {
+                if (child1.getKey().equals("restaurant_id")) {
                     restaurant.setRestaurantID("" + child1.getValue());
                 }
-                if (child1.getKey().equals("hname")) {
+                if (child1.getKey().equals("restaurant_name")) {
                     restaurant.setRestaurantName("" + child1.getValue());
+
+                }
+                if (child1.getKey().equals("discount")) {
+                    restaurant.setDiscount((Long) child1.getValue());
 
                 }
 
@@ -295,15 +303,15 @@ public class SearchFragment extends Fragment {
     }
 
     public void getCuisineData(DataSnapshot dataSnapshot) {
-        String restuarant_name = null,restuarant_id=null;
+        String restuarant_name = null, restuarant_id = null;
         for (DataSnapshot child1 : dataSnapshot.getChildren()) {
-          //  if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
+            //  if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
 
             for (DataSnapshot child2 : child1.getChildren()) { //starter, lat, long
                 if (child2.getKey().equals("restaurant_name"))
                     restuarant_name = (String) child2.getValue();
-                if(child2.getKey().equals("restaurant_id"))
-                    restuarant_id=(String)child2.getValue();
+                if (child2.getKey().equals("restaurant_id"))
+                    restuarant_id = (String) child2.getValue();
             }
             for (DataSnapshot child2 : child1.getChildren()) {
                 if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude")) {
@@ -317,7 +325,7 @@ public class SearchFragment extends Fragment {
                 }
 
             }
-            }
+        }
 
         //}
 
@@ -327,7 +335,15 @@ public class SearchFragment extends Fragment {
     class Restaurant {
         String restaurantID;
         String restaurantName;
+        long discount = 0;
 
+        public long getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(long discount) {
+            this.discount = discount;
+        }
 
         public String getRestaurantID() {
             return restaurantID;
@@ -345,12 +361,22 @@ public class SearchFragment extends Fragment {
             this.restaurantName = restaurantName;
         }
     }
-    class RestCuisineListItem{
+
+    class RestCuisineListItem {
         Integer position;
         String displayName;
         String restaurantID;
         String restaurantName;
         String dishName;
+        long discount = 0;
+
+        public long getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(long discount) {
+            this.discount = discount;
+        }
 
         public Integer getPosition() {
             return position;
@@ -392,4 +418,5 @@ public class SearchFragment extends Fragment {
             this.dishName = dishName;
         }
     }
+
 }

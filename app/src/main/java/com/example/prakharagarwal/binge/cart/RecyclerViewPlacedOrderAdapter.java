@@ -33,18 +33,18 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.placed_order_recyclerview_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.placed_order_recyclerview_item, parent, false);
         return new RecyclerViewPlacedOrderAdapter.MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewname.setText(menuList.get(position).getName());
-       holder.textViewprice.setText(integersList.get(position)+" X  ₹"+menuList.get(position).getPrice()+" = ₹"+Integer.parseInt(menuList.get(position).getPrice())*integersList.get(position));
-       if(menuList.get(position).getVeg()==0)
-          holder.imageView.setBackgroundResource(R.mipmap.veg);
-       else
-           holder.imageView.setBackgroundResource(R.mipmap.nonveg);
+        holder.textViewprice.setText(integersList.get(position) + " X  ₹" + menuList.get(position).getPrice() + " = ₹" + Integer.parseInt(menuList.get(position).getPrice()) * integersList.get(position));
+        if (menuList.get(position).getVeg() == 0)
+            holder.imageView.setBackgroundResource(R.mipmap.veg);
+        else
+            holder.imageView.setBackgroundResource(R.mipmap.nonveg);
 
     }
 
@@ -54,35 +54,59 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public static void addingToBill() {
-        float totalsum=0;
-        float total_price=0;
-        float total_priceGST5=0;
-        float total_priceGST18=0;
-        float gst_price=0;
-        HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.placed_order_hashmap;
+        float totalsum = 0;
+        float total_price = 0;
+        float total_priceGST5 = 0;
+        float total_priceGST18 = 0;
+        float gst_price = 0;
+        float totalDiscount = 0f;
+        float discountedPrice = 0f;
+        HashMap<com.example.prakharagarwal.binge.Menu.Menu, Integer> cartItem = PassingCartItem.placed_order_hashmap;
         for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
+
             if (entry.getValue() != 0) {
-                if(entry.getKey().getGst()==5)
-                    total_priceGST5+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
-                if(entry.getKey().getGst()==18)
-                    total_priceGST18+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
-                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+                if (entry.getKey().getDiscount() > 0) {
+                    totalDiscount += (Float.parseFloat(entry.getKey().getPrice()) * (entry.getKey().getDiscount() / 100.0f))
+                            * entry.getValue();
+                    discountedPrice = Float.parseFloat(entry.getKey().getPrice()) -
+                            (Float.parseFloat(entry.getKey().getPrice()) * (entry.getKey().getDiscount() / 100.0f));
+                }
+                if (discountedPrice > 0) {
+                    if (entry.getKey().getGst() == 5)
+                        total_priceGST5 += discountedPrice * entry.getValue();
+                    if (entry.getKey().getGst() == 18)
+                        total_priceGST18 += discountedPrice * entry.getValue();
+                } else {
+                    if (entry.getKey().getGst() == 5)
+                        total_priceGST5 += Float.parseFloat(entry.getKey().getPrice()) * entry.getValue();
+                    if (entry.getKey().getGst() == 18)
+                        total_priceGST18 += Float.parseFloat(entry.getKey().getPrice()) * entry.getValue();
+                }
+
+
             }
+            total_price += entry.getValue() * Float.parseFloat(entry.getKey().getPrice());
         }
         gst_price = ((total_priceGST5 * 5) / 100) + ((total_priceGST18 * 18) / 100);
-        totalsum=gst_price+total_price;
-        NewCartActivity.payAmount=totalsum;
-        if(NewCartActivity.gstpricetext!=null)
-        {
-            NewCartActivity.gstpricetext.setText("₹"+gst_price+"");
-            NewCartActivity.totalpricetext.setText("₹"+total_price+"");
-            NewCartActivity.paypricetext.setText("₹"+totalsum+"");
+        totalsum = gst_price + total_price- totalDiscount;
+        NewCartActivity.payAmount = totalsum;
+        if(totalDiscount>0){
+            NewCartActivity.discountText.setVisibility(View.VISIBLE);
+            NewCartActivity.discountValue.setVisibility(View.VISIBLE);
+            NewCartActivity.discountValue.setText("₹" + totalDiscount);
+        }else{
+            NewCartActivity.discountText.setVisibility(View.INVISIBLE);
+            NewCartActivity.discountValue.setVisibility(View.INVISIBLE);
+        }
+        if (NewCartActivity.gstpricetext != null) {
+            NewCartActivity.gstpricetext.setText("₹" + gst_price + "");
+            NewCartActivity.totalpricetext.setText("₹" + total_price + "");
+            NewCartActivity.paypricetext.setText("₹" + totalsum + "");
         }
 
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewname;
         public TextView textViewprice;
@@ -91,9 +115,9 @@ public class RecyclerViewPlacedOrderAdapter extends RecyclerView.Adapter<Recycle
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            textViewname=itemView.findViewById(R.id.dish_name_placed_order_cart);
-            textViewprice=itemView.findViewById(R.id.dish_price_order_cart);
-            imageView=itemView.findViewById(R.id.veg_nonveg_placed_order_cart);
+            textViewname = itemView.findViewById(R.id.dish_name_placed_order_cart);
+            textViewprice = itemView.findViewById(R.id.dish_price_order_cart);
+            imageView = itemView.findViewById(R.id.veg_nonveg_placed_order_cart);
         }
     }
 }

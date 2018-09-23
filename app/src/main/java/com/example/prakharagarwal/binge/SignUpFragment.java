@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -34,12 +37,12 @@ public class SignUpFragment extends Fragment {
     private static final int RC_SIGN_IN = 9001;
     private static final int FB_SIGN_IN = 8001;
     TextView loginstatus;
-    FirebaseAuth mAuth;
     //CallbackManager mCallbackManager;
     TextView textViewError;
     EditText user_email;
     EditText user_name;
     EditText user_password;
+    EditText user_confirmPass;
     Button signup;
     FirebaseDatabase mDatabase;
 
@@ -61,6 +64,7 @@ public class SignUpFragment extends Fragment {
         user_name=(EditText) rootView.findViewById(R.id.user_name);
         user_email=(EditText) rootView.findViewById(R.id.user_email);
         user_password=(EditText) rootView.findViewById(R.id.user_password);
+        user_confirmPass=rootView.findViewById(R.id.confirm_password);
         signup=(Button)rootView.findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +90,20 @@ public class SignUpFragment extends Fragment {
                 {
                     textViewError.setVisibility(View.VISIBLE);
                     textViewError.setText("Password cannot be blank");
+                }else if(user_confirmPass.getText().toString().equals(""))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Re-enter Password");
+                }else if(!isValidEmail(user_email.getText().toString().trim()))
+                {
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Please enter a valid email address");
+                } else if(user_password.getText().toString().length()<8 || !isValidPassword(user_password.getText().toString().trim())){
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Password must be atleast 8 characters and shall contain alphabhet,number and special character.");
+                }else if(!user_password.getText().toString().equals(user_confirmPass.getText().toString())){
+                    textViewError.setVisibility(View.VISIBLE);
+                    textViewError.setText("Passwords dont match");
                 }
                 else
                 {
@@ -93,10 +111,6 @@ public class SignUpFragment extends Fragment {
                 }
             }
         });
-        mAuth = FirebaseAuth.getInstance();
-
-
-
 
 
         mDatabase=FirebaseDatabase.getInstance();
@@ -176,8 +190,20 @@ public String encodeEmail(String email){
                 .replace(getString(R.string.encode_left_square_bracket),"[")
                 .replace(getString(R.string.encode_right_square_bracket),"]");
     }
+    public  boolean isValidEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
+    public static boolean isValidPassword(final String password) {
 
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
 
+        return matcher.matches();
+
+    }
 
 }

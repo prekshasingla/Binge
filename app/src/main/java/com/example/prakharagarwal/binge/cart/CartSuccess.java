@@ -7,14 +7,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -28,21 +23,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.prakharagarwal.binge.MainScreen.LocationSearchActivity;
 import com.example.prakharagarwal.binge.MainScreen.MainActivity;
 import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.VolleySingleton;
-import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -53,15 +39,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.internal.IPolylineDelegate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +69,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.LongToIntFunction;
 
 public class CartSuccess extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener, OnMapReadyCallback {
@@ -135,7 +117,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         orderID = getIntent().getStringExtra("orderId");
         rest_latitude=getIntent().getDoubleExtra("latitude",0.0);
         rest_longitude=getIntent().getDoubleExtra("longitude",0.0);
-        resturant_id=getIntent().getStringExtra("resturant_id");
+        resturant_id=getIntent().getStringExtra("restaurant_id");
 
         //save the data to shared preference
         final MySharedPreference sharedPreference=new MySharedPreference(CartSuccess.this);
@@ -172,19 +154,19 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
                     String order_status = snapshot.getString("status");
                     Log.d("RISHABH", "STRING DATA IS THE " + order_status);
                     if (order_status != null) {
-                        if(order_status.equals("Recieved")) {
+                        if(order_status.equals("recieved")) {
                             Log.d("RISHABH","Status 1");
                             received.setBackgroundColor(Color.GREEN);
                             cooking.setBackgroundColor(Color.GRAY);
                             served.setBackgroundColor(Color.GRAY);
                         }
-                            else if(order_status.equals("MealPrepared")) {
+                            else if(order_status.equals("mealPreparing")) {
                             Log.d("RISHABH","Status 2");
                             received.setBackgroundColor(Color.GREEN);
                             cooking.setBackgroundColor(Color.GREEN);
                             served.setBackgroundColor(Color.GRAY);
                         }
-                            else if(order_status.equals("Delivered")) {
+                            else if(order_status.equals("delivered")) {
                             Log.d("RISHABH","Status 3");
 //                            received.setBackgroundColor(Color.GREEN);
 //                            cooking.setBackgroundColor(Color.GREEN);
@@ -354,7 +336,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(10 * 1000);
+        mLocationRequest.setInterval(100 * 1000);
         try {
 
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -399,7 +381,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         changePositionOnMap();
-        calculateTime();
+//        calculateTime();
         LatLng origin = new LatLng(latitude, longitude);
         LatLng dest = new LatLng(rest_latitude, rest_longitude);
 
@@ -415,65 +397,65 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
 
 
-    private void calculateTime() {
-        // Get a RequestQueue
-        RequestQueue queue = VolleySingleton.getInstance(this.getApplicationContext()).
-                getRequestQueue();
-        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + String.valueOf(latitude) + "," + String.valueOf(longitude) + "&destinations=" + String.valueOf(rest_latitude) + "," + String.valueOf(rest_longitude) + "&key=AIzaSyD3mElGj7e1rE8sOdEamKJs-2S4JuIuSGA";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Do something with the response
-                        try {
-                            JSONObject responseJson = new JSONObject(response);
-                            if (responseJson.get("status").equals("OK")) {
-                                Log.d("RISHABH", "RESPONSE IS THE " + response);
-                                JSONArray rows = responseJson.getJSONArray("rows");
-                                JSONArray elements = ((JSONObject) rows.get(0)).optJSONArray("elements");
-                                JSONObject firstElement = (JSONObject) elements.get(0);
-                                if (firstElement.get("status").equals("OK")) {
-                                    JSONObject distance = firstElement.getJSONObject("distance");
-                                    String km = distance.get("text") + "";
-                                    JSONObject duration = firstElement.getJSONObject("duration");
-                                    eta_time.setText(duration.get("text") + " " + km);
-
-                                    Map<String, Object> durationMap = new HashMap<>();
-                                    durationMap.put("time_to_reach", duration.get("text"));
-                                    db.collection("orders/" + resturant_id + "/preOrder").document(orderID)
-                                            .set(durationMap, SetOptions.merge())
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(LOG_TAG, "DocumentSnapshot successfully written!");
-                                                    Toast.makeText(CartSuccess.this, "success response", Toast.LENGTH_SHORT).show();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(LOG_TAG, "Error writing document", e);
-                                                }
-                                            });
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d("RISHABH", "INSIDE THE CATCH EXEPTION");
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-                        Log.d("RISHABH", "API ERROR" + error.toString());
-                        Toast.makeText(CartSuccess.this, "Error in response", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        queue.add(stringRequest);
-    }
+//    private void calculateTime() {
+//        // Get a RequestQueue
+//        RequestQueue queue = VolleySingleton.getInstance(this.getApplicationContext()).
+//                getRequestQueue();
+//        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + String.valueOf(latitude) + "," + String.valueOf(longitude) + "&destinations=" + String.valueOf(rest_latitude) + "," + String.valueOf(rest_longitude) + "&key=AIzaSyD3mElGj7e1rE8sOdEamKJs-2S4JuIuSGA";
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // Do something with the response
+//                        try {
+//                            JSONObject responseJson = new JSONObject(response);
+//                            if (responseJson.get("status").equals("OK")) {
+//                                Log.d("RISHABH", "RESPONSE IS THE " + response);
+//                                JSONArray rows = responseJson.getJSONArray("rows");
+//                                JSONArray elements = ((JSONObject) rows.get(0)).optJSONArray("elements");
+//                                JSONObject firstElement = (JSONObject) elements.get(0);
+//                                if (firstElement.get("status").equals("OK")) {
+//                                    JSONObject distance = firstElement.getJSONObject("distance");
+//                                    String km = distance.get("text") + "";
+//                                    JSONObject duration = firstElement.getJSONObject("duration");
+//                                    eta_time.setText(duration.get("text") + " " + km);
+//
+//                                    Map<String, Object> durationMap = new HashMap<>();
+//                                    durationMap.put("time_to_reach", duration.get("text"));
+//                                    db.collection("orders/" + resturant_id + "/preOrder").document(orderID)
+//                                            .set(durationMap, SetOptions.merge())
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.d(LOG_TAG, "DocumentSnapshot successfully written!");
+//                                                    Toast.makeText(CartSuccess.this, "success response", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w(LOG_TAG, "Error writing document", e);
+//                                                }
+//                                            });
+//                                }
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.d("RISHABH", "INSIDE THE CATCH EXEPTION");
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // Handle error
+//                        Log.d("RISHABH", "API ERROR" + error.toString());
+//                        Toast.makeText(CartSuccess.this, "Error in response", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//        queue.add(stringRequest);
+//    }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
@@ -488,7 +470,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         String sensor = "sensor=false";
 
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;
+        String parameters = str_origin + "&" + str_dest + "&" + sensor+"&key=AIzaSyDMMAaX6-zLoun2a_W5WYqvlE_rLzi6MCc";
 
         // Output format
         String output = "json";
@@ -565,6 +547,34 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+
+            try {
+                JSONObject data=new JSONObject(result);
+                JSONArray routes= data.getJSONArray("routes");
+                JSONArray legs= ((JSONObject)routes.get(0)).getJSONArray("legs");
+                JSONObject duration=((JSONObject)legs.get(0)).getJSONObject("duration");
+                eta_time.setText(duration.getString("text"));
+                Map<String, Object> locationMap = new HashMap<>();
+                locationMap.put("time_to_reach", duration.getString("text"));
+                db.collection("orders/" + resturant_id + "/PreOrder").document(orderID)
+                        .set(locationMap, SetOptions.merge())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(LOG_TAG, "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(LOG_TAG, "Error writing document", e);
+                            }
+                        });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             ParserTask parserTask = new ParserTask();
 

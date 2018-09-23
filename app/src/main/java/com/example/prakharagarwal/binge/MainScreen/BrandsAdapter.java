@@ -83,7 +83,6 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.BrandsAdap
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(mContext, "Position "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(mContext,DishInfoActivity.class);
             intent.putExtra("rest",brands.get(getAdapterPosition()).getRestaurant_id());
             mContext.startActivity(intent);

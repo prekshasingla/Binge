@@ -146,31 +146,11 @@ public class MainActivity extends AppCompatActivity  {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
-//        Log.v("RishabhSharedPreference","Starting shared prefernce");
-//        //get data from the shared preference because if user already placed the preorder then we directly switch to the map activity
-//        MySharedPreference sharedPreference=new MySharedPreference(MainActivity.this);
-//        if(sharedPreference.savedmapactivity_get_flag()==true)
-//        {
-//            Log.v("RishabhSharedPreference","Inside shared prefernce "+sharedPreference.savedmapactivity_get_flag());
-//            Intent intent = new Intent(MainActivity.this, CartSuccess.class);
-//            intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
-//            intent.putExtra("latitude", sharedPreference.savedmapactivity_get_latitude());
-//            intent.putExtra("longitude", sharedPreference.savedmapactivity_get_longitude());
-//            intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
-//            startActivity(intent);
-//        }
-//        Log.v("RishabhSharedPreference","OutSide shared prefernce "+sharedPreference.savedmapactivity_get_flag());
-
         fragment_container=findViewById(R.id.fragment_container);
         search_edittext=findViewById(R.id.search_edit_text);
         search_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SearchFragment.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-               // search_edittext.setFocusable(true);
-               // search_edittext.setFocusableInTouchMode(true);
                 searchActivity=new SearchFragment();
                 SearchFragment.activity=MainActivity.this;
                 android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
@@ -182,22 +162,6 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-//        search_edittext.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                v.setFocusable(true);
-//                v.setFocusableInTouchMode(true);
-//                searchActivity=new SearchFragment();
-//                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
-//                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
-//                transaction.replace(R.id.fragment_container,searchActivity);
-//                transaction.addToBackStack("search");
-//                transaction.commit();
-//                return false;
-//
-//
-//            }
-//        });
 
 
 
@@ -211,8 +175,7 @@ public class MainActivity extends AppCompatActivity  {
         } else {
             checkLocationPermission();
         }
-//        latitude=""+LocationConstants.LAT_CP;
-//        longitude=""+LocationConstants.LON_CP;
+
         createUI();
 
         LinearLayout locationLayout = (LinearLayout) findViewById(R.id.location_layout);
@@ -225,7 +188,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-        //  update();
+
 
 
     }
@@ -417,6 +380,12 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
        // super.onBackPressed();
-        finishAffinity();
+        if(getSupportFragmentManager().getBackStackEntryCount()>0){
+            getSupportFragmentManager().popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
+//        finishAffinity();
     }
 }

@@ -92,16 +92,47 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
     public static void addingToBill() {
         float totalsum=0;
         float total_price=0;
-        float gst_price=0;
+        float total_priceGST5 = 0;
+        float total_priceGST18 = 0;
+        float gst_price = 0;
+        float totalDiscount = 0f;
+        float discountedPrice = 0f;
         HashMap<com.example.prakharagarwal.binge.Menu.Menu,Integer> cartItem= PassingCartItem.getMenuHashmap();
         for (Map.Entry<com.example.prakharagarwal.binge.Menu.Menu, Integer> entry : cartItem.entrySet()) {
             if (entry.getValue() != 0) {
-                total_price+=entry.getValue()*Integer.parseInt(entry.getKey().getPrice());
+
+                    if (entry.getKey().getDiscount() > 0) {
+                        totalDiscount += (Float.parseFloat(entry.getKey().getPrice()) * (entry.getKey().getDiscount() / 100.0f))
+                                * entry.getValue();
+                        discountedPrice = Float.parseFloat(entry.getKey().getPrice()) -
+                                (Float.parseFloat(entry.getKey().getPrice()) * (entry.getKey().getDiscount() / 100.0f));
+                    }
+                    if (discountedPrice > 0) {
+                        if (entry.getKey().getGst() == 5)
+                            total_priceGST5 += discountedPrice * entry.getValue();
+                        if (entry.getKey().getGst() == 18)
+                            total_priceGST18 += discountedPrice * entry.getValue();
+                    } else {
+                        if (entry.getKey().getGst() == 5)
+                            total_priceGST5 += Float.parseFloat(entry.getKey().getPrice()) * entry.getValue();
+                        if (entry.getKey().getGst() == 18)
+                            total_priceGST18 += Float.parseFloat(entry.getKey().getPrice()) * entry.getValue();
+                    }
+
+                total_price+=entry.getValue()*Float.parseFloat(entry.getKey().getPrice());
             }
         }
-        gst_price = (total_price * 4) / 100;
-        totalsum=gst_price+total_price;
+        gst_price = ((total_priceGST5 * 5) / 100) + ((total_priceGST18 * 18) / 100);
+        totalsum = gst_price + total_price- totalDiscount;
         NewCartActivity.payAmount=totalsum;
+        if(totalDiscount>0){
+            NewCartActivity.discountText.setVisibility(View.VISIBLE);
+            NewCartActivity.discountValue.setVisibility(View.VISIBLE);
+            NewCartActivity.discountValue.setText("₹" + totalDiscount);
+        }else{
+            NewCartActivity.discountText.setVisibility(View.INVISIBLE);
+            NewCartActivity.discountValue.setVisibility(View.INVISIBLE);
+        }
         if(NewCartActivity.gstpricetext!=null)
         {
             NewCartActivity.gstpricetext.setText("₹"+gst_price+"");

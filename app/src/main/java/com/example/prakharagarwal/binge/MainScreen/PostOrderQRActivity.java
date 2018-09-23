@@ -96,6 +96,7 @@ public class PostOrderQRActivity extends AppCompatActivity {
                                 vibrator.vibrate(10);
                                 intent = new Intent(PostOrderQRActivity.this, DishInfoActivity.class);
                                 intent.putExtra("rest", Restaurant_id[1]);
+                                intent.putExtra("flag", "insideOrder");
                                 startActivity(intent);
                                 PassingData.setResturant_Id(Restaurant_id[1]);
                                 PassingData.setTableNo(Restaurant_id[2]);

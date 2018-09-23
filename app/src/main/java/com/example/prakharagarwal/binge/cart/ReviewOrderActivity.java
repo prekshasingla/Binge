@@ -1,12 +1,14 @@
 package com.example.prakharagarwal.binge.cart;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +22,13 @@ import android.widget.Toast;
 
 
 import com.example.prakharagarwal.binge.BaseApplication;
+import com.example.prakharagarwal.binge.MainScreen.MainActivity;
 import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
@@ -39,8 +46,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class ReviewOrderActivity extends AppCompatActivity {
 
@@ -52,6 +62,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
     float paymentAmount;
     Intent intent;
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
+    private boolean preOrderFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +93,9 @@ public class ReviewOrderActivity extends AppCompatActivity {
         });
 
         intent = getIntent();
+        if (intent.getIntExtra("preorderFlag", 0) != 0) {
+            preOrderFlag = true;
+        }
         pay_amount.setText("Payment Amount  =" + intent.getFloatExtra("payamount", 0) + "");
         restaurant_name.setText("Restaurant Name - " + intent.getStringExtra("restaurant"));
         paymentAmount = intent.getFloatExtra("payamount", 0);
@@ -146,9 +160,11 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
         PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
 
-        double amount = 0;
+        double amount = 0d;
         try {
-            amount = intent.getFloatExtra("payamount", 0);
+            DecimalFormat df2 = new DecimalFormat(".##");
+
+            amount = Double.parseDouble(df2.format((double) intent.getFloatExtra("payamount", 0)));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +174,13 @@ public class ReviewOrderActivity extends AppCompatActivity {
         String productName = intent.getStringExtra("restaurant");
         String firstName = firstname1.trim();
         String email = "email@y.com";
+
+        JSONObject data = new JSONObject();
+        try {
+            data.put("timestamp", Calendar.getInstance().getTimeInMillis());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         String udf1 = "";
         String udf2 = "";
         String udf3 = "";
@@ -350,41 +373,92 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
             // Check which object is non-null
             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
-                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-                    //Success Transaction
-                    Toast.makeText(this, "success transaction", Toast.LENGTH_SHORT).show();
-
-                   FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-                    firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/InsideOrder").document( intent.getStringExtra("orderID")).update("payment", "done");
-                    new MySharedPreference(ReviewOrderActivity.this).set_insideorderpayment(false);
-
-                } else {
-                    Toast.makeText(this, "fail transaction", Toast.LENGTH_SHORT).show();
-
-                    //Failure Transaction
-                }
-
                 // Response from Payumoney
                 String payuResponse = transactionResponse.getPayuResponse();
 
                 // Response from SURl and FURL
                 String merchantResponse = transactionResponse.getTransactionDetails();
+                Map<String, Object> paymentData = new HashMap<>();
+                paymentData.put("payuResponse", payuResponse);
+                paymentData.put("merchantResponse", merchantResponse);
+                paymentData.put("timestamp", Calendar.getInstance().getTimeInMillis());
+                paymentData.put("orderId", intent.getStringExtra("orderID"));
 
-//                new AlertDialog.Builder(this)
-//                        .setCancelable(false)
-//                        .setMessage("Payu's Data : " + payuResponse + "\n\n\n Merchant's Data: " + merchantResponse)
-//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int whichButton) {
-//                                dialog.dismiss();
-//                            }
-//                        }).show();
+                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                    //Success Transaction
+
+
+                    if (preOrderFlag) {
+                        paymentData.put("ordertype", "preOrder");
+                        firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/payments").add(paymentData);
+
+                         HashMap<String, Object> placedOrderHashmap = new HashMap<>();
+                        placedOrderHashmap= (HashMap<String, Object>) intent.getSerializableExtra("preoderHashMap");
+                        placedOrderHashmap.put("customer_contact",phone.getText().toString());
+                        firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/PreOrder").document(intent.getStringExtra("orderID")).set(placedOrderHashmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Intent intent1 = new Intent(ReviewOrderActivity.this, CartSuccess.class);
+                                intent1.putExtra("orderId",intent.getStringExtra("orderID"));
+                                intent1.putExtra("latitude", PassingData.getLatitude());
+                                intent1.putExtra("longitude", PassingData.getLongitude());
+                                intent1.putExtra("restaurant_id", intent.getStringExtra("restaurantID"));
+                                startActivity(intent1);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        });
+
+                    } else {
+                        paymentData.put("ordertype", "orderInside");
+                        firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/InsideOrder").document(intent.getStringExtra("orderID")).update("payment", "done");
+                        firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/payments").add(paymentData);
+
+                        new MySharedPreference(ReviewOrderActivity.this).set_insideorderpayment(false);
+                        final Dialog dialog = new Dialog(ReviewOrderActivity.this);
+                        dialog.setContentView(R.layout.thankyou_layout);
+                        dialog.setCancelable(false);
+                        dialog.show();
+                        Button button = dialog.findViewById(R.id.thankyou_btn);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog.cancel();
+                                Intent intent = new Intent(ReviewOrderActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+
+                            }
+                        });
+                    }
+
+
+                } else {
+                    if (preOrderFlag) {
+                    paymentData.put("orderType", "PreOrder");}
+                    else{
+                        paymentData.put("orderType", "orderInside");
+                    }
+                    firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/payments").add(paymentData);
+                    error_text.setVisibility(View.VISIBLE);
+                    error_text.setText("Transaction Failed. Please try again.");
+                    //Failure Transaction
+                }
+
 
             } else if (resultModel != null && resultModel.getError() != null) {
                 Log.d("Review Order Activity", "Error response : " + resultModel.getError().getTransactionResponse());
             } else {
                 Log.d("Review Order Activity", "Both objects are null!");
             }
+        } else {
+            error_text.setVisibility(View.VISIBLE);
+            error_text.setText("Transaction Failed. Please try again.");
         }
     }
 
