@@ -69,26 +69,16 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     @Override
     public void onBindViewHolder(CategoriesAdapter.CategoriesAdapterViewHolder holder, int position) {
 
-//        String categoryId=category_string.get(position);
-//        Category1 category1 = categories.get(position);
-       // holder.name.setText(category1.getCategory_name());
         holder.carditem.setBackgroundColor(color[position]);
 
      //  holder.totalItem.setText(String.valueOf(category1.getItem()));
 
-
-        holder.totalItem.setText(category_number.get(position)+"");
-
-        for(int i=0;i<=categories.size()-1;i++)
-        {
-            if(categories.get(i).getCategory_id().equals(category_string.get(position)) && category_string.get(position)!=null && !category_string.get(position).equals(""))
+            if(categories.get(position).getItem()!=0)
             {
-                holder.name.setText(categories.get(i).getCategory_name());
-                Picasso.with(mContext).load(categories.get(i).getLogo_url()).into(holder.image);
-
+                holder.name.setText(categories.get(position).getCategory_name());
+                Picasso.with(mContext).load(categories.get(position).getLogo_url()).into(holder.image);
+                holder.totalItem.setText(categories.get(position).getItem()+"");
             }
-        }
-
 
 
     }
@@ -97,7 +87,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     @Override
     public int getItemCount() {
 
-        return category_string.size();
+        return categories.size();
     }
 
     public class CategoriesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -121,7 +111,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         public void onClick(View v) {
             Category1 category1 = categories.get(getAdapterPosition());
             Intent intent = new Intent(mContext, RestaurantActivity.class);
-            intent.putExtra("category", category_string.get(getAdapterPosition()));
+            intent.putExtra("category", categories.get(getAdapterPosition()).getCategory_id());
             // intent.putExtra("mfood",mfood);
             mContext.startActivity(intent);
         }

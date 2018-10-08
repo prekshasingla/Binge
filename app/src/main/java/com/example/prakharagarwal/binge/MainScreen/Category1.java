@@ -8,7 +8,7 @@ public class Category1 {
     private String category_id;
     private String category_name;
     private String logo_url;
-    private Long item;
+    private Long item=0l;
 
     public Long getItem() {
         return item;

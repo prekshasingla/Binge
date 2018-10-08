@@ -154,6 +154,7 @@ public class LoginFragment extends Fragment implements
     }
 public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
 
+        String display_name=null;
     for (DataSnapshot child : dataSnapshot.getChildren()) {
         if (child.getKey().equals(encodeEmail(email))) {
             emailVerified=true;
@@ -161,6 +162,9 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                 if(child1.getKey().equals("password")){
                     if(password.equals(child1.getValue().toString()))
                         passwordVerified=true;
+                }
+                if(child1.getKey().equals("name")){
+                      display_name=child1.getValue()+"";
                 }
             }
         }
@@ -173,6 +177,8 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
         SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
 
         editor.putString("username", email);
+        if(display_name!=null)
+        editor.putString("display_name", display_name);
         editor.apply();
         emailVerified=false;
         passwordVerified=false;
@@ -205,6 +211,7 @@ public void checkLogin(DataSnapshot dataSnapshot,String email,String password){
                 SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
 
                 editor.putString("username",email);
+                editor.putString("display_name",name);
                 editor.apply();
                 getActivity().onBackPressed();
                 //firebaseAuthWithGoogle(account);

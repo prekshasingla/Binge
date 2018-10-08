@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prakharagarwal.binge.BaseApplication;
+import com.example.prakharagarwal.binge.Config;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 
@@ -63,7 +64,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     Animation animation;
 
     static SlidingUpPanelLayout slidingUpPanelLayout;
-    static TextView dish_name, dish_price, dish_trending, dish_time, dish_discription, offer;
+    static TextView dish_name, dish_price, dish_restaurant, dish_discription, offer;
     static YouTubePlayerSupportFragment youTubePlayerFragment;
     static YouTubePlayer youTubePlayer1;
     Menu menu1;
@@ -81,6 +82,8 @@ public class DishInfoActivity extends AppCompatActivity implements
     static TextView pending_item;
     static TextView placed_item;
     static TextView timing_text;
+    TextView mostPopularText;
+    TextView dish_address;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     ImageView backbtn;
@@ -98,34 +101,34 @@ public class DishInfoActivity extends AppCompatActivity implements
     final static List<List<Menu>> foodcategorywithoutvideo = new ArrayList<>();
     static HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
 
-    long preorder_switch=0;
+    long preorder_switch = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish_info);
-        MySharedPreference sharedPreference=new MySharedPreference(this);
-        if(sharedPreference.get_insideorderpayment() && ((BaseApplication) getApplication()).isCartFlag())
-        {
+
+        MySharedPreference sharedPreference = new MySharedPreference(this);
+        if (sharedPreference.get_insideorderpayment() && ((BaseApplication) getApplication()).isCartFlag()) {
             Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
             startActivity(intent);
         }
         context = this;
-        main_relative_layout=findViewById(R.id.main_relative_layout);
+        main_relative_layout = findViewById(R.id.main_relative_layout);
         main_relative_layout.setVisibility(View.GONE);
         slidingUpPanelLayout = findViewById(R.id.slide_panel);
         dish_name = findViewById(R.id.dish_name);
         dish_price = findViewById(R.id.dish_price);
-        dish_trending = findViewById(R.id.dish_trending);
-        dish_time = findViewById(R.id.dish_time);
-        offer= findViewById(R.id.dish_offer);
+        dish_restaurant = findViewById(R.id.dish_restaurant);
+        offer = findViewById(R.id.dish_offer);
         dish_discription = findViewById(R.id.dish_discription);
         frameLayout = findViewById(R.id.cart_layout);
-        backbtn = findViewById(R.id.back_btn);
         //   cartNumberButton = findViewById(R.id.elegantNumberButton);
         pending_item = findViewById(R.id.pending_item_textview);
         placed_item = findViewById(R.id.placed_item);
         timing_text = findViewById(R.id.dish_time);
+        mostPopularText = findViewById(R.id.dishes_meal2);
+        dish_address = findViewById(R.id.dish_location);
         youTubePlayerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_player_fragment);
         pager = findViewById(R.id.dish_viewpager);
         pager2 = findViewById(R.id.dish_viewpager_second);
@@ -137,9 +140,8 @@ public class DishInfoActivity extends AppCompatActivity implements
 
         dish_name.setVisibility(View.INVISIBLE);
         dish_price.setVisibility(View.INVISIBLE);
-        dish_trending.setVisibility(View.INVISIBLE);
+        dish_restaurant.setVisibility(View.INVISIBLE);
         dish_discription.setVisibility(View.INVISIBLE);
-        dish_time.setVisibility(View.INVISIBLE);
         //  cartNumberButton.setVisibility(View.INVISIBLE);
         youTubePlayerFragment.setMenuVisibility(true);
         pager.setVisibility(View.INVISIBLE);
@@ -174,14 +176,9 @@ public class DishInfoActivity extends AppCompatActivity implements
         menuList = new ArrayList<>();
 
 
-
-        backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
+        Intent intent = getIntent();
+        String resturant_id = intent.getStringExtra("rest");
+        String dish = intent.getStringExtra("dish");
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,17 +197,17 @@ public class DishInfoActivity extends AppCompatActivity implements
                     Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
                     intent.putExtra("resturant_name", resturant_name);
                     intent.putExtra("photo_url", photo_url);
-                    intent.putExtra("preorder_switch",preorder_switch);
+                    intent.putExtra("preorder_switch", preorder_switch);
                     startActivity(intent);
-                } else if(orderType.equals("preOrder")) {
+                } else if (orderType.equals("preOrder")) {
                     Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
                     intent.putExtra("flag", "preOrder");
                     intent.putExtra("resturant_name", resturant_name);
-                    intent.putExtra("preorder_switch",preorder_switch);
+                    intent.putExtra("preorder_switch", preorder_switch);
                     intent.putExtra("photo_url", photo_url);
 
                     startActivity(intent);
-                }else if(orderType.equals("insideOrder")) {
+                } else if (orderType.equals("insideOrder")) {
                     Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
                     intent.putExtra("flag", "insideOrder");
                     intent.putExtra("resturant_name", resturant_name);
@@ -225,16 +222,11 @@ public class DishInfoActivity extends AppCompatActivity implements
         });
 
 
-        Intent intent = getIntent();
-        String resturant_id = intent.getStringExtra("rest");
-        String dish = intent.getStringExtra("dish");
         orderType = intent.getStringExtra("flag");
-        if(intent.getLongExtra("whole_discount",0)!=0)
-        {
-            offer.setText(intent.getLongExtra("whole_discount",0)+" % on Food Bill");
+        if (intent.getLongExtra("whole_discount", 0) != 0) {
+            offer.setText(intent.getLongExtra("whole_discount", 0) + " % on Food Bill");
             offer.setVisibility(View.VISIBLE);
-        }
-        else
+        } else
             offer.setVisibility(View.GONE);
         final String finalDish;
         if (dish == null) {
@@ -245,8 +237,11 @@ public class DishInfoActivity extends AppCompatActivity implements
         }
 
         timing = intent.getStringExtra("time");
-        if (timing != null) {
+        if (timing != null && !timing.equals("")) {
+            timing_text.setVisibility(View.VISIBLE);
             timing_text.setText(timing);
+        } else {
+            timing_text.setVisibility(View.GONE);
         }
 
 
@@ -276,16 +271,20 @@ public class DishInfoActivity extends AppCompatActivity implements
                         PassingData.setResturantName(String.valueOf(child1.getValue()));
                     }
                     if (child1.getKey().equals("discount")) {
-                        offer.setVisibility(View.VISIBLE);
-                        offer.setText(child1.getValue()+" % on Food Bill");
+                        if ((Long) child1.getValue() != 0) {
+                            offer.setText(child1.getValue() + " % on Food Bill");
+                            offer.setVisibility(View.VISIBLE);
+                        } else
+                            offer.setVisibility(View.GONE);
+
 
                     }
                     if (child1.getKey().equals("preorder_switch")) {
-                        preorder_switch=(long)child1.getValue();
+                        preorder_switch = (long) child1.getValue();
 
                     }
-//                    if (child1.getKey().equals("restaurant_id"))
-//                        PassingData.setResturant_Id(String.valueOf(child1.getValue()));
+                    if (child1.getKey().equals("restaurant_id"))
+                        PassingData.setResturant_Id(String.valueOf(child1.getValue()));
                     if (!child1.getKey().equals("latitude") && !child1.getKey().equals("longitude") && !child1.getKey().equals("restaurant_name") && !child1.getKey().equals("restaurant_id")) {
 
                         foodcategory.add(child1.getKey());
@@ -296,13 +295,13 @@ public class DishInfoActivity extends AppCompatActivity implements
                         Menu menu2 = child2.getValue(Menu.class);
                         if (finalDish.equals(menu2.getName())) {
                             if (menu2.getCourse_meal() == 1) {
-                                if (orderType!=null &&orderType.equals("preOrder")) {
+                                if (orderType != null && orderType.equals("preOrder")) {
                                     menu2.setTotalcartItem(1);
                                     course_meal1.add(0, menu2);
                                 } else
                                     course_meal1.add(0, menu2);
                             } else {
-                                if (orderType!=null &&orderType.equals("preOrder")) {
+                                if (orderType != null && orderType.equals("preOrder")) {
                                     menu2.setTotalcartItem(1);
                                     course_meal2.add(0, menu2);
                                 } else
@@ -330,21 +329,21 @@ public class DishInfoActivity extends AppCompatActivity implements
                 }
 //                HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
                 for (int i = 0; i <= foodcategory.size() - 1; i++) {
-                //     if (!foodcategorywithoutvideo.get(i).isEmpty())
-                        menuHashMap.put(foodcategory.get(i), foodcategorywithoutvideo.get(i));
-                   // else {
-                        //this code state that
-                  //      foodcategory.remove(i);
-                  //      foodcategorywithoutvideo.remove(i);
-                  //  }
+                    //     if (!foodcategorywithoutvideo.get(i).isEmpty())
+                    menuHashMap.put(foodcategory.get(i), foodcategorywithoutvideo.get(i));
+                    // else {
+                    //this code state that
+                    //      foodcategory.remove(i);
+                    //      foodcategorywithoutvideo.remove(i);
+                    //  }
                 }
-                List <String> foodcategory2=new ArrayList<>();
+                List<String> foodcategory2 = new ArrayList<>();
                 HashMap<String, List<Menu>> menuHashMap2 = new HashMap<>();
                 for (Map.Entry<String, List<Menu>> entry : menuHashMap.entrySet()) {
-                    List<Menu> menu=  entry.getValue();
-                    if (menu.size()>0) {
+                    List<Menu> menu = entry.getValue();
+                    if (menu.size() > 0) {
                         foodcategory2.add(entry.getKey());
-                        menuHashMap2.put(entry.getKey(),menu);
+                        menuHashMap2.put(entry.getKey(), menu);
                     }
                 }
 
@@ -367,7 +366,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                     dish_name.setText(menu3.getName());
                     dish_price.setText("₹" + menu3.getPrice());
                     dish_discription.setText(menu3.getDesc());
-                    dish_trending.setText(resturant_name);
+                    dish_restaurant.setText(resturant_name);
                     play_youtube_video(menu3.getVideo_url());
                     visibleView();
                 } else {
@@ -376,12 +375,12 @@ public class DishInfoActivity extends AppCompatActivity implements
                     dish_name.setText(menu1.getName());
                     dish_price.setText("₹ " + menu1.getPrice());
                     dish_discription.setText(menu1.getDesc());
-                    dish_trending.setText(resturant_name);
+                    dish_restaurant.setText(resturant_name);
                     play_youtube_video(menu1.getVideo_url());
                     visibleView();
                 }
 
-                if (orderType!=null &&orderType.equals("preOrder")) {
+                if (orderType != null && orderType.equals("preOrder")) {
                     add_item_to_cart(menu1, 1);
                 }
 
@@ -389,8 +388,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                 for (int i = 0; i <= menuList.size() - 1; i++) {
                     if (menuList.get(i).getCourse_meal() == 1)
                         course_meal1.add(menuList.get(i));
-                    else
-                    if (menuList.get(i).getCourse_meal() == 2)
+                    else if (menuList.get(i).getCourse_meal() == 2)
                         course_meal2.add(menuList.get(i));
                 }
                 Log.d("RISHABH", "GOING TO THE ADAPTER ");
@@ -400,6 +398,14 @@ public class DishInfoActivity extends AppCompatActivity implements
                 pagerAdapter1 = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal2, getApplicationContext(), 2);
                 pager.setOffscreenPageLimit(10);
                 pager2.setAdapter(pagerAdapter1);
+                if (course_meal2.size() == 0) {
+                    pager2.setVisibility(View.GONE);
+                    mostPopularText.setVisibility(View.GONE);
+                } else {
+                    pager2.setVisibility(View.VISIBLE);
+                    mostPopularText.setVisibility(View.VISIBLE);
+
+                }
                 main_relative_layout.setVisibility(View.VISIBLE);
 
             }
@@ -409,16 +415,31 @@ public class DishInfoActivity extends AppCompatActivity implements
 
             }
         });
+        getAddress(resturant_id);
 
+    }
 
+    private void getAddress(String resturant_id) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("table/" + resturant_id + "/h_address");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dish_address.setText(dataSnapshot.getValue() + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void visibleView() {
         dish_name.setVisibility(View.VISIBLE);
         dish_price.setVisibility(View.VISIBLE);
-        dish_trending.setVisibility(View.VISIBLE);
+        dish_restaurant.setVisibility(View.VISIBLE);
         dish_discription.setVisibility(View.VISIBLE);
-        dish_time.setVisibility(View.VISIBLE);
         // cartNumberButton.setVisibility(View.VISIBLE);
         youTubePlayerFragment.setMenuVisibility(false);
         pager.setVisibility(View.VISIBLE);
@@ -435,7 +456,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                                                 boolean wasRestored) {
                 if (!wasRestored) {
                     youTubePlayer1 = player;
-                    youTubePlayer1.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                    youTubePlayer1.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
 
                     youTubePlayer1.cueVideo(url);
                     youTubePlayer1.play();
@@ -556,7 +577,7 @@ public class DishInfoActivity extends AppCompatActivity implements
             Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            return (float) 900 / size.x;
+            return (float) 700 / size.x;
         }
 
         @Override
@@ -590,7 +611,6 @@ public class DishInfoActivity extends AppCompatActivity implements
         public ImageView thumnail;
         public TextView textView;
         public TextView price_rest;
-        public TextView discription;
         public static CartNumberButton numberButton;
         public int coursemeal;
         TextView offer;
@@ -605,7 +625,6 @@ public class DishInfoActivity extends AppCompatActivity implements
             textView = view.findViewById(R.id.dish_name_menu);
             price_rest = view.findViewById(R.id.price_rest);
             numberButton = view.findViewById(R.id.element_btn_viewpager);
-            discription = view.findViewById(R.id.dish_discription_menu);
             offer = view.findViewById(R.id.restaurant_offer);
 
             Bundle args = getArguments();
@@ -615,13 +634,10 @@ public class DishInfoActivity extends AppCompatActivity implements
             textView.setText(dishes.getName());
             Picasso.with(getActivity().getApplicationContext()).load(dishes.getPoster_url()).into(thumnail);
             price_rest.setText("₹" + dishes.getPrice());
-            discription.setText(dishes.getDesc());
-            if(dishes.getDiscount()!=0)
-            {
-                offer.setText(dishes.getDiscount()+" %");
+            if (dishes.getDiscount() != 0) {
+                offer.setText(dishes.getDiscount() + " %");
                 offer.setVisibility(View.VISIBLE);
-            }
-            else
+            } else
                 offer.setVisibility(View.GONE);
 
 
@@ -636,9 +652,11 @@ public class DishInfoActivity extends AppCompatActivity implements
                     dish_price.setText("₹ " + dishes.getPrice());
                     dish_discription.setText(dishes.getDesc());
 //                    cartNumberButton.setNumber(dishes.getTotalcartItem() + "");
-                    if (DishInfoActivity.timing != null)
+                    if (DishInfoActivity.timing != null && !DishInfoActivity.timing.equals("")) {
                         DishInfoActivity.timing_text.setText(DishInfoActivity.timing);
-
+                        DishInfoActivity.timing_text.setVisibility(View.VISIBLE);
+                    } else
+                        DishInfoActivity.timing_text.setVisibility(View.GONE);
 
                 }
             });
@@ -697,60 +715,58 @@ public class DishInfoActivity extends AppCompatActivity implements
             pager2.setAdapter(pagerAdapter1);
             updatehasmap();
         }
-      //  if (!PassingCartItem.menuIntegerHashMap.isEmpty()) {
-            frameLayout.setVisibility(View.VISIBLE);
-            int totalitems = 0, totalprices = 0;
-            List<Menu> placedordermenu=new ArrayList<>();
-            List<Integer> placedordermenuItem =new ArrayList<>();
-            for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
-                totalprices += Integer.parseInt(entry.getKey().getPrice()) * entry.getValue();
-                placedordermenu.add(entry.getKey());
-                placedordermenuItem.add(entry.getValue());
-                totalitems += entry.getValue();
-            }
-            placed_item.setText("Placed " + totalitems + " Item | ₹" + totalprices);
+        //  if (!PassingCartItem.menuIntegerHashMap.isEmpty()) {
+        frameLayout.setVisibility(View.VISIBLE);
+        int totalitems = 0, totalprices = 0;
+        List<Menu> placedordermenu = new ArrayList<>();
+        List<Integer> placedordermenuItem = new ArrayList<>();
+        for (Map.Entry<Menu, Integer> entry : PassingCartItem.placed_order_hashmap.entrySet()) {
+            totalprices += Integer.parseInt(entry.getKey().getPrice()) * entry.getValue();
+            placedordermenu.add(entry.getKey());
+            placedordermenuItem.add(entry.getValue());
+            totalitems += entry.getValue();
+        }
+        placed_item.setText("Placed " + totalitems + " Item | ₹" + totalprices);
 
-            Log.d("RISHABH FOOD ITEMS","The loop has been started");
-            for (int i = 0; i <= foodcategorywithoutvideo.size() - 1; i++) {
-                Log.d("RISHABH FOOD ITEMS",foodcategorywithoutvideo.size()+"this is the size");
-                for (int j = 0; j <= foodcategorywithoutvideo.get(i).size() - 1; j++) {
-                    Log.d("RISHABH FOOD ITEMS",foodcategorywithoutvideo.get(i).size()+"this is the size of second");
-                    if (placedordermenu.contains(foodcategorywithoutvideo.get(i).get(j))) {
-                       foodcategorywithoutvideo.get(i).get(j).setTotalcartItem(placedordermenuItem.get(j));
-                    }
-                    else
-                    {
-                        Log.d("RISHABH FOOD ITEMS","NO item there");
-                    }
-
+        Log.d("RISHABH FOOD ITEMS", "The loop has been started");
+        for (int i = 0; i <= foodcategorywithoutvideo.size() - 1; i++) {
+            Log.d("RISHABH FOOD ITEMS", foodcategorywithoutvideo.size() + "this is the size");
+            for (int j = 0; j <= foodcategorywithoutvideo.get(i).size() - 1; j++) {
+                Log.d("RISHABH FOOD ITEMS", foodcategorywithoutvideo.get(i).size() + "this is the size of second");
+                if (placedordermenu.contains(foodcategorywithoutvideo.get(i).get(j))) {
+                    foodcategorywithoutvideo.get(i).get(j).setTotalcartItem(placedordermenuItem.get(j));
+                } else {
+                    Log.d("RISHABH FOOD ITEMS", "NO item there");
                 }
+
             }
-        List <String> foodcategory2=new ArrayList<>();
+        }
+        List<String> foodcategory2 = new ArrayList<>();
         HashMap<String, List<Menu>> menuHashMap2 = new HashMap<>();
         for (Map.Entry<String, List<Menu>> entry : menuHashMap.entrySet()) {
-            List<Menu> menu=  entry.getValue();
-            if (menu.size()>0) {
+            List<Menu> menu = entry.getValue();
+            if (menu.size() > 0) {
                 foodcategory2.add(entry.getKey());
-                menuHashMap2.put(entry.getKey(),menu);
+                menuHashMap2.put(entry.getKey(), menu);
             }
         }
 
         expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory2, menuHashMap2);
-            expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setAdapter(expandableListAdapter);
 
-       // }
+        // }
     }
 
     @Override
     public void onBackPressed() {
-        if(new MySharedPreference(this).get_insideorderpayment())
-            Toast.makeText(this, "There are placed items in your cart. Kindly pay the bill.", Toast.LENGTH_LONG).show();
-        else {
-            PassingCartItem.menuIntegerHashMap.clear();
-            PassingCartItem.placed_order_hashmap.clear();
-            super.onBackPressed();
-
-        }
+//        if(new MySharedPreference(this).get_insideorderpayment())
+//            Toast.makeText(this, "There are placed items in your cart. Kindly pay the bill.", Toast.LENGTH_LONG).show();
+//        else {
+        PassingCartItem.menuIntegerHashMap.clear();
+        PassingCartItem.placed_order_hashmap.clear();
+        super.onBackPressed();
+//
+//        }
     }
 
     private void setListViewHeight(ExpandableListView listView,
@@ -788,7 +804,6 @@ public class DishInfoActivity extends AppCompatActivity implements
         listView.requestLayout();
 
     }
-
 
 
 }

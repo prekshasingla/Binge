@@ -63,7 +63,6 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
                 holder.item_price.setText("₹ "+Integer.parseInt(menuList.get(position).getPrice())*newValue);
                 menuList.get(position).setTotalcartItem(newValue);
                 PassingCartItem.addmenu(menuList.get(position),newValue);
-                menuList.get(position).setTotalcartItem(newValue);
 
                 addingToBill();
             }
@@ -139,7 +138,18 @@ public class RecyclerViewCartAdapter extends RecyclerView.Adapter<RecyclerViewCa
             NewCartActivity.totalpricetext.setText("₹"+total_price+"");
             NewCartActivity.paypricetext.setText("₹"+totalsum+"");
         }
+        if(totalsum==0) {
+            NewCartActivity.payNowbtn.setEnabled(false);
+            NewCartActivity.payNowbtn.setBackgroundColor(Color.GRAY);
 
+            NewCartActivity.placed_order_btn.setEnabled(false);
+            NewCartActivity.placed_order_btn.setBackgroundColor(Color.GRAY);
+        }else{
+            NewCartActivity.payNowbtn.setEnabled(true);
+            NewCartActivity.payNowbtn.setBackgroundColor(Color.parseColor("#32CD32"));
+            NewCartActivity.placed_order_btn.setEnabled(true);
+            NewCartActivity.placed_order_btn.setBackgroundColor(Color.parseColor("#ff5500"));
+        }
     }
 
     @Override

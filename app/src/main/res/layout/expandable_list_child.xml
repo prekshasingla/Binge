@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
-    app:cardElevation="2dp">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linlay"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        >
 
         <ImageView
             android:id="@+id/veg_nonveg"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:background="@mipmap/nonveg" />
 
         <TextView
             android:id="@+id/dish_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/veg_nonveg"
-            android:fontFamily="@font/roboto"
-            android:text="Dish Name"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/dish_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/veg_nonveg"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="8dp"
-            android:text="$25"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Dish Name"
+            android:textSize="15sp" />
+    </LinearLayout>
 
-        <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton
-            android:id="@+id/cart_number_btn"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/veg_nonveg"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="10dp"
-            app:backGroundColor="@color/lime_green">
+    <TextView
+        android:id="@+id/dish_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linlay"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:text="676"
+        android:textSize="15sp"
+         />
+    <TextView
+        android:id="@+id/dish_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dish_price"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:text="67"
+        android:drawableLeft="@drawable/ic_discount"
+        android:drawablePadding="5dp"
+        android:textSize="12sp"
+        />
+    <com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton
+        android:id="@+id/cart_number_btn"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="2dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:backGroundColor="@color/lime_green">
 
-        </com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
+    </com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton>
 
 
-    </RelativeLayout>
+</RelativeLayout>
 
-</android.support.v7.widget.CardView>

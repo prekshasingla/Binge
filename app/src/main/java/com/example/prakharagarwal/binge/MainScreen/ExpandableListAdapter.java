@@ -64,6 +64,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView veg_nonveg = convertView.findViewById(R.id.veg_nonveg);
         TextView dishnametext = convertView.findViewById(R.id.dish_name);
         TextView dish_price = convertView.findViewById(R.id.dish_price);
+        TextView dish_discount=convertView.findViewById(R.id.dish_discount);
         CartNumberButton numberButton = convertView.findViewById(R.id.cart_number_btn);
 
         if (menu.getVeg() == 0) {
@@ -72,7 +73,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             veg_nonveg.setBackgroundResource(R.mipmap.nonveg);
         }
         dishnametext.setText(menu.getName());
-        dish_price.setText("₹" + menu.getPrice());
+        dish_price.setText("₹ " + menu.getPrice());
+        if(menu.getDiscount()!=0){
+            dish_discount.setVisibility(View.VISIBLE);
+            dish_discount.setText(menu.getDiscount()+"%");
+        }
+        else {
+            dish_discount.setVisibility(View.GONE);
+        }
 
         numberButton.setNumber(menu.getTotalcartItem() + "");
 

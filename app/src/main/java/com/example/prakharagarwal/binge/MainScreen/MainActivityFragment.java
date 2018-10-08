@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.BaseApplication;
+import com.example.prakharagarwal.binge.Config;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.cart.CartSuccess;
@@ -120,16 +121,16 @@ public class MainActivityFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_activity_progress);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
-        inside_order_button=rootView.findViewById(R.id.order_inside_button);
-        preorder_button=rootView.findViewById(R.id.pre_order_button);
+        inside_order_button = rootView.findViewById(R.id.order_inside_button);
+        preorder_button = rootView.findViewById(R.id.pre_order_button);
 
         preorder_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchFragment.activity=getActivity();
-                android.support.v4.app.FragmentManager manager=getActivity().getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction transaction=manager.beginTransaction();
-                transaction.replace(R.id.fragment_container,new SearchFragment());
+                SearchFragment.activity = getActivity();
+                android.support.v4.app.FragmentManager manager = getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.fragment_container, new SearchFragment());
                 transaction.addToBackStack("search");
                 transaction.commit();
             }
@@ -142,22 +143,20 @@ public class MainActivityFragment extends Fragment {
                 new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood);
 
 
-        Log.v("RishabhSharedPreference","Starting shared prefernce");
+        Log.v("RishabhSharedPreference", "Starting shared prefernce");
         //get data from the shared preference because if user already placed the preorder then we directly switch to the map activity
-        MySharedPreference sharedPreference=new MySharedPreference(getActivity());
-        if(sharedPreference.savedmapactivity_get_flag()==true)
-        {
+        MySharedPreference sharedPreference = new MySharedPreference(getActivity());
+        if (sharedPreference.savedmapactivity_get_flag() == true) {
             Intent intent = new Intent(getActivity(), CartSuccess.class);
             intent.putExtra("orderId", sharedPreference.savedmapactivity_get_orderID());
             intent.putExtra("latitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_latitude()).toString()));
             intent.putExtra("longitude", Double.parseDouble(new Float(sharedPreference.savedmapactivity_get_longitude()).toString()));
-            intent.putExtra("resturant_id",sharedPreference.savedmapactivity_restaurantID());
+            intent.putExtra("resturant_id", sharedPreference.savedmapactivity_restaurantID());
             startActivity(intent);
             onDestroy();
         }
 
-        if(sharedPreference.get_insideorderpayment() && ((BaseApplication) getActivity().getApplication()).isCartFlag())
-        {
+        if (sharedPreference.get_insideorderpayment() && ((BaseApplication) getActivity().getApplication()).isCartFlag()) {
             Intent intent = new Intent(getActivity(), DishInfoActivity.class);
             intent.putExtra("flag", "insideOrder");
             intent.putExtra("rest", sharedPreference.get_inside_order_restaurant_id());
@@ -169,10 +168,9 @@ public class MainActivityFragment extends Fragment {
         inside_order_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),PostOrderQRActivity.class));
+                startActivity(new Intent(getActivity(), PostOrderQRActivity.class));
             }
         });
-
 
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -182,7 +180,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(getActivity()!=null) {
+                if (getActivity() != null) {
                     if (((MainActivity) getActivity()).getLatitude() != null && ((MainActivity) getActivity()).getLongitude() != null)
                         locationFlag = true;
                     else
@@ -234,7 +232,7 @@ public class MainActivityFragment extends Fragment {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(getActivity().getApplicationContext())
+                new AlertDialog.Builder(getActivity())
                         .setTitle("Location Permission Required")
                         .setMessage("Please give permission to access your location")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -274,8 +272,8 @@ public class MainActivityFragment extends Fragment {
                 Double longitude = 0.0;
                 String restuarant_name = null;
                 String restuarant_id = null;
-                long whole_discount=0;
-                long preorder_switch=0;
+                long whole_discount = 0;
+                long preorder_switch = 0;
 
                 for (DataSnapshot child1 : child.getChildren()) { //starter, lat, long
                     if (child1.getKey().equals("latitude"))
@@ -310,10 +308,8 @@ public class MainActivityFragment extends Fragment {
                                     if (totalcategory.containsKey(menu.getCategory())) {
                                         int total = totalcategory.get(menu.getCategory());
                                         totalcategory.put(menu.getCategory(), total + 1);
-                                        Log.v("RISHABH", "ToTal Category " + menu.getCategory() + " " + total);
                                     } else {
                                         totalcategory.put(menu.getCategory(), 1);
-                                        Log.v("RISHABH", "ToTal Category " + menu.getCategory() + "1");
                                     }
                                 }
                             }
@@ -340,11 +336,9 @@ public class MainActivityFragment extends Fragment {
                                     mFood2Counter++;
                                     if (totalcategory.containsKey(menu.getCategory())) {
                                         int total = totalcategory.get(menu.getCategory());
-                                        totalcategory.put(menu.getCategory(), total+1);
-                                        Log.v("RISHABH","ToTal Category "+menu.getCategory()+" "+total);
+                                        totalcategory.put(menu.getCategory(), total + 1);
                                     } else {
                                         totalcategory.put(menu.getCategory(), 1);
-                                        Log.v("RISHABH","ToTal Category "+menu.getCategory()+ "1 no");
                                     }
                                 }
 
@@ -391,8 +385,9 @@ public class MainActivityFragment extends Fragment {
         } else if (mFood.size() == 0) {
             emptyView.setVisibility(View.GONE);
             //   nearbyEmptyLayout.setVisibility(View.VISIBLE);
-            mDemoCollectionPagerAdapter =
-                    new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
+            if (getActivity() != null)
+                mDemoCollectionPagerAdapter =
+                        new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager(), mFood2);
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
         } else {
             emptyView.setVisibility(View.GONE);
@@ -401,7 +396,7 @@ public class MainActivityFragment extends Fragment {
 
             mDemoCollectionPagerAdapter.addAll(mFood);
             mDemoCollectionPagerAdapter.notifyDataSetChanged();
-             trendingViewpager.removeAllViews();
+            trendingViewpager.removeAllViews();
             trendingViewpager.setAdapter(mDemoCollectionPagerAdapter);
 
         }
@@ -450,18 +445,29 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void UpdateCategoriesView() {
-        List<String> category_string=new ArrayList<>();
-        List<Integer> category_integer=new ArrayList<>();
-        HashMap<String,Integer> categoryhashmap=PassingData.getTotalcategoryitem();
-        for(Map.Entry<String,Integer> category:categoryhashmap.entrySet())
-        {
-            category_string.add(category.getKey());
-            category_integer.add(category.getValue());
+        List<String> category_string = new ArrayList<>();
+        List<Integer> category_integer = new ArrayList<>();
+        HashMap<String, Integer> categoryhashmap = PassingData.getTotalcategoryitem();
+//        for (Map.Entry<String, Integer> category : categoryhashmap.entrySet()) {
+//
+//            category_string.add(category.getKey());
+//            category_integer.add(category.getValue());
+//
+//        }
+        for (int i = 0; i < categories.size(); i++) {
+            Category1 category1=categories.get(i);
+            if(categoryhashmap.containsKey(category1.getCategory_id())){
 
-            Log.v("RISHABHRAWAT","category is the "+category.getKey()+" "+category.getValue());
+                categories.get(i).setItem(Long.valueOf(categoryhashmap.get(category1.getCategory_id())));
+            }
         }
-
-        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(),category_string,category_integer);
+        List<Category1> category1s=new ArrayList<>();
+        for (int i = 0; i < categories.size(); i++) {
+           if(categories.get(i).getItem()!=0){
+               category1s.add(categories.get(i));
+           }
+        }
+        mCategoriesAdapter = new CategoriesAdapter(category1s, getActivity(), category_string, category_integer);
         final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
         mCategoryRecyclerView.setAdapter(mCategoriesAdapter);
@@ -505,9 +511,10 @@ public class MainActivityFragment extends Fragment {
             this.mFood = mFood;
         }
 
-        public void addAll(List<Menu> mFood){
-            this.mFood=mFood;
+        public void addAll(List<Menu> mFood) {
+            this.mFood = mFood;
         }
+
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = new DemoObjectFragment();
@@ -594,15 +601,15 @@ public class MainActivityFragment extends Fragment {
             postOrder = rootView.findViewById(R.id.post_order);
             title.setText(dish.getName());
             restaurantTrend.setText(dish.getRestaurantName());
-            if(MainActivityFragment.locationFlag) {
+            if (MainActivityFragment.locationFlag) {
                 double timebetweentwolatlong = caldistance(Double.parseDouble(dish.getLatitude()), Double.parseDouble(dish.getLongitude()));
                 time.setText(String.valueOf(timebetweentwolatlong).substring(0, 4) + " km");
+                time.setVisibility(View.VISIBLE);
                 timing = String.valueOf(timebetweentwolatlong).substring(0, 4) + " km";
-            }
-            else
-            {
+            } else {
                 time.setText("");
-                timing="";
+                time.setVisibility(View.GONE);
+                timing = "";
             }
             preOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -612,7 +619,7 @@ public class MainActivityFragment extends Fragment {
                     intent.putExtra("dish", dish.getName());
                     intent.putExtra("flag", "preOrder");
                     intent.putExtra("time", timing);
-                    intent.putExtra("whole_discount",dish.getWhole_discount());
+                    intent.putExtra("whole_discount", dish.getWhole_discount());
                     // PassingData.setLatitude(dish.getLatitude());
                     // PassingData.setLongitude(dish.getLongitude());
                     startActivity(intent);
@@ -627,11 +634,11 @@ public class MainActivityFragment extends Fragment {
                 }
             });
 
-            TextView discount= rootView.findViewById(R.id.restaurant_offer);
-            if(dish.getDiscount()!=0){
+            TextView discount = rootView.findViewById(R.id.restaurant_offer);
+            if (dish.getDiscount() != 0) {
                 discount.setVisibility(View.VISIBLE);
                 discount.setText(dish.getDiscount() + " % OFF");
-            }else{
+            } else {
                 discount.setVisibility(View.GONE);
             }
             prepare();
@@ -780,6 +787,7 @@ public class MainActivityFragment extends Fragment {
                                                                         YouTubePlayer youTubePlayer, boolean b) {
                                         DemoObjectFragment.youTubePlayer = youTubePlayer;
                                         DemoObjectFragment.youTubePlayer.loadVideo(dish.getVideo_url());
+                                        DemoObjectFragment.youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
                                         DemoObjectFragment.youTubePlayer.setFullscreenControlFlags(0);
                                         DemoObjectFragment.youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
                                             @Override

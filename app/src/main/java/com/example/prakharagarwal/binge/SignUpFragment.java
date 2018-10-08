@@ -168,6 +168,7 @@ public class SignUpFragment extends Fragment {
             SharedPreferences.Editor editor = getActivity().getSharedPreferences("Login", MODE_PRIVATE).edit();
 
             editor.putString("username", email);
+            editor.putString("display_name",name);
             editor.apply();
             getActivity().onBackPressed();
 

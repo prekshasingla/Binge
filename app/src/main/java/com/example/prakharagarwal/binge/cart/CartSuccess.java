@@ -125,8 +125,6 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         sharedPreference.savedmapactivity_set_orderID_restaurant_id(orderID,resturant_id);
         sharedPreference.savedmapactivity_set_flag(true);
 
-        Log.d("RISHABH", "ORDER ID IS THE " + orderID);
-        Log.d("RISHABH", "LATITUDE IS THE " + String.valueOf(getIntent().getDoubleExtra("latitude",0.0)) + " LONGITUDE IS THE " + String.valueOf(getIntent().getDoubleExtra("longitude",0.0)));
 
         mGoogleApiClient = new GoogleApiClient.Builder(CartSuccess.this)
                 .addApi(LocationServices.API)

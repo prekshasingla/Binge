@@ -13,6 +13,8 @@
     <color name="orange10">#FF5733</color>
     <color name="photo_placeholder">#ccc</color>
     <color name="grey">#d3d3d3</color>
+    <color name="darkGrey">#BDBDBD</color>
+
     <color name="colorAccent">#FF4081</color>
     <color name="white_opaque">#FFFFFFFF</color>
     <color name="pitch_black">#FF000000</color>

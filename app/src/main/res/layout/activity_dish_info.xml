@@ -12,10 +12,12 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoDragView="@id/full_layout"
-        sothree:umanoPanelHeight="360dp"
-        sothree:umanoShadowHeight="2dp">
+        sothree:umanoPanelHeight="280dp"
+        sothree:umanoShadowHeight="6dp">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/upper_view"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -26,26 +28,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@color/grey" />
+            <TextView
+                android:id="@+id/dish_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dish name"
+                android:textSize="16sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/droid_sans"
+                sothree:layout_constraintTop_toBottomOf="@+id/youtube_player_fragment"
+                />
+            <TextView
+                android:id="@+id/dish_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dish name"
+                android:textSize="16sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/droid_sans"
+                sothree:layout_constraintTop_toBottomOf="@+id/youtube_player_fragment"
+                sothree:layout_constraintRight_toLeftOf="parent"
 
-            <ImageView
-                android:id="@+id/back_btn"
-                android:layout_width="31dp"
-                android:layout_height="28dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-                sothree:layout_constraintBottom_toBottomOf="parent"
-                sothree:layout_constraintEnd_toEndOf="parent"
-                sothree:layout_constraintHorizontal_bias="0.0"
-                sothree:layout_constraintStart_toStartOf="parent"
-                sothree:layout_constraintTop_toTopOf="parent"
-                sothree:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints,VectorDrawableCompat" />
+                />
+            <TextView
+                android:id="@+id/dish_discription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="descripdskk n oojda l"
+                android:textSize="14sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/darkGrey"
+                android:textStyle="bold"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:fontFamily="@font/droid_sans"
+                sothree:layout_constraintTop_toBottomOf="@+id/dish_name"
+
+                />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -61,55 +88,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/dish_name"
-                    android:layout_width="292dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto"
-                    android:maxLines="2"
-                    android:text="Shai Panner Kabab"
-                    android:textColor="#1F2D3D"
-                    android:textSize="23dp"
-                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/dish_price"
+                    android:id="@+id/dish_restaurant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignRight="@+id/dish_name"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="₹ 625"
-                    android:textColor="#1F2D3D"
-                    android:textSize="23dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/dish_trending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/dish_name"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/ic_restaurant_black_24dp"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Treanding"
+                    android:text=""
+                    android:textColor="#464646" />
+                <TextView
+                    android:id="@+id/dish_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dish_restaurant"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Gurgaon"
                     android:textColor="#464646" />
                 <TextView
                     android:id="@+id/dish_offer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dish_trending"
+                    android:layout_below="@+id/dish_location"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/ic_discount"
@@ -123,7 +128,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@+id/dish_name"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/ic_directions_car_black_24dp"
@@ -132,34 +136,18 @@
                     android:text="10 min"
                     android:textColor="#1F2D3D" />
 
-                <TextView
-                    android:id="@+id/dish_discription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/dish_offer"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Our Chocolate  We prepare each small batch right in our restaurants, all throughout the day, using real Wisconsin dairy, so it’s ever so rich and it is good for the health"
-                    android:textColor="#8492A6"
-                    android:textSize="15dp" />
+
 
             </RelativeLayout>
 
-            <android.support.design.widget.NavigationView
-                android:id="@+id/nav_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/dish_layout"
-                android:layout_gravity="start">
+
 
                 <com.example.prakharagarwal.binge.rishabhcutomview.CustomScrollView
                     android:id="@+id/customScrollView"
                     android:layout_width="match_parent"
+                    android:background="@color/white"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/dish_layout"
 
                     android:layout_marginTop="10dp">
                     <!--This Layout is for the Whole Card View-->
@@ -172,7 +160,7 @@
                             android:id="@+id/top_restaurants_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#EFF2F7">
+                            >
 
                             <TextView
                                 android:id="@+id/dishes_meal"
@@ -182,20 +170,21 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="15dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Start your course meal 1: "
-                                android:textColor="#1F2D3D"
-                                android:textSize="25sp" />
+                                android:textStyle="bold"
+                                android:fontFamily="@font/droid_sans"
+                                android:text="Recommended"
+                                android:textColor="@color/darkGrey"
+                                android:textSize="16sp" />
 
                             <android.support.v4.view.ViewPager
                                 android:id="@+id/dish_viewpager"
                                 android:layout_width="match_parent"
-                                android:layout_height="350dp"
+                                android:layout_height="230dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_below="@+id/dishes_meal"
                                 android:layout_marginBottom="2dp"
-                                android:layout_marginRight="2dp"></android.support.v4.view.ViewPager>
+                                android:layout_marginRight="2dp"/>
 
                             <TextView
                                 android:id="@+id/dishes_meal2"
@@ -206,20 +195,21 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="15dp"
-                                android:fontFamily="@font/roboto"
-                                android:text="Start your course meal 2:"
-                                android:textColor="#1F2D3D"
-                                android:textSize="25sp" />
+                                android:fontFamily="@font/droid_sans"
+                                android:textStyle="bold"
+                                android:text="Most Popular"
+                                android:textColor="@color/darkGrey"
+                                android:textSize="16sp" />
 
                             <android.support.v4.view.ViewPager
                                 android:id="@+id/dish_viewpager_second"
                                 android:layout_width="match_parent"
-                                android:layout_height="350dp"
+                                android:layout_height="230dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_below="@+id/dishes_meal2"
                                 android:layout_marginBottom="15dp"
-                                android:layout_marginRight="2dp"></android.support.v4.view.ViewPager>
+                                android:layout_marginRight="2dp"/>
 
                         </RelativeLayout>
 
@@ -239,7 +229,7 @@
 
 
                 </com.example.prakharagarwal.binge.rishabhcutomview.CustomScrollView>
-            </android.support.design.widget.NavigationView>
+
 
 
             <!--<RelativeLayout-->

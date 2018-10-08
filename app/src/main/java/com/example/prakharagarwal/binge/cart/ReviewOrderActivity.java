@@ -63,6 +63,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
     Intent intent;
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
     private boolean preOrderFlag;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = prefs.edit();
         final String uID = prefs.getString("username", null);
-        final String UName = prefs.getString("testname", null);
+        final String UName = prefs.getString("display_name", null);
         final String uPhone = prefs.getString("userphone", null);
 
         if (uID != null) {
@@ -132,7 +133,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
                     } else {
                         if (UName == null) {
-                            editor.putString("testname", name.getText().toString().trim()).commit();
+                            editor.putString("display_name", name.getText().toString().trim()).commit();
                         }
                         if (uPhone == null) {
                             editor.putString("userphone", phone.getText().toString()).commit();
@@ -173,7 +174,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
         String phone = phone1.trim();
         String productName = intent.getStringExtra("restaurant");
         String firstName = firstname1.trim();
-        String email = "email@y.com";
+        String email = email1;
 
         JSONObject data = new JSONObject();
         try {
@@ -216,6 +217,11 @@ public class ReviewOrderActivity extends AppCompatActivity {
                 .setMerchantId(appEnvironment.merchant_ID());
 
         try {
+            dialog = new ProgressDialog(this);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Please wait ..");
+            dialog.setCancelable(false);
+            dialog.show();
             mPaymentParams = builder.build();
 
             /*
@@ -238,6 +244,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
             }*/
 
         } catch (Exception e) {
+            dialog.dismiss();
             // some exception occurred
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             payButton.setEnabled(true);
@@ -275,14 +282,11 @@ public class ReviewOrderActivity extends AppCompatActivity {
     }
 
     private class GetHashesFromServerTask extends AsyncTask<String, String, String> {
-        private ProgressDialog progressDialog;
+
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(ReviewOrderActivity.this);
-            progressDialog.setMessage("Please wait...");
-            progressDialog.show();
         }
 
         @Override
@@ -329,12 +333,20 @@ public class ReviewOrderActivity extends AppCompatActivity {
                 }
 
             } catch (MalformedURLException e) {
+                dialog.dismiss();
+                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (ProtocolException e) {
+                dialog.dismiss();
+                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (IOException e) {
+                dialog.dismiss();
+                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (JSONException e) {
+                dialog.dismiss();
+                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             return merchantHash;
@@ -343,12 +355,11 @@ public class ReviewOrderActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String merchantHash) {
             super.onPostExecute(merchantHash);
-
-            progressDialog.dismiss();
             payButton.setEnabled(true);
 
             if (merchantHash.isEmpty() || merchantHash.equals("")) {
-                Toast.makeText(ReviewOrderActivity.this, "Could not generate hash", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
             } else {
                 mPaymentParams.setMerchantHash(merchantHash);
 
@@ -400,6 +411,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                         firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/PreOrder").document(intent.getStringExtra("orderID")).set(placedOrderHashmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                dialog.dismiss();
                                 Intent intent1 = new Intent(ReviewOrderActivity.this, CartSuccess.class);
                                 intent1.putExtra("orderId",intent.getStringExtra("orderID"));
                                 intent1.putExtra("latitude", PassingData.getLatitude());
@@ -417,7 +429,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                         paymentData.put("ordertype", "orderInside");
                         firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/InsideOrder").document(intent.getStringExtra("orderID")).update("payment", "done");
                         firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/payments").add(paymentData);
-
+                        dialog.dismiss();
                         new MySharedPreference(ReviewOrderActivity.this).set_insideorderpayment(false);
                         final Dialog dialog = new Dialog(ReviewOrderActivity.this);
                         dialog.setContentView(R.layout.thankyou_layout);
@@ -439,6 +451,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
 
                 } else {
+                    dialog.dismiss();
                     if (preOrderFlag) {
                     paymentData.put("orderType", "PreOrder");}
                     else{
@@ -452,11 +465,18 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
 
             } else if (resultModel != null && resultModel.getError() != null) {
+                dialog.dismiss();
+                error_text.setVisibility(View.VISIBLE);
+                error_text.setText("Transaction Failed. Please try again.");
                 Log.d("Review Order Activity", "Error response : " + resultModel.getError().getTransactionResponse());
             } else {
+                dialog.dismiss();
+                error_text.setVisibility(View.VISIBLE);
+                error_text.setText("Transaction Failed. Please try again.");
                 Log.d("Review Order Activity", "Both objects are null!");
             }
         } else {
+            dialog.dismiss();
             error_text.setVisibility(View.VISIBLE);
             error_text.setText("Transaction Failed. Please try again.");
         }

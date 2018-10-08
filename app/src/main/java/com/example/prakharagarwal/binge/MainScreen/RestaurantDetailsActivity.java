@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prakharagarwal.binge.Config;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.Menu.MenuAdapter;
