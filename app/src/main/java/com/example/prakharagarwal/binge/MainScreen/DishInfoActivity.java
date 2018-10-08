@@ -25,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +103,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     static HashMap<String, List<Menu>> menuHashMap = new HashMap<>();
 
     long preorder_switch = 0;
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,9 @@ public class DishInfoActivity extends AppCompatActivity implements
             Intent intent = new Intent(DishInfoActivity.this, NewCartActivity.class);
             startActivity(intent);
         }
+        progress=findViewById(R.id.progress);
+        progress.setVisibility(View.VISIBLE);
+        progress.setIndeterminate(true);
         context = this;
         main_relative_layout = findViewById(R.id.main_relative_layout);
         main_relative_layout.setVisibility(View.GONE);
@@ -346,7 +351,7 @@ public class DishInfoActivity extends AppCompatActivity implements
                         menuHashMap2.put(entry.getKey(), menu);
                     }
                 }
-
+                progress.setVisibility(View.GONE);
                 expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory2, menuHashMap2);
                 expandableListView.setAdapter(expandableListAdapter);
                 setListViewHeight(expandableListView, 0);
@@ -705,6 +710,7 @@ public class DishInfoActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        progress.setVisibility(View.VISIBLE);
         if (course_meal1 != null && course_meal2 != null) {
 
             pagerAdapter = new RestaurantPagerAdapter(getSupportFragmentManager(), course_meal1, getApplicationContext(), 1);
@@ -750,10 +756,9 @@ public class DishInfoActivity extends AppCompatActivity implements
                 menuHashMap2.put(entry.getKey(), menu);
             }
         }
-
+        progress.setVisibility(View.GONE);
         expandableListAdapter = new ExpandableListAdapter(DishInfoActivity.this, foodcategory2, menuHashMap2);
         expandableListView.setAdapter(expandableListAdapter);
-
         // }
     }
 

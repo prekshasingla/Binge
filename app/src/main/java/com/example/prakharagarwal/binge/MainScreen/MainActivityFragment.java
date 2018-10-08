@@ -56,6 +56,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -377,8 +378,8 @@ public class MainActivityFragment extends Fragment {
 
     public void UpdateTrendingView() {
 
-//        Collections.shuffle(mFood);
-//        Collections.shuffle(mFood2);
+        Collections.shuffle(mFood);
+        Collections.shuffle(mFood2);
         progressBar.setVisibility(View.GONE);
         if (mFood.size() == 0 && mFood2.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);

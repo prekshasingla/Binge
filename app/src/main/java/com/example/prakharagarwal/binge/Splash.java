@@ -24,10 +24,10 @@ public class Splash extends AppCompatActivity {
                 String uID = prefs.getString("status", null);
                 Intent intent;
 
-             //   if(uID!=null){
-               //     intent= new Intent(Splash.this, MainActivity.class);
+//                if(uID!=null){
+                    intent= new Intent(Splash.this, MainActivity.class);
 //                }else{
-                    intent=new Intent(Splash.this,OnBoardingActivity.class);
+//                    intent=new Intent(Splash.this,OnBoardingActivity.class);
 //                }
                 startActivity(intent);
                 finish();

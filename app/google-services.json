@@ -1,67 +1,75 @@
 {
   "project_info": {
-    "project_number": "254566168359",
-    "firebase_url": "https://bingetesting.firebaseio.com",
-    "project_id": "bingetesting",
-    "storage_bucket": "bingetesting.appspot.com"
+    "project_number": "547273078992",
+    "firebase_url": "https://bingeandroid.firebaseio.com",
+    "project_id": "bingeandroid",
+    "storage_bucket": "bingeandroid.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:254566168359:android:83cb832dfcd586d0",
+        "mobilesdk_app_id": "1:547273078992:android:6f2611c8dc15ea46",
         "android_client_info": {
-          "package_name": "com.example.prakharagarwal.binge"
+          "package_name": "in.binge.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "254566168359-5qjoe157hm75rhb2nnlbpm0g98mau31f.apps.googleusercontent.com",
+          "client_id": "547273078992-6ms24lfagsrhdpsrvl88c2ln16gv45t2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
+            "package_name": "in.binge.android",
             "certificate_hash": "04e32bfb918bb4b9e8bc30e8a2c00dd214699b97"
           }
         },
         {
-          "client_id": "254566168359-h5qedf93bfj68ktffi5or9gglatf838d.apps.googleusercontent.com",
+          "client_id": "547273078992-j1ced35385dgdfcmbi4h3i4nhbtlflb8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
-            "certificate_hash": "4296681f4b3018f34778ca93019658b2672ea5a1"
-          }
-        },
-        {
-          "client_id": "254566168359-i11471cj7gn47pkad7722tjb8s2jb6i7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
-            "certificate_hash": "c6c0863b9d96e02ced8b98407c78f14c0e859014"
-          }
-        },
-        {
-          "client_id": "254566168359-mlkfarlpmalikl9ueqj8aa5rnq06p5st.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
+            "package_name": "in.binge.android",
             "certificate_hash": "83c68593f8cc1db0b252d68162e0e1c59276f7dc"
           }
         },
         {
-          "client_id": "254566168359-uh1adc26efbusnlg5ih41ticp26ragic.apps.googleusercontent.com",
+          "client_id": "547273078992-jo5hqab4866llhdhm44qbpeond392sp6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.prakharagarwal.binge",
+            "package_name": "in.binge.android",
+            "certificate_hash": "4296681f4b3018f34778ca93019658b2672ea5a1"
+          }
+        },
+        {
+          "client_id": "547273078992-pp601g81k5ii41j8r5ld9o1ed0caqpqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.binge.android",
+            "certificate_hash": "9872ca4ad92f82de847301e014fa6c579662aee9"
+          }
+        },
+        {
+          "client_id": "547273078992-qseo8fthku4363vc5n04loaovdckep1l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.binge.android",
+            "certificate_hash": "c6c0863b9d96e02ced8b98407c78f14c0e859014"
+          }
+        },
+        {
+          "client_id": "547273078992-ti5igfaho1u0ti16ee6qg6cqmae3ruoi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.binge.android",
             "certificate_hash": "7a93db02d57d52ce42d4e4f3f17fd0dad8bf7914"
           }
         },
         {
-          "client_id": "254566168359-9tptif1dq2n68urae8m2ml87po2krk26.apps.googleusercontent.com",
+          "client_id": "547273078992-cmiv5jepol6jcupc82dmks5v27ktk99q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAAq89QlXBWErsndV_wuc_RV-yROwZvzXc"
+          "current_key": "AIzaSyDmVypmno_Z-faKtItXS2uxNW3QZHScXg0"
         }
       ],
       "services": {
@@ -72,7 +80,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "254566168359-9tptif1dq2n68urae8m2ml87po2krk26.apps.googleusercontent.com",
+              "client_id": "547273078992-cmiv5jepol6jcupc82dmks5v27ktk99q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

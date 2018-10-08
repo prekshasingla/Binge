@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/slide_panel"
         android:layout_width="match_parent"
@@ -21,7 +22,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                sothree:layout_constraintBottom_toTopOf="parent"
+                sothree:layout_constraintRight_toLeftOf="parent"
+                sothree:layout_constraintLeft_toRightOf="parent"/>
             <fragment
                 android:id="@+id/youtube_player_fragment"
                 android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"

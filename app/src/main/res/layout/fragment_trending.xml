@@ -14,14 +14,16 @@
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded"
-            fresco:placeholderImage="@color/colorPrimary"/>
+            fresco:placeholderImage="@color/grey"/>
 
         <ImageView
             android:id="@+id/play_button"
