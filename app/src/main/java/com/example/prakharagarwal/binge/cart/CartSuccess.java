@@ -118,14 +118,19 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         rest_latitude=getIntent().getDoubleExtra("latitude",0.0);
         rest_longitude=getIntent().getDoubleExtra("longitude",0.0);
         resturant_id=getIntent().getStringExtra("restaurant_id");
-
-        //save the data to shared preference
         final MySharedPreference sharedPreference=new MySharedPreference(CartSuccess.this);
+        if(resturant_id==null)
+            resturant_id=sharedPreference.savedmapactivity_restaurantID();
+        //save the data to shared preference
+        if(orderID==null)
+            orderID=sharedPreference.savedmapactivity_get_orderID();
+
         sharedPreference.savedmapactivity_set_latitude_longitude_flag(rest_latitude,rest_longitude);
         sharedPreference.savedmapactivity_set_orderID_restaurant_id(orderID,resturant_id);
         sharedPreference.savedmapactivity_set_flag(true);
 
-
+    if(resturant_id==null)
+        resturant_id=sharedPreference.get_inside_order_restaurant_id();
         mGoogleApiClient = new GoogleApiClient.Builder(CartSuccess.this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(CartSuccess.this)

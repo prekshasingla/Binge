@@ -764,14 +764,14 @@ public class DishInfoActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-//        if(new MySharedPreference(this).get_insideorderpayment())
-//            Toast.makeText(this, "There are placed items in your cart. Kindly pay the bill.", Toast.LENGTH_LONG).show();
-//        else {
+        if(new MySharedPreference(this).get_insideorderpayment())
+            Toast.makeText(this, "There are placed items in your cart. Kindly pay the bill.", Toast.LENGTH_LONG).show();
+        else {
         PassingCartItem.menuIntegerHashMap.clear();
         PassingCartItem.placed_order_hashmap.clear();
         super.onBackPressed();
 //
-//        }
+        }
     }
 
     private void setListViewHeight(ExpandableListView listView,

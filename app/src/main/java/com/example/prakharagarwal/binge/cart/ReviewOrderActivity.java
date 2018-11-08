@@ -25,6 +25,7 @@ import com.example.prakharagarwal.binge.BaseApplication;
 import com.example.prakharagarwal.binge.MainScreen.MainActivity;
 import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
 import com.example.prakharagarwal.binge.R;
+import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -392,7 +393,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                 Map<String, Object> paymentData = new HashMap<>();
                 paymentData.put("payuResponse", payuResponse);
                 paymentData.put("merchantResponse", merchantResponse);
-                paymentData.put("timestamp", Calendar.getInstance().getTimeInMillis());
+                paymentData.put("timestamp_payment", Calendar.getInstance().getTimeInMillis());
                 paymentData.put("orderId", intent.getStringExtra("orderID"));
 
                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -431,6 +432,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
                         firebaseFirestore.collection("orders/" + intent.getStringExtra("restaurantID") + "/payments").add(paymentData);
                         dialog.dismiss();
                         new MySharedPreference(ReviewOrderActivity.this).set_insideorderpayment(false);
+                        PassingCartItem.setOrderID(null);
                         final Dialog dialog = new Dialog(ReviewOrderActivity.this);
                         dialog.setContentView(R.layout.thankyou_layout);
                         dialog.setCancelable(false);
