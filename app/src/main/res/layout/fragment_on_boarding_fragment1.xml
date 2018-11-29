@@ -18,18 +18,18 @@
         android:textColor="#ff5500"
         android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/onboarding_image1"
-        android:layout_below="@+id/onboarding_text1"
-        android:layout_width="250dp"
-        android:layout_height="370dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/onboarding1" />
+    <!--<ImageView-->
+        <!--android:id="@+id/onboarding_image1"-->
+        <!--android:layout_below="@+id/onboarding_text1"-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="370dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@drawable/onboarding1"-->
+        <!--/>-->
 
     <TextView
         android:id="@+id/onboarding_text2"
-        android:layout_below="@+id/onboarding_image1"
         android:layout_width="300dp"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"

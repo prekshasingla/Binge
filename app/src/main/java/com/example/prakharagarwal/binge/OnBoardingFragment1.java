@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.MainScreen.MainActivity;
@@ -57,17 +56,17 @@ public class OnBoardingFragment1 extends Fragment {
         TextView text1= (TextView) rootView.findViewById(R.id.onboarding_text1);
         TextView text2= (TextView) rootView.findViewById(R.id.onboarding_text2);
         TextView text3= (TextView) rootView.findViewById(R.id.onboarding_text3);
-        ImageView image1= (ImageView) rootView.findViewById(R.id.onboarding_image1);
+//        ImageView image1= (ImageView) rootView.findViewById(R.id.onboarding_image1);
         if(getArguments().get(ARG_PARAM1).equals("screen1")){
             text1.setText("DISCOVER");
             text2.setText("Find out what's unique and new at restaurants near you.");
             text3.setText("SKIP");
-            image1.setBackgroundResource(R.drawable.onboarding1);
+//            image1.setBackgroundResource(R.drawable.onboarding1);
         }else{
             text1.setText("VIDEO MENUS");
             text2.setText("No more guessing, watch a short video to see what you order.");
             text3.setText("CONTINUE");
-            image1.setBackgroundResource(R.drawable.onboarding2);
+//            image1.setBackgroundResource(R.drawable.onboarding2);
         }
         text3.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,39 +1,44 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
-import com.example.prakharagarwal.binge.Menu.Menu;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by prekshasingla on 10/11/17.
+ * Created by prakharagarwal on 25/05/18.
  */
 
 public class Category {
-    String category;
-    List<Menu> categoryMenu;
+    private String category_id;
+    private String category_name;
+    private String logo_url;
+    private Long item=0l;
 
-    Category(){
-        categoryMenu=new ArrayList<Menu>();
+    public Long getItem() {
+        return item;
     }
 
-
-    public String getCategory() {
-        return category;
+    public void setItem(Long item) {
+        this.item = item;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getCategory_id() {
+        return category_id;
     }
 
-    public List<Menu> getCategoryMenu() {
-        return categoryMenu;
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
     }
 
-    public void setCategoryMenu(List<Menu> categoryMenu) {
-        this.categoryMenu = categoryMenu;
+    public String getCategory_name() {
+        return category_name;
     }
-    public void addCategoryMenu(Menu menu){
-        categoryMenu.add(menu);
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    public String getLogo_url() {
+        return logo_url;
+    }
+
+    public void setLogo_url(String logo_url) {
+        this.logo_url = logo_url;
     }
 }

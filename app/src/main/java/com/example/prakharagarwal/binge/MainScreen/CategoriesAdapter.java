@@ -1,27 +1,20 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
-import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +25,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     public List<Integer> category_number;
     public List<String> category_string;
-    private List<Category1> categories;
+    private List<Category> categories;
     final private Activity mContext;
 
 
@@ -47,7 +40,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             Color.parseColor("#DA70D6"), Color.parseColor("#FF6347"), Color.parseColor("#DAA520"),
             Color.parseColor("#1E90FF"),Color.parseColor("#D2691E")};
 
-    public CategoriesAdapter(List<Category1> categories, Activity mContext,List<String> category_string,List<Integer> category_number) {
+    public CategoriesAdapter(List<Category> categories, Activity mContext, List<String> category_string, List<Integer> category_number) {
         this.categories = categories;
         this.mContext = mContext;
         this.category_string=category_string;
@@ -109,7 +102,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         @Override
         public void onClick(View v) {
-            Category1 category1 = categories.get(getAdapterPosition());
+            Category category = categories.get(getAdapterPosition());
             Intent intent = new Intent(mContext, RestaurantActivity.class);
             intent.putExtra("category", categories.get(getAdapterPosition()).getCategory_id());
             // intent.putExtra("mfood",mfood);
@@ -118,7 +111,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
 
-    public void addAll(List<Category1> categories) {
+    public void addAll(List<Category> categories) {
         this.categories = categories;
 
     }

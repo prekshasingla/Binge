@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -78,7 +80,7 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 98;
     private LocationRequest mLocationRequest;
     private int REQUEST_CHECK_SETTINGS = 88;
-    private String LOG_TAG = "CArt Success Activity";
+    private String LOG_TAG = "Cart Success Activity";
 
     private String orderID;
     private FirebaseFirestore db;
@@ -86,7 +88,6 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
     private double longitude = 0;
     private GoogleMap googleMap = null;
     private Marker movemarker;
-    private Button received, cooking, served;
 
     TextView eta_time;
     Polyline polyline = null;
@@ -94,6 +95,10 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
     Double rest_longitude;
     String resturant_id;
     Boolean dialogflag=false;
+
+    CardView pendingCard,recievedCard,preparingCard;
+    TextView pendingText,recievedText,preparingText;
+    TextView recievedText2,preparingText2;
 
 
 
@@ -105,11 +110,19 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        received = findViewById(R.id.recived_status);
-        cooking = findViewById(R.id.cooking_status);
-        served = findViewById(R.id.served_status);
 
 
+
+        pendingCard=findViewById(R.id.status_pending);
+        recievedCard=findViewById(R.id.status_recieved);
+        preparingCard=findViewById(R.id.status_preparing);
+
+        pendingText=findViewById(R.id.pending_text);
+        recievedText=findViewById(R.id.recieved_text);
+        preparingText=findViewById(R.id.preparing_text);
+
+        recievedText2=findViewById(R.id.recieved_text2);
+        preparingText2=findViewById(R.id.preparing_text2);
 
         db = FirebaseFirestore.getInstance();
 
@@ -158,22 +171,14 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
                     Log.d("RISHABH", "STRING DATA IS THE " + order_status);
                     if (order_status != null) {
                         if(order_status.equals("recieved")) {
-                            Log.d("RISHABH","Status 1");
-                            received.setBackgroundColor(Color.GREEN);
-                            cooking.setBackgroundColor(Color.GRAY);
-                            served.setBackgroundColor(Color.GRAY);
+
+                            setStatusRecieved();
                         }
                             else if(order_status.equals("mealPreparing")) {
-                            Log.d("RISHABH","Status 2");
-                            received.setBackgroundColor(Color.GREEN);
-                            cooking.setBackgroundColor(Color.GREEN);
-                            served.setBackgroundColor(Color.GRAY);
+
+                            setStatusPreparing();
                         }
                             else if(order_status.equals("delivered")) {
-                            Log.d("RISHABH","Status 3");
-//                            received.setBackgroundColor(Color.GREEN);
-//                            cooking.setBackgroundColor(Color.GREEN);
-//                            served.setBackgroundColor(Color.GREEN);
                             if(!dialogflag) {
                                 dialogflag=true;
                                 final Dialog dialog = new Dialog(CartSuccess.this);
@@ -198,10 +203,6 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
                         }
                         else
                         {
-                            Log.d("RISHABH","Status 4");
-                            received.setBackgroundColor(Color.GRAY);
-                            cooking.setBackgroundColor(Color.GRAY);
-                            served.setBackgroundColor(Color.GRAY);
                         }
                     }
                 } else {
@@ -214,6 +215,44 @@ public class CartSuccess extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
+
+
+    private void setStatusRecieved() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            recievedCard.setElevation(6);
+            pendingCard.setElevation(0);
+            preparingCard.setElevation(0);
+        }
+
+        pendingText.setTextColor(getResources().getColor(R.color.add_amount_grey));
+        recievedText.setTextColor(getResources().getColor(R.color.black85));
+        pendingText.setTextSize(14);
+        recievedText.setTextSize(18);
+        recievedText2.setVisibility(View.VISIBLE);
+
+
+
+    }
+    private void setStatusPreparing() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            recievedCard.setElevation(0);
+            pendingCard.setElevation(0);
+            preparingCard.setElevation(6);
+        }
+
+        pendingText.setTextColor(getResources().getColor(R.color.add_amount_grey));
+        recievedText.setTextColor(getResources().getColor(R.color.add_amount_grey));
+        preparingText.setTextColor(getResources().getColor(R.color.black85));
+        pendingText.setTextSize(14);
+        recievedText.setTextSize(14);
+
+        preparingText.setTextSize(18);
+        preparingText2.setVisibility(View.VISIBLE);
+        recievedText2.setVisibility(View.VISIBLE);
+
+
+    }
     public void checkLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this,

@@ -35,7 +35,6 @@ import com.example.prakharagarwal.binge.Config;
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
 import com.example.prakharagarwal.binge.cart.CartSuccess;
-import com.example.prakharagarwal.binge.cart.NewCartActivity;
 import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -59,7 +58,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -83,7 +81,7 @@ public class MainActivityFragment extends Fragment {
     private ViewPager trendingViewpager;
     private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private int mFood2Counter = 0;
-    private List<Category1> categories;
+    private List<Category> categories;
     Button inside_order_button;
     Button preorder_button;
 
@@ -433,8 +431,8 @@ public class MainActivityFragment extends Fragment {
 
             for (DataSnapshot child : dataSnapshot[0].getChildren()) { //38_barakks
 
-                Category1 category1 = child.getValue(Category1.class);
-                categories.add(category1);
+                Category category = child.getValue(Category.class);
+                categories.add(category);
             }
             return null;
         }
@@ -455,20 +453,20 @@ public class MainActivityFragment extends Fragment {
 //            category_integer.add(category.getValue());
 //
 //        }
-        for (int i = 0; i < categories.size(); i++) {
-            Category1 category1=categories.get(i);
-            if(categoryhashmap.containsKey(category1.getCategory_id())){
+        for (int i = 0; i < this.categories.size(); i++) {
+            Category category = this.categories.get(i);
+            if(categoryhashmap.containsKey(category.getCategory_id())){
 
-                categories.get(i).setItem(Long.valueOf(categoryhashmap.get(category1.getCategory_id())));
+                this.categories.get(i).setItem(Long.valueOf(categoryhashmap.get(category.getCategory_id())));
             }
         }
-        List<Category1> category1s=new ArrayList<>();
-        for (int i = 0; i < categories.size(); i++) {
-           if(categories.get(i).getItem()!=0){
-               category1s.add(categories.get(i));
+        List<Category> categories =new ArrayList<>();
+        for (int i = 0; i < this.categories.size(); i++) {
+           if(this.categories.get(i).getItem()!=0){
+               categories.add(this.categories.get(i));
            }
         }
-        mCategoriesAdapter = new CategoriesAdapter(category1s, getActivity(), category_string, category_integer);
+        mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(), category_string, category_integer);
         final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCategoryRecyclerView.setLayoutManager(mLayoutManager1);
         mCategoryRecyclerView.setAdapter(mCategoriesAdapter);

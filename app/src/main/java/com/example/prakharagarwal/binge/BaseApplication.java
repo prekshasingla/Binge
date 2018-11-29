@@ -3,6 +3,7 @@ package com.example.prakharagarwal.binge;
 import android.app.Application;
 
 import com.example.prakharagarwal.binge.cart.AppEnvironment;
+import com.onesignal.OneSignal;
 
 /**
  * Created by prakharagarwal on 29/07/18.
@@ -25,7 +26,10 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appEnvironment = AppEnvironment.SANDBOX;
-
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
 
     }
 

@@ -95,18 +95,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainScreen.RestaurantDetailsActivity"
-            android:label="@string/title_activity_restaurant"
-            android:screenOrientation="portrait">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
             android:name=".MainScreen.RestaurantActivity"
             android:label="@string/title_activity_restaurant" />
         <activity
@@ -116,10 +104,6 @@
         <activity
             android:name=".MainScreen.LocationSearchActivity"
             android:label="Select Location" />
-        <activity android:name=".DishRecommend" />
-        <activity
-            android:name=".cart.CartActivity"
-            android:label="@string/title_activity_cart" />
         <activity
             android:name=".cart.CartSuccess"
             android:label="@string/title_activity_cart_success" />
@@ -130,9 +114,9 @@
             android:name=".MainScreen.PostOrderQRActivity"
             android:noHistory="true" />
         <activity android:name=".cart.NewCartActivity" />
-        <activity android:name=".cart.CartMapTracking" />
         <activity android:name=".cart.PlacedOrderItem" />
         <activity android:name=".cart.ReviewOrderActivity"></activity>
+
     </application>
 
 </manifest>
