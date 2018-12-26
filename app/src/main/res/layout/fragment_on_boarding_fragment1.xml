@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_below="@+id/onboarding_text1"
         android:gravity="center"
         android:text="Find out what's unique and new at restaurants near you."
         android:textColor="@color/white_opaque"

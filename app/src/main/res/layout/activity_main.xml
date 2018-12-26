@@ -38,10 +38,9 @@
 
                     <LinearLayout
                         android:id="@+id/location_layout"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="left"
-                        android:layout_weight="9"
                         android:orientation="vertical">
 
                         <TextView
@@ -58,7 +57,7 @@
 
                         <TextView
                             android:id="@+id/user_location"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:drawableLeft="@drawable/loc_marker"
                             android:drawablePadding="5dp"
@@ -130,6 +129,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:menu="@menu/nav_drawer_menu"
+        app:itemIconTint="@color/theme_primary"
+        app:headerLayout="@layout/nav_drawer_header"
         android:fitsSystemWindows="true" />
 
 </android.support.v4.widget.DrawerLayout>

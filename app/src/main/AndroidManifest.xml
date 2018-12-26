@@ -115,8 +115,16 @@
             android:noHistory="true" />
         <activity android:name=".cart.NewCartActivity" />
         <activity android:name=".cart.PlacedOrderItem" />
-        <activity android:name=".cart.ReviewOrderActivity"></activity>
-
+        <activity android:name=".cart.ReviewOrderActivity" />
+        <activity
+            android:name=".WalletActivity"
+            android:label="@string/title_activity_wallet"
+            android:theme="@style/Login"
+            android:parentActivityName=".MainScreen.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.prakharagarwal.binge.MainScreen.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

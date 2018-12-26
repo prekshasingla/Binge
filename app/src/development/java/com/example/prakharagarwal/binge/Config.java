@@ -7,5 +7,6 @@ package com.example.prakharagarwal.binge;
 public class Config {
     public static final String YOUTUBE_API_KEY = "AIzaSyDGzgze5f7z_Nruuti3E9dBerkdf9Id-1o";
 
+    public static final boolean isDevelopmentMode=true;
 
 }

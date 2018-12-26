@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/nav_section_top">
+        >
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/ic_account_balance_wallet_orange_24dp"
+            android:title="Wallet" />
+        <item
+            android:id="@+id/nav_order"
+            android:icon="@drawable/ic_order_orange"
+            android:title="Orders" />
+        <item
+            android:id="@+id/nav_redeem"
+            android:icon="@drawable/ic_redeem_orange_24dp"
+            android:title="Redeem" />
 
+    </group>
+    <group
+        android:id="@+id/nav_section_bottom">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"
+            />
+    </group>
 </menu>

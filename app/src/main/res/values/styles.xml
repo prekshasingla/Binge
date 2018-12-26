@@ -12,7 +12,7 @@
         <item name="colorPrimaryDark">#343F4B</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorSecondary">@color/text_color</item>
-        <item name="colorAccent">#f1bb3a</item>
+        <item name="colorAccent">#ff5500</item>
         <!--<item name="android:statusBarColor">#FF000000</item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -36,10 +36,10 @@
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
     <style name="Login" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">#f1bb3a</item>
+        <item name="colorPrimaryDark">#ff5500</item>
     </style>
     <style name="LoginToolbar" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">#f1bb3a</item>
+        <item name="colorPrimaryDark">#ff5500</item>
         <item name="android:textColorSecondary">@color/white_opaque</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -58,7 +58,7 @@
     <style name="PayuTheme" parent="PayumoneyAppTheme">
         <item name="colorPrimary">#343F4B</item>
         <item name="colorPrimaryDark">#343F4B</item>
-        <item name="colorAccent">#f1bb3a</item>
+        <item name="colorAccent">#ff5500</item>
         <item name="colorButtonNormal">#343F4B</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle_pink</item>
         <item name="actionMenuTextColor">@color/white</item>

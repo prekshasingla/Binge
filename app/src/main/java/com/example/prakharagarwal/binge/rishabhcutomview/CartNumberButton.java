@@ -115,6 +115,26 @@ public class CartNumberButton  extends RelativeLayout {
         a.recycle();
     }
 
+    public void disable(){
+        subtractBtn.setOnClickListener(null);
+        addBtn.setOnClickListener(null);
+    }
+    public void enable(){
+        subtractBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                int num = Integer.valueOf(textView.getText().toString());
+                setNumber(String.valueOf(num - 1), true);
+            }
+        });
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                int num = Integer.valueOf(textView.getText().toString());
+                setNumber(String.valueOf(num + 1), true);
+            }
+        });
+    }
     private void callListener(View view) {
         if (mListener != null) {
             mListener.onClick(view);

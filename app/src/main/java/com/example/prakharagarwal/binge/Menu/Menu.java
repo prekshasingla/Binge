@@ -1,9 +1,6 @@
 package com.example.prakharagarwal.binge.Menu;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
@@ -31,6 +28,7 @@ public class Menu implements Serializable{
     long discount=0;
     long whole_discount=0;
     long preorder_switch=0;
+    long dish_switch=1;
 
     public long getPreorder_switch() {
         return preorder_switch;
@@ -184,4 +182,11 @@ public class Menu implements Serializable{
         this.poster_url = poster_url;
     }
 
+    public long getDish_switch() {
+        return dish_switch;
+    }
+
+    public void setDish_switch(long dish_switch) {
+        this.dish_switch = dish_switch;
+    }
 }

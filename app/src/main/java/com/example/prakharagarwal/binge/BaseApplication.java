@@ -26,11 +26,12 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appEnvironment = AppEnvironment.SANDBOX;
-        OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init();
-
+        if(!Config.isDevelopmentMode) {
+            OneSignal.startInit(this)
+                    .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                    .unsubscribeWhenNotificationsAreDisabled(true)
+                    .init();
+        }
     }
 
     public AppEnvironment getAppEnvironment() {

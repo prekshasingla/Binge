@@ -1,12 +1,9 @@
 package com.example.prakharagarwal.binge;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,9 +113,7 @@ public class SignUpFragment extends Fragment {
         mDatabase=FirebaseDatabase.getInstance();
         return rootView;
     }
-    public FirebaseDatabase getDatabase(){
-        return mDatabase;
-    }
+
     private void userSignUpFirebase(final String name,final String email, final String password) {
 
 

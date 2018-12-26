@@ -616,7 +616,7 @@ public class DishInfoActivity extends AppCompatActivity implements
         public ImageView thumnail;
         public TextView textView;
         public TextView price_rest;
-        public static CartNumberButton numberButton;
+        public  CartNumberButton numberButton;
         public int coursemeal;
         TextView offer;
 
@@ -666,28 +666,38 @@ public class DishInfoActivity extends AppCompatActivity implements
                 }
             });
 
+            if(dishes.getDish_switch()==0){
+                numberButton.updateColors(getResources().getColor(R.color.grey), Color.WHITE);
+                numberButton.disable();
+                numberButton.setOnValueChangeListener(null);
+            }else {
+                numberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
+                numberButton.enable();
+                numberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
+                    @Override
+                    public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
+
+                        if (coursemeal == 1) {
+                            course_meal1.get(position).setTotalcartItem(newValue);
+                        } else {
+                            course_meal2.get(position).setTotalcartItem(newValue);
+                        }
+
+
+                        if (newValue != 0)
+                            numberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
+                        else
+                            numberButton.updateColors(getResources().getColor(R.color.yellow), Color.WHITE);
+
+                        DishInfoActivity dishInfoActivity = new DishInfoActivity();
+                        dishInfoActivity.add_item_to_cart(dishes, newValue);
+                    }
+                });
+            }
+
             numberButton.setNumber(dishes.getTotalcartItem() + "");
 
-            numberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {
-                @Override
-                public void onValueChange(CartNumberButton view, int oldValue, int newValue) {
 
-                    if (coursemeal == 1) {
-                        course_meal1.get(position).setTotalcartItem(newValue);
-                    } else {
-                        course_meal2.get(position).setTotalcartItem(newValue);
-                    }
-
-
-                    if (newValue != 0)
-                        numberButton.updateColors(getResources().getColor(R.color.lime_green), Color.WHITE);
-                    else
-                        numberButton.updateColors(getResources().getColor(R.color.yellow), Color.WHITE);
-
-                    DishInfoActivity dishInfoActivity = new DishInfoActivity();
-                    dishInfoActivity.add_item_to_cart(dishes, newValue);
-                }
-            });
 
             prepare();
             return view;
@@ -734,15 +744,11 @@ public class DishInfoActivity extends AppCompatActivity implements
         }
         placed_item.setText("Placed " + totalitems + " Item | ₹" + totalprices);
 
-        Log.d("RISHABH FOOD ITEMS", "The loop has been started");
         for (int i = 0; i <= foodcategorywithoutvideo.size() - 1; i++) {
-            Log.d("RISHABH FOOD ITEMS", foodcategorywithoutvideo.size() + "this is the size");
             for (int j = 0; j <= foodcategorywithoutvideo.get(i).size() - 1; j++) {
-                Log.d("RISHABH FOOD ITEMS", foodcategorywithoutvideo.get(i).size() + "this is the size of second");
                 if (placedordermenu.contains(foodcategorywithoutvideo.get(i).get(j))) {
                     foodcategorywithoutvideo.get(i).get(j).setTotalcartItem(placedordermenuItem.get(j));
                 } else {
-                    Log.d("RISHABH FOOD ITEMS", "NO item there");
                 }
 
             }

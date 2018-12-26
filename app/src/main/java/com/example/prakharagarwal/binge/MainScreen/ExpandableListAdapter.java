@@ -1,7 +1,7 @@
 package com.example.prakharagarwal.binge.MainScreen;
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,7 @@ import android.widget.TextView;
 
 import com.example.prakharagarwal.binge.Menu.Menu;
 import com.example.prakharagarwal.binge.R;
-import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.rishabhcutomview.CartNumberButton;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +79,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             dish_discount.setVisibility(View.GONE);
         }
 
+        if(menu.getDish_switch()==0){
+            numberButton.updateColors(_context.getResources().getColor(R.color.grey), Color.WHITE);
+            numberButton.disable();
+        }else{
+            numberButton.updateColors(_context.getResources().getColor(R.color.lime_green), Color.WHITE);
+            numberButton.enable();
+        }
         numberButton.setNumber(menu.getTotalcartItem() + "");
 
         numberButton.setOnValueChangeListener(new CartNumberButton.OnValueChangeListener() {

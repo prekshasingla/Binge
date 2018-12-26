@@ -70,8 +70,8 @@ public class MainActivityFragment extends Fragment {
     BrandsAdapter mBrandsAdapter;
     RecyclerView mCategoryRecyclerView;
     CategoriesAdapter mCategoriesAdapter;
-    static private List<Menu> mFood;
-    static private List<Menu> mFood2;
+    private List<Menu> mFood;
+    private List<Menu> mFood2;
     List<Brand> brands;
     TextView emptyView;
     ProgressBar progressBar;
@@ -301,7 +301,7 @@ public class MainActivityFragment extends Fragment {
                                 menu.setLongitude(String.valueOf(longitude));
                                 menu.setWhole_discount(whole_discount);
                                 menu.setPreorder_switch(preorder_switch);
-                                if (menu.getHas_video() == 0) {
+                                if (menu.getHas_video() == 0 && menu.getDish_switch() == 1) {
                                     mFood.add(menu);
 
                                     if (totalcategory.containsKey(menu.getCategory())) {
@@ -330,7 +330,7 @@ public class MainActivityFragment extends Fragment {
                                 menu.setWhole_discount(whole_discount);
                                 menu.setPreorder_switch(preorder_switch);
 
-                                if (menu.getHas_video() == 0) {
+                                if (menu.getHas_video() == 0 && menu.getDish_switch() == 1) {
                                     mFood2.add(menu);
                                     mFood2Counter++;
                                     if (totalcategory.containsKey(menu.getCategory())) {
@@ -455,16 +455,16 @@ public class MainActivityFragment extends Fragment {
 //        }
         for (int i = 0; i < this.categories.size(); i++) {
             Category category = this.categories.get(i);
-            if(categoryhashmap.containsKey(category.getCategory_id())){
+            if (categoryhashmap.containsKey(category.getCategory_id())) {
 
                 this.categories.get(i).setItem(Long.valueOf(categoryhashmap.get(category.getCategory_id())));
             }
         }
-        List<Category> categories =new ArrayList<>();
+        List<Category> categories = new ArrayList<>();
         for (int i = 0; i < this.categories.size(); i++) {
-           if(this.categories.get(i).getItem()!=0){
-               categories.add(this.categories.get(i));
-           }
+            if (this.categories.get(i).getItem() != 0) {
+                categories.add(this.categories.get(i));
+            }
         }
         mCategoriesAdapter = new CategoriesAdapter(categories, getActivity(), category_string, category_integer);
         final LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -474,21 +474,24 @@ public class MainActivityFragment extends Fragment {
 
 
     private boolean calRadius(double lat2, double lon2) {
-        double lat1 = Double.parseDouble(((MainActivity) getActivity()).getLatitude());
-        double lon1 = Double.parseDouble(((MainActivity) getActivity()).getLongitude());
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        if (dist <= 6)
-            return true;
-        else
-            return false;
+        if (getActivity() != null) {
+            double lat1 = Double.parseDouble(((MainActivity) getActivity()).getLatitude());
+            double lon1 = Double.parseDouble(((MainActivity) getActivity()).getLongitude());
+            double theta = lon1 - lon2;
+            double dist = Math.sin(deg2rad(lat1))
+                    * Math.sin(deg2rad(lat2))
+                    + Math.cos(deg2rad(lat1))
+                    * Math.cos(deg2rad(lat2))
+                    * Math.cos(deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.1515;
+            if (dist <= 6)
+                return true;
+            else
+                return false;
+        }else
+        return false;
     }
 
     private double deg2rad(double deg) {
