@@ -30,17 +30,17 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         manifestPlaceholders = [
                 onesignal_app_id               : '3320c6a2-ff8b-4684-b1b6-0a55772d3eda',
                 // Project number pulled from dashboard, local value is ignored.
                 onesignal_google_project_number: 'REMOTE'
         ]
-        applicationId "in.binge.android"
+        applicationId "com.example.prakharagarwal.binge"
         minSdkVersion 20
         targetSdkVersion 27
-        versionCode 9
+        versionCode 10
         versionName "3.0"
         multiDexEnabled true
         signingConfig signingConfigs.config

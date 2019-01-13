@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -225,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
                                     mDrawerLayout.closeDrawers();
                                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                 }
+                                break;
+                            case R.id.nav_privacy_policy:
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://binge.digital/privacypolicy.html"));
+                                startActivity(browserIntent);
+                                mDrawerLayout.closeDrawers();
                                 break;
                             case R.id.nav_logout:
                                 mDrawerLayout.closeDrawers();
