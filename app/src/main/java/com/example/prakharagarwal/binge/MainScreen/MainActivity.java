@@ -54,6 +54,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //
 //        this.menu = menu;
-        return false;
+        return true;
     }
 
     @Override
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showRedeemDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View layout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         final Button redeem = layout.findViewById(R.id.redeem);
         final EditText code = layout.findViewById(R.id.code);
@@ -289,8 +290,8 @@ public class MainActivity extends AppCompatActivity {
                 if (code.getText().toString().trim().equals("")) {
                     Toast.makeText(MainActivity.this, "Enter a coupon", Toast.LENGTH_SHORT).show();
                 } else {
+                    alertDialog.dismiss();
                     checkCoupon(code.getText().toString().trim());
-                    alertDialog.cancel();
                 }
             }
         });
@@ -383,8 +384,14 @@ public class MainActivity extends AppCompatActivity {
                                                 } else {
 //                                            Log.d(TAG, "get failed with ", task.getException());
                                                 }
-                                                firebaseFirestore.collection("users_app")
-                                                        .document(encodeEmail(uID)).update("wallet_balance", Float.parseFloat(walletBalance[0]) + amount);
+                                                if(walletBalance[0].equals(0)){
+//                                                    Map<String>
+                                                }
+                                                Map<String,Double> wal=new HashMap<>();
+                                                wal.put("wallet_balance",Double.parseDouble(walletBalance[0]) + amount);
+                                                firebaseFirestore.collection("users_app").document(encodeEmail(uID)).set(wal,SetOptions.merge());
+//                                                firebaseFirestore.collection("users_app")
+//                                                        .document(encodeEmail(uID)).update("wallet_balance", Float.parseFloat(walletBalance[0]) + amount);
                                                 Map<String, Object> trans = new HashMap<>();
                                                 trans.put("credit_amount", amount);
                                                 trans.put("credit_debit", 1);

@@ -37,7 +37,7 @@ android {
                 // Project number pulled from dashboard, local value is ignored.
                 onesignal_google_project_number: 'REMOTE'
         ]
-        applicationId "com.example.prakharagarwal.binge"
+        applicationId "in.binge.android"
         minSdkVersion 20
         targetSdkVersion 27
         versionCode 9
