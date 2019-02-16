@@ -246,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
     }
+
 
     private void checkLogin() {
         SharedPreferences prefs = getSharedPreferences("Login", Context.MODE_PRIVATE);
