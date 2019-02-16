@@ -1,16 +1,14 @@
 package com.example.prakharagarwal.binge.cart;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.prakharagarwal.binge.BaseApplication;
 import com.example.prakharagarwal.binge.MainScreen.MainActivity;
 import com.example.prakharagarwal.binge.MainScreen.MySharedPreference;
@@ -29,7 +26,6 @@ import com.example.prakharagarwal.binge.model_class.PassingCartItem;
 import com.example.prakharagarwal.binge.model_class.PassingData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
@@ -263,8 +259,8 @@ public class ReviewOrderActivity extends AppCompatActivity {
         postParamsBuffer.append(concatParams(PayUmoneyConstants.AMOUNT, params.get(PayUmoneyConstants.AMOUNT)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.TXNID, params.get(PayUmoneyConstants.TXNID)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.EMAIL, params.get(PayUmoneyConstants.EMAIL)));
-        postParamsBuffer.append(concatParams("productinfo", params.get(PayUmoneyConstants.PRODUCT_INFO)));
-        postParamsBuffer.append(concatParams("firstname", params.get(PayUmoneyConstants.FIRSTNAME)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.PRODUCT_INFO, params.get(PayUmoneyConstants.PRODUCT_INFO)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.FIRSTNAME, params.get(PayUmoneyConstants.FIRSTNAME)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF1, params.get(PayUmoneyConstants.UDF1)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF2, params.get(PayUmoneyConstants.UDF2)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF3, params.get(PayUmoneyConstants.UDF3)));
@@ -295,7 +291,7 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
             String merchantHash = "";
             try {
-                URL url = new URL("http://13.126.117.141/test.php");
+                URL url = new URL("http://binge-digital.000webhostapp.com/test.php");
 
                 String postParam = postParams[0];
 
@@ -335,19 +331,19 @@ public class ReviewOrderActivity extends AppCompatActivity {
 
             } catch (MalformedURLException e) {
                 dialog.dismiss();
-                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (ProtocolException e) {
                 dialog.dismiss();
-                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (IOException e) {
                 dialog.dismiss();
-                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (JSONException e) {
                 dialog.dismiss();
-                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ReviewOrderActivity.this, "Some error occured. Try again.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             return merchantHash;
